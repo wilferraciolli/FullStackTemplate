@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.hateoas.Link;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -19,13 +21,24 @@ public class BaseResponse {
     private Map<String, Metadatable> metadata = new HashMap<>();
 
     @JsonProperty("_metaLinks")
-    private Map<String, LinkDetails> links = new HashMap<>();
+    private Map<String, LinkDetails> metaLinks = new HashMap<>();
 
     @JsonProperty("_messages")
-    private Object message;
+    private Object messages;
 
+    /**
+     * Adds single metadata.
+     */
     public void addMetaData() {
         metadata.put("personId", new Metadata(true, null, true, Arrays.asList(new MetadataEmnbedded("123", "WilIAm"))));
+    }
+
+    /**
+     * Adds single link to the meta links.
+     * @param link
+     */
+    public void addMetaLink(final Link link){
+        this.metaLinks.put(link.getRel().value(), new LinkDetails(link.getHref()));
     }
 
     public BaseResponse() {
@@ -47,20 +60,20 @@ public class BaseResponse {
         this.metadata = metadata;
     }
 
-    public Map<String, LinkDetails> getLinks() {
-        return links;
+    public Map<String, LinkDetails> getMetaLinks() {
+        return metaLinks;
     }
 
-    public void setLinks(final Map<String, LinkDetails> links) {
-        this.links = links;
+    public void setMetaLinks(final Map<String, LinkDetails> metaLinks) {
+        this.metaLinks = metaLinks;
     }
 
-    public Object getMessage() {
-        return message;
+    public Object getMessages() {
+        return messages;
     }
 
-    public void setMessage(final Object message) {
-        this.message = message;
+    public void setMessages(final Object messages) {
+        this.messages = messages;
     }
 }
 

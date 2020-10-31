@@ -3,13 +3,13 @@ package com.template.libraries.rest;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
+import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
-import com.template.users.UserResource;
 
 public class BaseRestService {
 
@@ -23,13 +23,23 @@ public class BaseRestService {
         return MvcUriComponentsBuilder.fromController(getClass()).path("/{id}").buildAndExpand(id).toUri();
     }
 
+    /**
+     * Build self link link.
+     * @return the link
+     */
+    public Link buildSelfLink() {
+        final String uriString = ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString();
+
+        return new Link(uriString, "self");
+    }
+
     public ResponseEntity buildResponseOk(final String rootName, final BaseDTO resource) {
 
         final BaseResponse response = new BaseResponse();
         response.setData(rootName, resource);
         response.addMetaData();
-        response.setMessage("Message");
-        response.setLinks(Map.of("self", new LinkDetails("localhost:5001")));
+        response.setMessages("Message");
+        response.addMetaLink(buildSelfLink());
 
         return ResponseEntity.ok().body(response);
     }
@@ -38,8 +48,8 @@ public class BaseRestService {
         final BaseResponse response = new BaseResponse();
         response.setData(rootName, resources);
         response.addMetaData();
-        response.setMessage("Message");
-        response.setLinks(Map.of("self", new LinkDetails("localhost:5001")));
+        response.setMessages("Message");
+        response.setMetaLinks(Map.of("self", new LinkDetails("localhost:5001")));
 
         return ResponseEntity.ok().body(response);
     }
