@@ -16,6 +16,7 @@ public enum UserRoleType {
      * The Role hr admin.
      */
     ROLE_HR_ADMIN("HR Admin"),
+
     /**
      * Role user user role type.
      */

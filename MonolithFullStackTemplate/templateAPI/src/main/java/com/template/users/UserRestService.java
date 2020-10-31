@@ -1,6 +1,10 @@
 package com.template.users;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -39,12 +43,15 @@ public class UserRestService extends BaseRestService {
     @GetMapping("/template")
     public ResponseEntity<UserResource> template() {
         final UserResource resource = UserResource.builder()
+                .firstName("")
+                .lastName("")
+                .username("")
+                .password("")
+                .roleIds(new ArrayList<>())
+                .active(true)
                 .build();
 
-        // TODO add meta
-        // TODO add self link
-
-        return buildResponseOk(getJsonRootName(UserResource.class), resource);
+        return buildResponseOk(getJsonRootName(UserResource.class), resource, metaFabricator.createMetaForTemplate());
     }
 
     /**
@@ -77,10 +84,14 @@ public class UserRestService extends BaseRestService {
         //                UserResourceAssembler.createLinksToCollection(),
         //                this.metaFabricator.createMetaForCollectionResource());
 
-        return buildResponseOk(getJsonRootName(UserResource.class), resources);
+        Set<String> usedRoleIds = resources.stream()
+                .map(UserResource::getRoleIds)
+                .flatMap(Collection::stream)
+                .distinct()
+                .collect(Collectors.toSet());
+
+        return buildResponseOk(getJsonRootName(UserResource.class), resources, metaFabricator.createMetaForCollectionResource(usedRoleIds));
     }
-
-
 
     /**
      * Find by id response entity.

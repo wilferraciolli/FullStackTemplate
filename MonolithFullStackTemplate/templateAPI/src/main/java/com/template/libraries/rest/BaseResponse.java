@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BaseResponse {
 
@@ -18,7 +19,7 @@ public class BaseResponse {
     private PayloadData data;
 
     @JsonProperty("_metadata")
-    private Map<String, Metadatable> metadata = new HashMap<>();
+    private Map<String, Metadata> metadata = new HashMap<>();
 
     @JsonProperty("_metaLinks")
     private Map<String, LinkDetails> metaLinks = new HashMap<>();
@@ -33,11 +34,15 @@ public class BaseResponse {
         metadata.put("personId", new Metadata(true, null, true, Arrays.asList(new MetadataEmnbedded("123", "WilIAm"))));
     }
 
+    public void addMetaData(final String fieldName, final Metadata meta) {
+        metadata.put(fieldName, meta);
+    }
+
     /**
      * Adds single link to the meta links.
      * @param link
      */
-    public void addMetaLink(final Link link){
+    public void addMetaLink(final Link link) {
         this.metaLinks.put(link.getRel().value(), new LinkDetails(link.getHref()));
     }
 
@@ -52,11 +57,11 @@ public class BaseResponse {
         this.data = new PayloadData(rootName, data);
     }
 
-    public Map<String, Metadatable> getMetadata() {
+    public Map<String, Metadata> getMetadata() {
         return metadata;
     }
 
-    public void setMetadata(final Map<String, Metadatable> metadata) {
+    public void setMetadata(final Map<String, Metadata> metadata) {
         this.metadata = metadata;
     }
 
