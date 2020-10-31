@@ -14,7 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wiltech.market.engine.users.user.User;
+import com.template.users.user.User;
 
 /**
  * The type Userinfo controller.

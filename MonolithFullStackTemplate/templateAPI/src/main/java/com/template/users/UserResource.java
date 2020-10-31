@@ -7,21 +7,21 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.wiltech.market.engine.validation.ValidateUniqueUsername;
+import com.template.libraries.rest.BaseDTO;
+import com.template.validation.ValidateUniqueUsername;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Value;
 
 /**
  * The type User resource.
  */
-@Data
+@Value
 @Builder
 @JsonTypeName("user")
-@JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
-public class UserResource {
+//@JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
+public class UserResource extends BaseDTO {
 
     private Long id;
 

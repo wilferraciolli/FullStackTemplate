@@ -1,14 +1,16 @@
 package com.template.users.events.handler;
 
+import static java.util.Arrays.asList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 
-import com.wiltech.market.engine.security.authentication.RegistrationRequest;
-import com.wiltech.market.engine.security.authentication.events.UserRegisteredEvent;
-import com.wiltech.market.engine.users.UserAppService;
-import com.wiltech.market.engine.users.UserResource;
-import com.wiltech.market.engine.users.UserRoleType;
+import com.template.security.authentication.RegistrationRequest;
+import com.template.security.authentication.events.UserRegisteredEvent;
+import com.template.users.UserAppService;
+import com.template.users.UserResource;
+import com.template.users.UserRoleType;
 
 /**
  * The type User registered event handler.

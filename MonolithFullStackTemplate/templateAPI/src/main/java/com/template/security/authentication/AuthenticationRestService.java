@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wiltech.BaseRestService;
-import com.wiltech.market.engine.security.jwt.refresh.RefreshTokenException;
-import com.wiltech.market.engine.security.jwt.refresh.RefreshTokenRequest;
+import com.template.libraries.rest.BaseRestService;
+import com.template.security.jwt.refresh.RefreshTokenException;
+import com.template.security.jwt.refresh.RefreshTokenRequest;
+
 
 /**
  * The type Auth controller.

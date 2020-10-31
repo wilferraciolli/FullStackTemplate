@@ -1,13 +1,11 @@
 package com.template.users;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,13 +17,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wiltech.BaseRestService;
+import com.template.libraries.rest.BaseRestService;
 
 /**
  * The type User rest service.
  */
 @RestController()
-//@ExposesResourceFor(UserResource.class)
 @RequestMapping(value = "/users", produces = "application/json")
 public class UserRestService extends BaseRestService {
 
@@ -40,14 +37,14 @@ public class UserRestService extends BaseRestService {
      * @return the response entity
      */
     @GetMapping("/template")
-    public ResponseEntity<UserResourceResponse> template() {
+    public ResponseEntity<UserResource> template() {
         final UserResource resource = UserResource.builder()
                 .build();
 
-        final UserResourceResponse response = new UserResourceResponse(resource, this.metaFabricator.createMetaForTemplate());
-        response.add(this.buildSelfLink());
+        // TODO add meta
+        // TODO add self link
 
-        return ResponseEntity.ok(response);
+        return buildResponseOk(getJsonRootName(UserResource.class), resource);
     }
 
     /**
@@ -56,11 +53,13 @@ public class UserRestService extends BaseRestService {
      * @return the response entity
      */
     @PostMapping("")
-    public ResponseEntity<UserResourceResponse> create(@RequestBody @Valid final UserResource payload) {
+    public ResponseEntity<UserResource> create(@RequestBody @Valid final UserResource payload) {
         final UserResource createdResource = this.appService.create(payload);
 
-        return ResponseEntity.created(this.buildLocationHeader(createdResource.getId()))
-                .body(new UserResourceResponse(createdResource));
+        // TODO change to return the same as build response
+        return ResponseEntity
+                .created(buildLocationHeader(createdResource.getId()))
+                .body(createdResource);
     }
 
     /**
@@ -68,20 +67,20 @@ public class UserRestService extends BaseRestService {
      * @return the response entity
      */
     @GetMapping("")
-    public ResponseEntity<UserResourceResponseCollection<UserResourceResponse>> findAll() {
+    public ResponseEntity<UserResource> findAll() {
 
-        final List<UserResourceResponse> resources = this.appService.findUsers().stream()
-                .map(UserResourceResponse::new)
-                .collect(Collectors.toList());
+        final List<UserResource> resources = this.appService.findUsers();
 
-        //get the resource collection and add link to the collection
-        final UserResourceResponseCollection<UserResourceResponse> response = new UserResourceResponseCollection<>(
-                new CollectionModel<>(resources),
-                UserResourceAssembler.createLinksToCollection(),
-                this.metaFabricator.createMetaForCollectionResource());
+        //TODO get the resource collection and add link to the collection
+        //        final UserResourceResponseCollection<UserResourceResponse> response = new UserResourceResponseCollection<>(
+        //                new CollectionModel<>(resources),
+        //                UserResourceAssembler.createLinksToCollection(),
+        //                this.metaFabricator.createMetaForCollectionResource());
 
-        return ResponseEntity.ok(response);
+        return buildResponseOk(getJsonRootName(UserResource.class), resources);
     }
+
+
 
     /**
      * Find by id response entity.
@@ -89,11 +88,13 @@ public class UserRestService extends BaseRestService {
      * @return the response entity
      */
     @GetMapping("/{id}")
-    public ResponseEntity<UserResourceResponse> findById(@PathVariable("id") final Long id) {
+    public ResponseEntity<UserResource> findById(@PathVariable("id") final Long id) {
 
         final UserResource resource = this.appService.findById(id);
 
-        return ResponseEntity.ok(new UserResourceResponse(resource, this.metaFabricator.createMetaForSingleResource()));
+        // TODO add meta and links
+
+        return buildResponseOk(getJsonRootName(UserResource.class), resource);
     }
 
     @GetMapping("/usernames/{username}/availability")
@@ -101,7 +102,8 @@ public class UserRestService extends BaseRestService {
 
         final boolean isAvailable = this.appService.checkUsernameAvailability(StringUtils.defaultString(username));
 
-        return ResponseEntity.ok(isAvailable);
+        return ResponseEntity
+                .ok(isAvailable);
     }
 
     /**
@@ -112,10 +114,12 @@ public class UserRestService extends BaseRestService {
      */
     @PreAuthorize(value = "hasRole('ROLE_ADMIN') or checkOwnerByUserId(#id)")
     @PutMapping("/{id}")
-    public ResponseEntity<UserResourceResponse> update(@PathVariable("id") final Long id, @RequestBody @Valid final UserResource payload) {
+    public ResponseEntity<UserResource> update(@PathVariable("id") final Long id, @RequestBody @Valid final UserResource payload) {
         final UserResource updatedResource = this.appService.update(id, payload);
 
-        return ResponseEntity.ok(new UserResourceResponse(updatedResource));
+        // TODO add meta and links
+
+        return buildResponseOk(getJsonRootName(UserResource.class), updatedResource);
     }
 
     /**
@@ -128,6 +132,8 @@ public class UserRestService extends BaseRestService {
     public ResponseEntity deleteById(@PathVariable("id") final Long id) {
         this.appService.deleteById(id);
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity
+                .noContent()
+                .build();
     }
 }

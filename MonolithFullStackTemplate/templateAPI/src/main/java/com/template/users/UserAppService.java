@@ -10,13 +10,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.wiltech.EventPublisher;
-import com.wiltech.market.engine.exceptions.EntityNotFoundException;
-import com.wiltech.market.engine.mails.MailService;
-import com.wiltech.market.engine.mails.NotificationEmail;
-import com.wiltech.market.engine.users.events.UserCreatedEvent;
-import com.wiltech.market.engine.users.user.User;
-import com.wiltech.market.engine.users.user.UserRepository;
+import com.template.exceptions.EntityNotFoundException;
+import com.template.libraries.core.EventPublisher;
+import com.template.libraries.mails.MailService;
+import com.template.libraries.mails.NotificationEmail;
+import com.template.users.events.UserCreatedEvent;
+import com.template.users.user.User;
+import com.template.users.user.UserRepository;
 
 /**
  * The type User app service.

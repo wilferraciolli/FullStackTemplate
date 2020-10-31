@@ -1,5 +1,6 @@
 package com.template.validation;
 
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
@@ -7,7 +8,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.wiltech.market.engine.users.user.UserRepository;
+import com.template.users.user.UserRepository;
+
 
 @Component
 public class ValidateUniqueUsernameValidator implements ConstraintValidator<ValidateUniqueUsername, String> {

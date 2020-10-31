@@ -10,7 +10,7 @@ import java.util.List;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 
-import com.wiltech.market.engine.users.user.User;
+import com.template.users.user.User;
 
 /**
  * The type User resource assembler.

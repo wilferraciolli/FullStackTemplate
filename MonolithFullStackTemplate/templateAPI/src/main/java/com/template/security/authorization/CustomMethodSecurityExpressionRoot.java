@@ -4,7 +4,7 @@ import org.springframework.security.access.expression.SecurityExpressionRoot;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionOperations;
 import org.springframework.security.core.Authentication;
 
-import com.wiltech.market.engine.users.user.User;
+import com.template.users.user.User;
 
 /**
  * The type Is owner security expression root.

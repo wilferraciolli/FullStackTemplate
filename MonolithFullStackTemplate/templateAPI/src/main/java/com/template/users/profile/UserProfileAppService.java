@@ -11,14 +11,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import com.wiltech.ProvidersLinkProvider;
-import com.wiltech.market.engine.exceptions.EntityNotFoundException;
-import com.wiltech.market.engine.people.PersonRestService;
-import com.wiltech.market.engine.users.UserDetailsView;
-import com.wiltech.market.engine.users.UserDetailsViewRepository;
-import com.wiltech.market.engine.users.UserRestService;
-import com.wiltech.market.engine.users.user.User;
-import com.wiltech.market.engine.users.user.UserRepository;
+import com.template.exceptions.EntityNotFoundException;
+import com.template.people.PersonRestService;
+import com.template.users.UserDetailsView;
+import com.template.users.UserDetailsViewRepository;
+import com.template.users.UserRestService;
+import com.template.users.user.User;
+import com.template.users.user.UserRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -51,8 +50,7 @@ public class UserProfileAppService {
         if (hasRole("ROLE_ADMIN")) {
             userResource.add(linkTo(UserRestService.class).withRel("users"));
             userResource.add(linkTo(PersonRestService.class).withRel("people"));
-            userResource.add(ProvidersLinkProvider.buildProvidersLink());
-
+       
             userResource.add(linkTo(methodOn(PersonRestService.class).findById(userDetailsView.getPersonId())).withRel("person"));
         } else if (userDetailsView.getId().equals(this.getUserId())) {
 

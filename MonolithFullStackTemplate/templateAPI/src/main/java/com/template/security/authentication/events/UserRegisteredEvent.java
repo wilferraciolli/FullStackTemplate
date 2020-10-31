@@ -8,7 +8,7 @@ package com.template.security.authentication.events;
 
 import org.springframework.context.ApplicationEvent;
 
-import com.wiltech.market.engine.security.authentication.RegistrationRequest;
+import com.template.security.authentication.RegistrationRequest;
 
 import lombok.Getter;
 

@@ -11,17 +11,18 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.wiltech.BaseApplicationService;
-import com.wiltech.EventPublisher;
-import com.wiltech.market.engine.exceptions.EntityNotFoundException;
-import com.wiltech.market.engine.security.authentication.events.UserRegisteredEvent;
-import com.wiltech.market.engine.security.jwt.JwtTokenProvider;
-import com.wiltech.market.engine.security.jwt.refresh.RefreshToken;
-import com.wiltech.market.engine.security.jwt.refresh.RefreshTokenException;
-import com.wiltech.market.engine.security.jwt.refresh.RefreshTokenRequest;
-import com.wiltech.market.engine.security.jwt.refresh.RefreshTokenService;
-import com.wiltech.market.engine.users.user.User;
-import com.wiltech.market.engine.users.user.UserRepository;
+import com.template.exceptions.EntityNotFoundException;
+import com.template.libraries.core.BaseApplicationService;
+import com.template.libraries.core.EventPublisher;
+import com.template.security.authentication.events.UserRegisteredEvent;
+import com.template.security.jwt.JwtTokenProvider;
+import com.template.security.jwt.refresh.RefreshToken;
+import com.template.security.jwt.refresh.RefreshTokenException;
+import com.template.security.jwt.refresh.RefreshTokenRequest;
+import com.template.security.jwt.refresh.RefreshTokenService;
+import com.template.users.user.User;
+import com.template.users.user.UserRepository;
+
 
 /**
  * The type Authentication service.
