@@ -1,6 +1,7 @@
 package com.template.libraries.rest;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.template.users.UserResource;
 
 /**
  * The type Base rest service.
@@ -21,7 +23,7 @@ public class BaseRestService {
      * @param id the id
      * @return the uri
      */
-    public URI buildLocationHeader(final Long id) {
+    protected URI buildLocationHeader(final Long id) {
 
         return MvcUriComponentsBuilder.fromController(getClass()).path("/{id}").buildAndExpand(id).toUri();
     }
@@ -30,7 +32,7 @@ public class BaseRestService {
      * Build self link link.
      * @return the link
      */
-    public Link buildSelfLink() {
+    private Link buildSelfLink() {
         final String uriString = ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString();
 
         return new Link(uriString, "self");
@@ -100,6 +102,28 @@ public class BaseRestService {
     }
 
     /**
+     * Build response ok response entity. For a collection.
+     * @param rootName the root name
+     * @param resources the resources
+     * @param metadata the metadata
+     * @param metaLinks the meta links
+     * @return the response entity
+     */
+    public ResponseEntity buildResponseOk(final String rootName, final List<? extends BaseDTO> resources, final Map<String, Metadata> metadata,
+            final List<Link> metaLinks) {
+
+        // add the self link to the collection of links
+        List<Link> metaLinksToAdd = generateMetaLinks(metaLinks);
+
+        final BaseResponse response = new BaseResponse();
+        response.setData(rootName, resources);
+        response.setMetadata(metadata);
+        response.addMetaLinks(metaLinksToAdd);
+
+        return ResponseEntity.ok().body(response);
+    }
+
+    /**
      * Gets json root name.
      * @param clazz the clazz
      * @return the json root name
@@ -111,5 +135,13 @@ public class BaseRestService {
         } else {
             return clazz.getSimpleName();
         }
+    }
+
+    private List<Link> generateMetaLinks(final List<Link> metaLinks) {
+        List<Link> metaLinksToAdd = new ArrayList<>();
+        metaLinksToAdd.add(buildSelfLink());
+        metaLinksToAdd.addAll(metaLinks);
+
+        return metaLinksToAdd;
     }
 }

@@ -1,8 +1,10 @@
 package com.template.users;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -10,6 +12,7 @@ import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.template.libraries.rest.BaseRestService;
+import com.template.libraries.rest.Metadata;
 
 /**
  * The type User rest service.
@@ -47,7 +51,7 @@ public class UserRestService extends BaseRestService {
                 .lastName("")
                 .username("")
                 .password("")
-                .roleIds(new ArrayList<>())
+                .roleIds(Arrays.asList(UserRoleType.ROLE_USER.name()))
                 .active(true)
                 .build();
 
@@ -78,19 +82,11 @@ public class UserRestService extends BaseRestService {
 
         final List<UserResource> resources = this.appService.findUsers();
 
-        //TODO get the resource collection and add link to the collection
-        //        final UserResourceResponseCollection<UserResourceResponse> response = new UserResourceResponseCollection<>(
-        //                new CollectionModel<>(resources),
-        //                UserResourceAssembler.createLinksToCollection(),
-        //                this.metaFabricator.createMetaForCollectionResource());
+        Set<String> usedRoleIds = resolveUsedRoleIds(resources);
+        Map<String, Metadata> metaForCollectionResource = metaFabricator.createMetaForCollectionResource(usedRoleIds);
+        List<Link> metaLinks = appService.generateCollectionLinks();
 
-        Set<String> usedRoleIds = resources.stream()
-                .map(UserResource::getRoleIds)
-                .flatMap(Collection::stream)
-                .distinct()
-                .collect(Collectors.toSet());
-
-        return buildResponseOk(getJsonRootName(UserResource.class), resources, metaFabricator.createMetaForCollectionResource(usedRoleIds));
+        return buildResponseOk(getJsonRootName(UserResource.class), resources, metaForCollectionResource, metaLinks);
     }
 
     /**
@@ -104,8 +100,9 @@ public class UserRestService extends BaseRestService {
         final UserResource resource = this.appService.findById(id);
 
         // TODO add meta and links
+        Map<String, Metadata> metadata = metaFabricator.createMetaForSingleResource();
 
-        return buildResponseOk(getJsonRootName(UserResource.class), resource);
+        return buildResponseOk(getJsonRootName(UserResource.class), resource, metadata);
     }
 
     @GetMapping("/usernames/{username}/availability")
@@ -146,5 +143,13 @@ public class UserRestService extends BaseRestService {
         return ResponseEntity
                 .noContent()
                 .build();
+    }
+
+    private Set<String> resolveUsedRoleIds(List<UserResource> resources) {
+
+        return resources.stream()
+                .map(UserResource::getRoleIds)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toSet());
     }
 }

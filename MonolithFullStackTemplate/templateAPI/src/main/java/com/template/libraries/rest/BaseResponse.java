@@ -2,6 +2,7 @@ package com.template.libraries.rest;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.hateoas.Link;
@@ -10,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-
+/**
+ * The type Base response.
+ */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BaseResponse {
 
@@ -34,16 +37,30 @@ public class BaseResponse {
         metadata.put("personId", new Metadata(true, null, true, Arrays.asList(new MetadataEmnbedded("123", "WilIAm"))));
     }
 
+    /**
+     * Add meta data.
+     * @param fieldName the field name
+     * @param meta the meta
+     */
     public void addMetaData(final String fieldName, final Metadata meta) {
         metadata.put(fieldName, meta);
     }
 
     /**
      * Adds single link to the meta links.
-     * @param link
+     * @param link the link
      */
     public void addMetaLink(final Link link) {
         this.metaLinks.put(link.getRel().value(), new LinkDetails(link.getHref()));
+    }
+
+    /**
+     * Add a collection of links to meta links.
+     * @param linksToAdd the links to add
+     */
+    public void addMetaLinks(final List<Link> linksToAdd) {
+
+        linksToAdd.forEach(this::addMetaLink);
     }
 
     public BaseResponse() {
@@ -80,8 +97,13 @@ public class BaseResponse {
     public void setMessages(final Object messages) {
         this.messages = messages;
     }
+
+
 }
 
+/**
+ * The type Payload data.
+ */
 class PayloadData {
     private final String rootName;
     private final Object data;

@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 
 import com.template.exceptions.EntityNotFoundException;
 import com.template.people.PersonRestService;
-import com.template.users.UserDetailsView;
-import com.template.users.UserDetailsViewRepository;
+import com.template.users.details.UserDetailsView;
+import com.template.users.details.UserDetailsViewRepository;
 import com.template.users.UserRestService;
 import com.template.users.user.User;
 import com.template.users.user.UserRepository;

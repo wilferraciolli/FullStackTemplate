@@ -1,11 +1,14 @@
 package com.template.users;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,8 @@ import com.template.exceptions.EntityNotFoundException;
 import com.template.libraries.core.EventPublisher;
 import com.template.libraries.mails.MailService;
 import com.template.libraries.mails.NotificationEmail;
+import com.template.users.details.UserDetailsView;
+import com.template.users.details.UserDetailsViewRepository;
 import com.template.users.events.UserCreatedEvent;
 import com.template.users.user.User;
 import com.template.users.user.UserRepository;
@@ -35,6 +40,9 @@ public class UserAppService {
 
     @Autowired
     private UserResourceAssembler assembler;
+
+    @Autowired
+    private UserLinkProvider linkProvider;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -123,6 +131,14 @@ public class UserAppService {
         this.userRepository.delete(user);
     }
 
+    public List<Link> generateCollectionLinks() {
+
+        List<Link> links = new ArrayList<>();
+        links.add(linkProvider.generateCreateUserLink());
+
+        return links;
+    }
+
     private UserResource transpose(final User user) {
         final UserResource userResource = UserResource.builder()
                 .id(user.getId())
@@ -152,7 +168,12 @@ public class UserAppService {
 
     private UserResource convertToDTO(final UserDetailsView userDetailsView) {
 
-        return this.assembler.convertToDTO(userDetailsView, this.resolveUserRoles(userDetailsView));
+        UserResource userResource = this.assembler.convertToDTO(userDetailsView, this.resolveUserRoles(userDetailsView));
+
+        List<Link> linksToAdd = Arrays.asList(linkProvider.generateSourceLink(userResource.getId()), linkProvider.generateUpdateLink(userResource.getId()), linkProvider.generateDeleteLink(userResource.getId()));
+        userResource.addLinks(linksToAdd);
+
+        return userResource;
     }
 
     private List<String> resolveUserRoles(final UserDetailsView userDetailsView) {

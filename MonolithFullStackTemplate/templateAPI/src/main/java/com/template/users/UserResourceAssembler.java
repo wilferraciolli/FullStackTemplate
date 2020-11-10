@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 
+import com.template.users.details.UserDetailsView;
 import com.template.users.user.User;
 
 /**
@@ -81,21 +82,6 @@ public class UserResourceAssembler {
     //        return new Resource<>(resource, linkToGetSingle, linkToUpdateSingle, linkToDeleteSingle);
     //    }
 
-    /**
-     * Create links to collection list.
-     * @return the list
-     */
-    public static List<Link> createLinksToCollection() {
-        //add self link to the list
-        final Link selfRel = linkTo(methodOn(UserRestService.class)
-                .findAll()).withSelfRel();
-
-        //add create/template link to the list
-        final Link createLink = linkTo(methodOn(UserRestService.class)
-                .template()).withRel("createUser");
-
-        return Arrays.asList(selfRel, createLink);
-    }
 
     private List<String> getRoles(final UserDetailsView entity) {
         return new ArrayList<>();

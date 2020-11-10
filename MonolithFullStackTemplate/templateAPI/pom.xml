@@ -10,7 +10,7 @@
 	</parent>
 	
 	<groupId>com.template</groupId>
-	<artifactId>template</artifactId>
+	<artifactId>templateAPI</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Spring Template API for a monolith application</name>
 	<description>Template for API</description>

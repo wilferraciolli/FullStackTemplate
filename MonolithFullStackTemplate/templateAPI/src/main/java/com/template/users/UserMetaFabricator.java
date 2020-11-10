@@ -55,13 +55,6 @@ public class UserMetaFabricator {
                 .values(generateUserRoleEmbedded())
                 .build());
 
-        //            final Metadata meta = Metadata.builder()
-        //                    .build();
-        //            meta.getValues().put("id", HIDDEN_AND_READ_ONLY_MAP);
-        //            meta.getValues().put("userName", MANDATORY_MAP);
-        //            meta.getValues().put("password", MANDATORY_MAP);
-        //            meta.getValues().put("roleIds", generateEmbeddedValues(Map.of(Meta.MANDATORY, Meta.TRUE), generateUserRoleEmbedded()));
-
         return metadata;
     }
 
@@ -93,11 +86,6 @@ public class UserMetaFabricator {
         return userRoleIds.stream()
                 .map(userRole -> new MetadataEmnbedded(UserRoleType.valueOf(userRole).name(), UserRoleType.valueOf(userRole).getDescription()))
                 .collect(Collectors.toList());
-
-        //            return UserRoleType.stream()
-        //                    .filter(userRole -> userRoleIds.contains(userRole.name()))
-        //                    .map(value -> new MetadataEmnbedded(value.name(), value.getDescription()))
-        //                    .collect(Collectors.toList());
     }
 
 }
