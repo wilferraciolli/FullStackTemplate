@@ -46,14 +46,7 @@ public class UserRestService extends BaseRestService {
      */
     @GetMapping("/template")
     public ResponseEntity<UserResource> template() {
-        final UserResource resource = UserResource.builder()
-                .firstName("")
-                .lastName("")
-                .username("")
-                .password("")
-                .roleIds(Arrays.asList(UserRoleType.ROLE_USER.name()))
-                .active(true)
-                .build();
+        final UserResource resource = appService.createTemplate();
 
         return buildResponseOk(getJsonRootName(UserResource.class), resource, metaFabricator.createMetaForTemplate());
     }
@@ -67,10 +60,14 @@ public class UserRestService extends BaseRestService {
     public ResponseEntity<UserResource> create(@RequestBody @Valid final UserResource payload) {
         final UserResource createdResource = this.appService.create(payload);
 
+        Map<String, Metadata> metadata = metaFabricator.createMetaForCreatedResource(createdResource.getRoleIds());
+
         // TODO change to return the same as build response
-        return ResponseEntity
-                .created(buildLocationHeader(createdResource.getId()))
-                .body(createdResource);
+//        return ResponseEntity
+//                .created(buildLocationHeader(createdResource.getId()))
+//                .body(createdResource);
+
+        return buildResponseCreated(getJsonRootName(UserResource.class), createdResource, metadata);
     }
 
     /**
@@ -82,7 +79,7 @@ public class UserRestService extends BaseRestService {
 
         final List<UserResource> resources = this.appService.findUsers();
 
-        Set<String> usedRoleIds = resolveUsedRoleIds(resources);
+        Set<String> usedRoleIds = appService.resolveUsedRoleIds(resources);
         Map<String, Metadata> metaForCollectionResource = metaFabricator.createMetaForCollectionResource(usedRoleIds);
         List<Link> metaLinks = appService.generateCollectionLinks();
 
@@ -99,7 +96,6 @@ public class UserRestService extends BaseRestService {
 
         final UserResource resource = this.appService.findById(id);
 
-        // TODO add meta and links
         Map<String, Metadata> metadata = metaFabricator.createMetaForSingleResource();
 
         return buildResponseOk(getJsonRootName(UserResource.class), resource, metadata);
@@ -125,9 +121,9 @@ public class UserRestService extends BaseRestService {
     public ResponseEntity<UserResource> update(@PathVariable("id") final Long id, @RequestBody @Valid final UserResource payload) {
         final UserResource updatedResource = this.appService.update(id, payload);
 
-        // TODO add meta and links
+        Map<String, Metadata> metadata = metaFabricator.createMetaForSingleResource();
 
-        return buildResponseOk(getJsonRootName(UserResource.class), updatedResource);
+        return buildResponseOk(getJsonRootName(UserResource.class), updatedResource, metadata);
     }
 
     /**
@@ -145,11 +141,4 @@ public class UserRestService extends BaseRestService {
                 .build();
     }
 
-    private Set<String> resolveUsedRoleIds(List<UserResource> resources) {
-
-        return resources.stream()
-                .map(UserResource::getRoleIds)
-                .flatMap(Collection::stream)
-                .collect(Collectors.toSet());
-    }
 }

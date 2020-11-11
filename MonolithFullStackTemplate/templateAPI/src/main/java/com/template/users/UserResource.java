@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.template.libraries.rest.BaseDTO;
 import com.template.validation.ValidateUniqueUsername;
@@ -22,7 +23,7 @@ import lombok.Value;
 @Builder
 @JsonRootName("user")
 //@JsonTypeName("user")
-//@JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
+//@JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.MINIMAL_CLASS)
 public class UserResource extends BaseDTO {
 
     private Long id;

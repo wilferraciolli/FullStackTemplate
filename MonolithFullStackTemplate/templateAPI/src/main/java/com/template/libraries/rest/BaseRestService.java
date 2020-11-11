@@ -71,6 +71,25 @@ public class BaseRestService {
         return ResponseEntity.ok().body(response);
     }
 
+
+    public ResponseEntity buildResponseCreated(String rootName, BaseDTO createdResource, Map<String, Metadata> metadata) {
+
+        final BaseResponse response = new BaseResponse();
+        response.setData(rootName, createdResource);
+        response.setMetadata(metadata);
+        response.addMetaLink(buildSelfLink());
+
+        return ResponseEntity
+                .created(buildLocationHeader(1L))
+                .body(response);
+
+//        return ResponseEntity
+//                .created(buildLocationHeader(createdResource.getId()))
+//                .body(createdResource);
+
+    }
+
+
     /**
      * Build response ok response entity. For a collection.
      * @param rootName the root name

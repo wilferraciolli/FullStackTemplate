@@ -1,7 +1,7 @@
 package com.template.users;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +29,12 @@ public class UserMetaFabricator {
         return buildBasicMeta();
     }
 
+
+    public Map<String, Metadata> createMetaForCreatedResource(final List<String> roleIds) {
+
+        return buildCreatedMeta(roleIds);
+    }
+
     public Map<String, Metadata> createMetaForCollectionResource(final Set<String> userRoleIds) {
 
         return buildCollectionMeta(userRoleIds);
@@ -53,6 +59,31 @@ public class UserMetaFabricator {
         metadata.put("roleIds", Metadata.builder()
                 .mandatory(true)
                 .values(generateUserRoleEmbedded())
+                .build());
+
+        return metadata;
+    }
+
+    private Map<String, Metadata> buildCreatedMeta(final List<String> roleIds) {
+
+        Map<String, Metadata> metadata = new HashMap<>();
+
+        metadata.put("id", Metadata.builder()
+                .hidden(true)
+                .readOnly(true)
+                .build());
+
+        metadata.put("userName", Metadata.builder()
+                .mandatory(true)
+                .build());
+
+        metadata.put("password", Metadata.builder()
+                .mandatory(true)
+                .build());
+
+        metadata.put("roleIds", Metadata.builder()
+                .mandatory(true)
+                .values(generateFilteredUserRoleEmbedded(Set.copyOf(roleIds)))
                 .build());
 
         return metadata;

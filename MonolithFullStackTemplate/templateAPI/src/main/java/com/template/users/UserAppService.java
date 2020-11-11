@@ -2,7 +2,9 @@ package com.template.users;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -44,6 +46,7 @@ public class UserAppService {
     @Autowired
     private UserLinkProvider linkProvider;
 
+    //TODO remove
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -52,6 +55,18 @@ public class UserAppService {
 
     @Autowired
     private MailService mailService;
+
+    public UserResource createTemplate() {
+
+        return UserResource.builder()
+                .firstName("")
+                .lastName("")
+                .username("")
+                .password("")
+                .roleIds(Arrays.asList(UserRoleType.ROLE_USER.name()))
+                .active(true)
+                .build();
+    }
 
     /**
      * Find users list.
@@ -70,12 +85,7 @@ public class UserAppService {
      * @return the user resource
      */
     public UserResource create(@Valid final UserResource userResourceCreate) {
-        final User user = User.builder()
-                .username(userResourceCreate.getUsername())
-                .password(this.passwordEncoder.encode(userResourceCreate.getPassword()))
-                .active(userResourceCreate.getActive())
-                .roles(userResourceCreate.getRoleIds())
-                .build();
+        final User user = assembler.convertToEntity(userResourceCreate);
 
         this.userRepository.save(user);
 
@@ -139,17 +149,12 @@ public class UserAppService {
         return links;
     }
 
-    private UserResource transpose(final User user) {
-        final UserResource userResource = UserResource.builder()
-                .id(user.getId())
-                .username(user.getUsername())
-                //                .email(user.getUsername())
-                .password(user.getPassword())
-                .active(user.getActive())
-                .roleIds(user.getRoles())
-                .build();
+    public Set<String> resolveUsedRoleIds(List<UserResource> resources) {
 
-        return userResource;
+        return resources.stream()
+                .map(UserResource::getRoleIds)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toSet());
     }
 
     private void publishUserCreatedEventWithPersonDetails(final Long userId, final UserResource userResourceCreated) {
@@ -172,6 +177,20 @@ public class UserAppService {
 
         List<Link> linksToAdd = Arrays.asList(linkProvider.generateSourceLink(userResource.getId()), linkProvider.generateUpdateLink(userResource.getId()), linkProvider.generateDeleteLink(userResource.getId()));
         userResource.addLinks(linksToAdd);
+
+        return userResource;
+    }
+
+
+    private UserResource transpose(final User user) {
+        final UserResource userResource = UserResource.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                //                .email(user.getUsername())
+                .password(user.getPassword())
+                .active(user.getActive())
+                .roleIds(user.getRoles())
+                .build();
 
         return userResource;
     }

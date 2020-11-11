@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.template.users.details.UserDetailsView;
@@ -19,15 +21,19 @@ import com.template.users.user.User;
 @Service
 public class UserResourceAssembler {
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     /**
      * Convert to entity user.
      * @param payload the payload
      * @return the user
      */
     public User convertToEntity(final UserResource payload) {
+
         return User.builder()
                 .username(payload.getUsername())
-                .password(payload.getPassword())
+                .password(this.passwordEncoder.encode(payload.getPassword()))
                 .active(payload.getActive())
                 .roles(payload.getRoleIds())
                 .build();
