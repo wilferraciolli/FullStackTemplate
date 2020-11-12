@@ -9,7 +9,6 @@ import org.springframework.hateoas.Link;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public abstract class BaseDTO implements Transferable {
 

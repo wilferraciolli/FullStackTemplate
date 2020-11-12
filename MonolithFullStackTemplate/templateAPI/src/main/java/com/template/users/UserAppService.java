@@ -90,7 +90,7 @@ public class UserAppService {
         this.userRepository.save(user);
 
         this.publishUserCreatedEventWithPersonDetails(user.getId(), userResourceCreate);
-        this.sendEmailVerification(user.getId(), user.getUsername());
+       // this.sendEmailVerification(user.getId(), user.getUsername());
 
         return this.transpose(user);
     }
