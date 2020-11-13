@@ -1,4 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/*html, body { height: 100%; }*/
+/*body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }*/
+$tabletSize: 800px;
+
+*{
+  font-family: "Segoe UI Symbol";
+}
+
+.hidden-small-screen {
+  display: none;
+
+  @media (min-width: $tabletSize) {
+    display: inherit;
+  }
+}
+
+.shown-small-screen {
+  @media (min-width: $tabletSize) {
+    display: none;
+  }
+}

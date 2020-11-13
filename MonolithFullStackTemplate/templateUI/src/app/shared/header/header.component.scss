@@ -3,6 +3,8 @@ $tabletSize: 800px;
 
 .header {
 
+  display: flex;
+
   a {
     margin-left: 10px;
     text-decoration: none;
@@ -39,6 +41,9 @@ $tabletSize: 800px;
     }
   }
 
+  &-actions {
+    margin-left: auto;
+  }
 }
 
 

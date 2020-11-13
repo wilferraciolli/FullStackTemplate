@@ -52,12 +52,12 @@ export class HeaderComponent implements OnInit {
 
   getProfile(): void {
     // send the user to the user profile component and pass user profile as data
-    const dataObject = { state: { data: { userProfile: this.userProfile } } };
+    const dataObject = {state: {data: {userProfile: this.userProfile}}};
     this.router.navigate(['userdetails', this.userProfile.userId], dataObject);
   }
 
   getUsers(): void {
-    const dataObject = { state: { usersLink: this.userProfile.links.users } };
+    const dataObject = {state: {usersLink: this.userProfile.links.users}};
     this.router.navigate(['users'], dataObject);
   }
 
