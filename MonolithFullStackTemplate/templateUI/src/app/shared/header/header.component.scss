@@ -1,0 +1,45 @@
+$iconWidth: 56px;
+$tabletSize: 800px;
+
+.header {
+
+  a {
+    margin-left: 10px;
+    text-decoration: none;
+  }
+
+  // toggle for the sidenav
+  &-sidenav-toggle {
+
+    padding: 0;
+    margin: 8px;
+    min-width: $iconWidth;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    mat-icon {
+      font-size: 30px;
+      height: $iconWidth;
+      width: $iconWidth;
+      line-height: $iconWidth;
+      color: white;
+    }
+
+    @media (min-width: $tabletSize) {
+      display: none;
+    }
+  }
+
+  &-menu {
+    display: none;
+
+    @media (min-width: $tabletSize) {
+      display: flex;
+    }
+  }
+
+}
+
+
+

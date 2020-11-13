@@ -1,0 +1,23 @@
+<div class="mainBody">
+  <mat-sidenav-container class="wrapper-sidenav-container">
+    <mat-sidenav #sidenav class="wrapper-sidenav mat-elevation-z10"
+                 [mode]="'over'"
+                 [opened]="isNavBarOpen">
+      <mat-toolbar color="primary">
+        <!--        <span>Market Engine Nav bar title</span>-->
+      </mat-toolbar>
+
+      <div class="wrapper-sidenav-menu">
+        <a mat-button class="btn-no-hover" routerLink="/home" (click)="sidenav.toggle()">Home</a>
+        <a mat-button class="btn-no-hover" [hidden]="!usersAccess" (click)="getUsers()">Users</a>
+      </div>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="wrapper-sidenav-content">
+      <app-header (toggleSidenav)="sidenav.toggle()"></app-header>
+      <router-outlet></router-outlet>
+      <app-footer></app-footer>
+
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

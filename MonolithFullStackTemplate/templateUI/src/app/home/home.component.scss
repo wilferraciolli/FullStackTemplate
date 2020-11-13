@@ -1,0 +1,17 @@
+.contentBody {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.example-card {
+  min-width: 200px;
+  max-width: 400px;
+  padding: 20px;
+}
+
+.example-header-image {
+  background-image: url('https://picsum.photos/20');
+  background-size: cover;
+}
