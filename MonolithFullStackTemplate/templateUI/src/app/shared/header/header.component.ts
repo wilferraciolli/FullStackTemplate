@@ -31,7 +31,7 @@ export class HeaderComponent implements OnInit {
               private linksService: LinksService) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.authenticationService.currentUser
       .subscribe(x => {
         this.currentUser = x;
@@ -50,18 +50,13 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/home']);
   }
 
-  getProfile() {
+  getProfile(): void {
     // send the user to the user profile component and pass user profile as data
     const dataObject = { state: { data: { userProfile: this.userProfile } } };
     this.router.navigate(['userdetails', this.userProfile.userId], dataObject);
   }
 
-  getProviders() {
-    const dataObject = { state: { providersLink: this.userProfile.links.providers } };
-    this.router.navigate(['providers'], dataObject);
-  }
-
-  getUsers() {
+  getUsers(): void {
     const dataObject = { state: { usersLink: this.userProfile.links.users } };
     this.router.navigate(['users'], dataObject);
   }
@@ -69,7 +64,7 @@ export class HeaderComponent implements OnInit {
   /**
    * Get the user profile for the person logged on. This can be used to work out areas access.
    */
-  private getAreasAccess() {
+  private getAreasAccess(): void {
 
     if (this.currentUser) {
       this.userProfileService.loadUserProfile()

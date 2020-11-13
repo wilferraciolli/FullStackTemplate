@@ -11,7 +11,6 @@
 
     <div class="header-menu">
       <a mat-button class="btn-no-hover" routerLink="/home">Home</a>
-      <a mat-button class="btn-no-hover" [hidden]="!providersAccess" (click)="getProviders()">Providers</a>
       <a mat-button class="btn-no-hover" [hidden]="!usersAccess" (click)="getUsers()">Users</a>
     </div>
     <span class="spacer"></span>

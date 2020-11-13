@@ -22,10 +22,13 @@ import { UserComponent } from './users/user/user.component';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {ErrorInterceptor} from './_helpers/error.interceptor';
 import {JwtInterceptor} from './_helpers/jwt.interceptor';
+import { PersonComponent } from './people/person/person.component';
+import {ConvertIdsToStringValuePipe} from './users/user-role-mapper-pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
+    ConvertIdsToStringValuePipe,
     WrapperComponent,
     FooterComponent,
     HeaderComponent,
@@ -37,7 +40,8 @@ import {JwtInterceptor} from './_helpers/jwt.interceptor';
     UserListComponent,
     UserDetailsComponent,
     UserProfileComponent,
-    UserComponent
+    UserComponent,
+    PersonComponent
   ],
   imports: [
     AppRoutingModule,
