@@ -8,12 +8,12 @@
       </button>
 
       <div class="pointerCursor">
-        <span>Market Search</span>
+        <span>Template UI</span>
       </div>
 
       <div class="header-menu">
         <a mat-button class="btn-no-hover" routerLink="/home">Home</a>
-        <a mat-button class="btn-no-hover" [hidden]="!usersAccess" (click)="getUsers()">Users</a>
+        <a mat-button class="btn-no-hover" *ngIf="usersAccess" (click)="getUsers()">Users</a>
       </div>
 
       <div class="header-actions">

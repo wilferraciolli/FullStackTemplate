@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {UserProfile} from '../../../home/user.profile';
+import {UserProfile} from '../../profile/user.profile';
 import {UserDetailsComponent} from '../user-details.component';
 import * as _ from 'lodash';
 import {UserDetailsProfileService} from './user-details-profile.service';

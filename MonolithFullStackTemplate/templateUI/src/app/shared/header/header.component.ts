@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {UserProfile} from '../../home/user.profile';
+import {UserProfile} from '../../users/profile/user.profile';
 import {Router} from '@angular/router';
 import {AuthenticationService} from '../../_services/authentication.service';
 import {UserProfileService} from '../../_services/user.profile.service';
@@ -13,7 +13,6 @@ import {LinksService} from '../../_services/links-service';
 export class HeaderComponent implements OnInit {
 
   currentUser: any;
-  providersAccess: boolean;
   usersAccess: boolean;
   peopleAccess: boolean;
 
@@ -35,17 +34,21 @@ export class HeaderComponent implements OnInit {
     this.authenticationService.currentUser
       .subscribe(x => {
         this.currentUser = x;
-        this.getAreasAccess();
       });
 
-    this.getAreasAccess();
+    this.userProfileService.currentUserProfile
+      .subscribe(user => {
+        this.userProfile = user;
+        this.getAreasAccess();
+      });
   }
 
   /**
    * Logs the user out and redirect to home.
    */
-  logout() {
+  logout(): void {
     this.authenticationService.logout();
+    this.userProfileService.removeUserProfile();
     this.getAreasAccess();
     this.router.navigate(['/home']);
   }
@@ -53,7 +56,7 @@ export class HeaderComponent implements OnInit {
   getProfile(): void {
     // send the user to the user profile component and pass user profile as data
     const dataObject = {state: {data: {userProfile: this.userProfile}}};
-    this.router.navigate(['userdetails', this.userProfile.userId], dataObject);
+    this.router.navigate(['userdetails', this.userProfile.id], dataObject);
   }
 
   getUsers(): void {
@@ -66,19 +69,10 @@ export class HeaderComponent implements OnInit {
    */
   private getAreasAccess(): void {
 
-    if (this.currentUser) {
-      this.userProfileService.loadUserProfile()
-        .then((data) => {
-          this.userProfile = new UserProfile(data);
-
-          console.log('HEADER userProfile', this.userProfile);
-
-          this.providersAccess = this.linksService.hasLink(this.userProfile.links.providers);
-          this.usersAccess = this.linksService.hasLink(this.userProfile.links.users);
-          this.peopleAccess = this.linksService.hasLink(this.userProfile.links.people);
-        });
+    if (this.userProfile) {
+      this.usersAccess = this.linksService.hasLink(this.userProfile.links.users);
+      this.peopleAccess = this.linksService.hasLink(this.userProfile.links.people);
     } else {
-      this.providersAccess = false;
       this.usersAccess = false;
       this.peopleAccess = false;
     }

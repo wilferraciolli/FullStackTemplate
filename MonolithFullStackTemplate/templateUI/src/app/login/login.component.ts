@@ -3,8 +3,8 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from '../_services/authentication.service';
 import {first} from 'rxjs/operators';
-import {LogInPayload} from './log-in-payload';
 import {Authentication} from './authentication';
+import {UserProfileService} from '../_services/user.profile.service';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +29,8 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: AuthenticationService) {
+    private authenticationService: AuthenticationService,
+    private userProfileService: UserProfileService) {
 
     // redirect to home if already logged in
     if (this.authenticationService.currentUserValue) {
@@ -68,7 +69,7 @@ export class LoginComponent implements OnInit {
    * Authenticates the user by calling the this.authenticationService.login() method with the username and password as parameters. The authentication service returns an Observable that we .subscribe() to for the results of the authentication. On success the user is redirected to the returnUrl by calling this.router.navigate([this.returnUrl]);. On fail the error message is stored in the this.error property to be displayed by the template and the this.loading property is reset back to false.
    * The call to .pipe(first()) unsubscribes from the observable immediately after the first value is emitted.
    */
-  login() {
+  login(): void {
     this.submitted = true;
 
     // stop here if form is invalid
@@ -77,10 +78,17 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    this.authenticationService.login1(new LogInPayload(this.getFormValue()))
+    this.authenticationService.login1(this.getFormValue())
       .pipe(first())
       .subscribe(
         data => {
+          // populate user profile service after login
+          this.userProfileService.loadUserProfile()
+            .then((userProfileResponse) => {
+              this.userProfileService.populateUserProfile(userProfileResponse);
+            });
+
+          // redirect
           this.router.navigate([this.returnUrl]);
         },
         error => {

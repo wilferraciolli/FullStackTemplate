@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {LinksService} from '../../_services/links-service';
 import * as _ from 'lodash';
-import {UserProfile} from '../../home/user.profile';
+import {UserProfile} from '../profile/user.profile';
 
 @Component({
   selector: 'app-user-details',

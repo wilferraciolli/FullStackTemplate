@@ -40,7 +40,14 @@ Followed by adding it to the main.ts file
          *   exp: 1393286893,
          *   iat: 1393268893  }
          */
-    
+
+
+## Creating lazily loading modules
+    ```
+    ng generate module moduleName --route routeName --module app.module
+    ```
+
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.

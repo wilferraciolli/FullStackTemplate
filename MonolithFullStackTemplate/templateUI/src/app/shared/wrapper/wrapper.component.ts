@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {UserProfile} from '../../home/user.profile';
+import {Component, OnInit} from '@angular/core';
+import {UserProfile} from '../../users/profile/user.profile';
 import {Router} from '@angular/router';
 import {AuthenticationService} from '../../_services/authentication.service';
 import {UserProfileService} from '../../_services/user.profile.service';
@@ -30,17 +30,21 @@ export class WrapperComponent implements OnInit {
 
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.authenticationService.currentUser.subscribe(x => {
       this.currentUser = x;
-      this.getAreasAccess();
     });
-    this.getAreasAccess();
+
+    this.userProfileService.currentUserProfile
+      .subscribe(user => {
+        this.userProfile = user;
+        this.getAreasAccess();
+      });
   }
 
   getUsers() {
     this.hideNavBar();
-    const dataObject = { state: { usersLink: this.userProfile.links.users } };
+    const dataObject = {state: {usersLink: this.userProfile.links.users}};
     this.router.navigate(['users'], dataObject);
   }
 
@@ -51,20 +55,13 @@ export class WrapperComponent implements OnInit {
   /**
    * Get the user profile for the person logged on. This can be used to work out areas access.
    */
-  private getAreasAccess() {
+  private getAreasAccess(): void {
 
-    if (this.currentUser) {
-      this.userProfileService.loadUserProfile()
-        .then((data) => {
-          this.userProfile = new UserProfile(data);
-
-          console.log('WRAPPER userProfile', this.userProfile);
-
-                  this.usersAccess = this.linksService.hasLink(this.userProfile.links.users);
-          this.peopleAccess = this.linksService.hasLink(this.userProfile.links.people);
-        });
+    if (this.userProfile) {
+      this.usersAccess = this.linksService.hasLink(this.userProfile.links.users);
+      this.peopleAccess = this.linksService.hasLink(this.userProfile.links.people);
     } else {
-         this.usersAccess = false;
+      this.usersAccess = false;
       this.peopleAccess = false;
     }
   }
