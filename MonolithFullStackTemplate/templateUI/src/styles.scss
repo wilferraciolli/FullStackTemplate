@@ -22,3 +22,16 @@ $tabletSize: 800px;
     display: none;
   }
 }
+
+.hide{
+  display: none;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+/* class to make the holl over effect of pointing */
+.pointerCursor {
+  cursor: pointer;
+}
