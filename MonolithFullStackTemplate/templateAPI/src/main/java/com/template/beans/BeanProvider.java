@@ -21,15 +21,16 @@ public class BeanProvider {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
+    // This bean is used to configure jackson to add the root name to DTOs
     @Bean
     public Jackson2ObjectMapperBuilder jacksonBuilder() {
         Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
 
-        // Response Serializer
+        // Response Serializer, uncomment to add root value to response
         // builder.featuresToEnable(SerializationFeature.WRAP_ROOT_VALUE);
 
-        // Request deserializer
-        builder.featuresToEnable(DeserializationFeature.UNWRAP_ROOT_VALUE);
+        // Request deserializer, uncomment to expect payload with root value
+        //  builder.featuresToEnable(DeserializationFeature.UNWRAP_ROOT_VALUE);
 
         builder.failOnUnknownProperties(false);
 

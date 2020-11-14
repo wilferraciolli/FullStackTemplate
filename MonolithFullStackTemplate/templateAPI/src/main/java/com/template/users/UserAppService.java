@@ -175,7 +175,7 @@ public class UserAppService {
 
         UserResource userResource = this.assembler.convertToDTO(userDetailsView, this.resolveUserRoles(userDetailsView));
 
-        List<Link> linksToAdd = Arrays.asList(linkProvider.generateSourceLink(userResource.getId()), linkProvider.generateUpdateLink(userResource.getId()), linkProvider.generateDeleteLink(userResource.getId()));
+        List<Link> linksToAdd = Arrays.asList(linkProvider.generateSelfLink(userResource.getId()), linkProvider.generateUpdateLink(userResource.getId()), linkProvider.generateDeleteLink(userResource.getId()));
         userResource.addLinks(linksToAdd);
 
         return userResource;

@@ -16,10 +16,10 @@ public class UserLinkProvider {
         return linkTo(methodOn(UserRestService.class).template()).withRel("createUser");
     }
 
-    public Link generateSourceLink(final Long id) {
+    public Link generateSelfLink(final Long id) {
         if (Objects.nonNull(id)){
 
-            return linkTo(methodOn(UserRestService.class).findById(id)).withRel("source");
+            return linkTo(methodOn(UserRestService.class).findById(id)).withSelfRel();
         }
 
         return null;

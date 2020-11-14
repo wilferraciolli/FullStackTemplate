@@ -1,4 +1,4 @@
-package com.template.users;
+package com.template.users.details;
 
 import static java.util.stream.Collectors.toList;
 

@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,7 +32,7 @@ import com.template.libraries.rest.Metadata;
  * The type User rest service.
  */
 @RestController()
-@RequestMapping(value = "/users", produces = "application/json")
+@RequestMapping(value = "/users", produces =  MediaType.APPLICATION_JSON_VALUE)
 public class UserRestService extends BaseRestService {
 
     @Autowired
@@ -101,15 +102,6 @@ public class UserRestService extends BaseRestService {
         return buildResponseOk(getJsonRootName(UserResource.class), resource, metadata);
     }
 
-    @GetMapping("/usernames/{username}/availability")
-    public ResponseEntity<Boolean> checkUsernameAvailability(@PathVariable("username") final String username) {
-
-        final boolean isAvailable = this.appService.checkUsernameAvailability(StringUtils.defaultString(username));
-
-        return ResponseEntity
-                .ok(isAvailable);
-    }
-
     /**
      * Update response entity.
      * @param id the id
@@ -139,6 +131,15 @@ public class UserRestService extends BaseRestService {
         return ResponseEntity
                 .noContent()
                 .build();
+    }
+
+    @GetMapping("/usernames/{username}/availability")
+    public ResponseEntity<Boolean> checkUsernameAvailability(@PathVariable("username") final String username) {
+
+        final boolean isAvailable = this.appService.checkUsernameAvailability(StringUtils.defaultString(username));
+
+        return ResponseEntity
+                .ok(isAvailable);
     }
 
 }

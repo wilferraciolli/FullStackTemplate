@@ -3,16 +3,22 @@ package com.template.users.profile;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.template.exceptions.DomainException;
 import com.template.exceptions.EntityNotFoundException;
 import com.template.people.PersonRestService;
+import com.template.users.UserRoleType;
 import com.template.users.details.UserDetailsView;
 import com.template.users.details.UserDetailsViewRepository;
 import com.template.users.UserRestService;
@@ -41,40 +47,45 @@ public class UserProfileAppService {
      */
     public UserProfileResource getUserProfile(final UserDetails userDetails) {
 
-        final UserDetailsView userDetailsView = this.getUser(((User) userDetails).getId());
-
-        final UserProfileResource userResource = this.buildUserProfileResource(userDetailsView);
-
-        userResource.add(linkTo(UserProfileRestService.class).withSelfRel());
-
-        if (hasRole("ROLE_ADMIN")) {
-            userResource.add(linkTo(UserRestService.class).withRel("users"));
-            userResource.add(linkTo(PersonRestService.class).withRel("people"));
-       
-            userResource.add(linkTo(methodOn(PersonRestService.class).findById(userDetailsView.getPersonId())).withRel("person"));
-        } else if (userDetailsView.getId().equals(this.getUserId())) {
-
-            // add owner links
-            userResource.add(linkTo(methodOn(PersonRestService.class).findById(userDetailsView.getPersonId())).withRel("person"));
+        if (Objects.isNull(userDetails)){
+            throw new DomainException("No user passed on ");
         }
 
-        //        System.out.println(getUserRoles());
-        //        System.out.println(hasRole("USER_ROLE"));
-        //        System.out.println(hasRole("USER"));
-        //        System.out.println(hasRole("ROLE_USER"));
-        //        System.out.println(hasRole("ROLE_ADMIN"));
+        final UserDetailsView userDetailsView = this.getUser(((User) userDetails).getId());
+        final UserProfileResource userResource = this.buildUserProfileResource(userDetailsView);
 
         return userResource;
     }
 
     private UserProfileResource buildUserProfileResource(final UserDetailsView userDetailsView) {
 
-        return UserProfileResource.builder()
-                .userId(userDetailsView.getId())
+        UserProfileResource user = UserProfileResource.builder()
+                .id(userDetailsView.getId())
                 .personId(userDetailsView.getPersonId())
                 .firstName(userDetailsView.getFirstName())
                 .lastName(userDetailsView.getLastName())
                 .build();
+        List<Link> linksToAdd = generateLinks(userDetailsView);
+        user.addLinks(linksToAdd);
+
+        return user;
+    }
+
+    private List<Link> generateLinks(UserDetailsView userDetailsView) {
+
+        List<Link> linksToAdd = new ArrayList<>();
+        linksToAdd.add(linkTo(UserProfileRestService.class).withSelfRel());
+
+        if (hasRole(UserRoleType.ROLE_ADMIN.name())) {
+            linksToAdd.add(linkTo(UserRestService.class).withRel("users"));
+            linksToAdd.add(linkTo(PersonRestService.class).withRel("people"));
+            linksToAdd.add(linkTo(methodOn(PersonRestService.class).findById(userDetailsView.getPersonId())).withRel("person"));
+        } else if (userDetailsView.getId().equals(this.getUserId())) {
+            // add owner links
+            linksToAdd.add(linkTo(methodOn(PersonRestService.class).findById(userDetailsView.getPersonId())).withRel("person"));
+        }
+
+        return linksToAdd;
     }
 
     private UserDetailsView getUser(final Long userId) {
@@ -83,11 +94,7 @@ public class UserProfileAppService {
                 .orElseThrow(() -> new EntityNotFoundException("could not find user for given id"));
     }
 
-    /**
-     * Get the id of the current user logged on.
-     * @return
-     */
-    public Long getUserId() {
+    private Long getUserId() {
         final String username;
         final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
@@ -112,4 +119,5 @@ public class UserProfileAppService {
                 .stream()
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(roleName));
     }
+
 }
