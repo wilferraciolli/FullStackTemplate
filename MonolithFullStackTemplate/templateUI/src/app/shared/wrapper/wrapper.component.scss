@@ -1,4 +1,8 @@
+$tabletSize: 800px;
+
 .wrapper{
+
+  min-height: 600px;
 
   &-sidenav-container {
     flex: 1;
@@ -12,8 +16,15 @@
   &-sidenav-content {
     display: flex;
     height: 100%;
+    padding-right: 0;
+    padding-left: 0;
 
     flex-direction: column;
+
+    @media (min-width: $tabletSize) {
+      padding-right: 10%;
+      padding-left: 10%;
+    }
   }
 
   &-sidenav {

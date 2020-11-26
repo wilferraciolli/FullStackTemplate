@@ -19,6 +19,7 @@ import * as _ from 'lodash';
 import {Link} from '../../shared/response/link';
 import {Observable} from 'rxjs';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
+import {UserProfileService} from '../../_services/user.profile.service';
 
 @Component({
   selector: 'app-user-list',
@@ -26,7 +27,6 @@ import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/lay
   styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent implements OnInit {
-
 
   searchKey: string;
   users: Array<User>;
@@ -48,6 +48,7 @@ export class UserListComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private userService: UserServiceService,
               private userFormBuilder: UserFormBuilder,
+              private userProfileService: UserProfileService,
               private adapter: UserAdapter,
               private linksService: LinksService,
               private notificationService: NotificationService,
@@ -57,19 +58,12 @@ export class UserListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    // send the request to home if no link is present
-    if (_.isUndefined(history.state.usersLink)
-      && _.isUndefined(this.userService.usersUrl)) {
+    if (_.isUndefined(history.state.usersLink)) {
 
       this.router.navigate(['/home']);
-    } else {
-      if (_.isUndefined(this.userService.usersUrl)) {
-        this.userService.usersUrl = history.state.usersLink.href;
-      }
     }
 
-    this.loadAll(this.userService.usersUrl);
+    this.loadAll(history.state.usersLink.href);
   }
 
   onSearchClear(): void {
@@ -204,31 +198,29 @@ export class UserListComponent implements OnInit {
   private loadAll(url: string): void {
     this.userService.getAll<UsersResponse>(url)
       .subscribe((response: UsersResponse) => {
-        const embedded = response._embedded;
+        const collectionData = response._data;
+        const collectionMeta: any = response._metadata;
+        const metaLinks: any = response._metaLinks;
 
-        const collectionMeta: any = response._meta;
-        this.userCollectionMeta = this.resolveCollectionMeta(collectionMeta);
-
-        const metaLinks: any = response._links;
         this.userTemplateLink = metaLinks.createUser;
 
+        this.userCollectionMeta = this.resolveCollectionMeta(collectionMeta);
         this.userCollectionLinks = this.resolveCollectionLinks(metaLinks);
         this.userCreateAccess = this.linksService.hasLink(this.userCollectionLinks.createUser);
-        this.userCollectionRoleIds = this.userService.resolveUserRoles(Object.values(this.userCollectionMeta)
-          .filter(g => g.hasOwnProperty('roleIds')));
+        this.userCollectionRoleIds = this.userService.resolveRoleIds(this.userCollectionMeta.roleIds.values);
 
-        this.assignMatTableProperties(embedded.collection);
+        this.assignUsers(collectionData.user);
       });
   }
 
-  private assignMatTableProperties(collectionBody: any[]): void {
+  private assignUsers(collectionBody: any[]): void {
     this.users = this.convertResponse(collectionBody);
   }
 
   private convertResponse(collectionBody: any[]): Array<User> {
-
+    console.log('The collection body is ', collectionBody);
     return collectionBody.map(item =>
-      this.adapter.adapt(item._data, item._links, item._meta));
+      this.adapter.adapt(item, item.links, null));
   }
 
   private resolveCollectionLinks(metaLinks: any): UserLinksCollection {

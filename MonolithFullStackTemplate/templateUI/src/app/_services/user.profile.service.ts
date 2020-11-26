@@ -21,7 +21,7 @@ export class UserProfileService {
     this.currentUserProfile = this.currentUserProfileSubject.asObservable();
   }
 
-  public get currentUserProfileValue(): any {
+  public get currentUserProfileValue(): UserProfile {
 
     return this.currentUserProfileSubject.value;
   }
@@ -70,7 +70,6 @@ export class UserProfileService {
     this.currentUserProfileSubject.next(new UserProfile(userProfileResponse));
 
   }
-
 
   removeUserProfile(): void {
     console.log('removing userProfile in UserProfileService');

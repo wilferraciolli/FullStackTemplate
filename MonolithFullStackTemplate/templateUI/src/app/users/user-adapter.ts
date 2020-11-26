@@ -8,16 +8,16 @@ import { UserLinks } from './user-links';
 })
 export class UserAdapter implements Adapter<User> {
 
-  adapt(data: any, links: any, meta?: any): User {
+  adapt(user: any, links: any, meta?: any): User {
 
-    return new User(data.user.id,
-      data.user.firstName,
-      data.user.lastName,
-      data.user.username,
-      data.user.password,
-      data.user.dateOfBirth,
-      data.user.active,
-      data.user.roleIds,
+    return new User(user.id,
+      user.firstName,
+      user.lastName,
+      user.username,
+      user.password,
+      user.dateOfBirth,
+      user.active,
+      user.roleIds,
       new UserLinks(links.self,
         links.updateUser,
         links.deleteUser,

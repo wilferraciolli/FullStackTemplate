@@ -9,7 +9,6 @@ import { FormBuilder } from '@angular/forms';
 export class HttpBaseService {
 
   private headers = new HttpHeaders();
-  // private SERVER_BASE_PATH = 'http://localhost:5001/api/';
 
   constructor(
     private router: Router,

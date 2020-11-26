@@ -7,13 +7,13 @@
         <mat-icon>menu</mat-icon>
       </button>
 
-      <div class="pointerCursor">
-        <span>Template UI</span>
-      </div>
-
       <div class="header-menu">
+        <div class="pointerCursor">
+          <span>Template UI</span>
+        </div>
         <a mat-button class="btn-no-hover" routerLink="/home">Home</a>
-        <a mat-button class="btn-no-hover" *ngIf="usersAccess" (click)="getUsers()">Users</a>
+<!--        <a mat-button class="btn-no-hover" *ngIf="usersAccess" (click)="getUsers()">Users</a>-->
+        <a mat-button class="btn-no-hover" (click)="getUsers()">Users</a>
       </div>
 
       <div class="header-actions">
