@@ -54,6 +54,14 @@ export class HttpBaseService {
     return data;
   }
 
+  async getTemplateAsync<T>(url: string): Promise<any> {
+
+    const data = await this.httpClient.get<T>(url)
+      .toPromise();
+
+    return data;
+  }
+
   getTemplate<T>(url: string) {
 
     return this.httpClient.get<T>(url)

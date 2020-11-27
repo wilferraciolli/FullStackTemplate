@@ -6,11 +6,10 @@ import {UserAdapter} from '../user-adapter';
 import {UserPayload} from '../user-payload';
 import {UserFormBuilder} from '../user-form-builder';
 import {ValueViewValue} from '../../shared/response/value-viewValue';
-import {UserMeta} from '../user-meta';
 import {User} from '../user';
 import {Link} from '../../shared/response/link';
-import {MetaDataWithValues} from '../../shared/response/meta-data';
-import {IdValue} from '../../shared/response/id-value';
+import {UserResponse} from './user-response';
+import {LinksService} from '../../_services/links-service';
 
 @Component({
   selector: 'app-user',
@@ -22,47 +21,53 @@ export class UserComponent implements OnInit {
   hide = true;
   availableRoles: Array<ValueViewValue>;
   user: User;
-  selfLink: Link;
+  link: Link;
 
   constructor(private userService: UserServiceService,
               public userFormBuilder: UserFormBuilder,
               private adapter: UserAdapter,
               private notificationService: NotificationService,
+              private linkService: LinksService,
               public dialogRef: MatDialogRef<UserComponent>,
               @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
 
     // get the link passed on
     if (data) {
-      this.selfLink = data.link;
+      this.link = data.link;
     } else {
       console.warn('no link to get single user was passed');
     }
   }
 
   ngOnInit(): void {
-    this.getSingleUser(this.selfLink.href).then((data) => {
-      this.user = this.adapter.adapt(data._data.user, data._data.user, data._metadata);
-      this.availableRoles = this.userService.resolveRoleIds(this.user.meta.roleIds.values);
+    if (this.linkService.isTemplateLink(this.link)) {
+      this.getUserTemplate(this.link.href).then((data: UserResponse) => {
+        this.user =  this.adapter.adapt(data._data.user, data._data.user.links, data._metadata);
+        this.availableRoles = this.userService.resolveRoleIds(this.user.meta.roleIds.values);
 
-      this.userFormBuilder.populateForm(this.user);
-    });
-  }
+        this.userFormBuilder.initializeFormGroupWithTemplateValues(this.user);
+      });
+    } else {
 
-  getSingleUser(url: string): Promise<any> {
+      this.getSingleUser(this.link.href).then((data) => {
+        this.user = this.adapter.adapt(data._data.user, data._data.user.links, data._metadata);
+        this.availableRoles = this.userService.resolveRoleIds(this.user.meta.roleIds.values);
 
-    return this.userService.getById(url);
+        this.userFormBuilder.populateForm(this.user);
+      });
+    }
   }
 
   /**
    * Clear out form and re initialize it
    */
-  onClear() {
+  onClear(): void {
     this.userFormBuilder.form.reset();
     this.userFormBuilder.initializeFormGroup();
     this.notificationService.success('Form cleared successfully');
   }
 
-  onSubmit() {
+  onSubmit(): void {
     console.log('the value of the form is ', this.userFormBuilder.getFormValue());
     if (this.userFormBuilder.form.valid) {
 
@@ -79,10 +84,10 @@ export class UserComponent implements OnInit {
     }
   }
 
-  create() {
+  create(): void {
     console.log('Adding');
 
-    this.userService.add('http://localhost:5001/api/users', new UserPayload(this.userFormBuilder.getFormValue()))
+    this.userService.add(this.linkService.getCreateUrlFromTemplateUrl(this.link), this.userFormBuilder.getFormValue())
       .subscribe(data => {
           console.log('Success', data);
           this.notificationService.success('User created successfully');
@@ -93,7 +98,7 @@ export class UserComponent implements OnInit {
         });
   }
 
-  update() {
+  update(): void {
     console.log('updating');
     const updateUrl = this.userFormBuilder.form.value.links.updateUser.href;
 
@@ -111,9 +116,30 @@ export class UserComponent implements OnInit {
   /**
    * Method to be called once the add dialog is closed.
    */
-  onClose() {
+  onClose(): void {
     this.userFormBuilder.form.reset();
     this.userFormBuilder.initializeFormGroup();
     this.dialogRef.close();
+  }
+
+  // private getUserTemplate(href: string): User {
+  //   let userTemplate;
+  //   this.userService.getTemplate(href)
+  //     .subscribe((response: UserResponse) => {
+  //       console.log('The response is ', response);
+  //       userTemplate = this.adapter.adapt(response._data.user, response._data.user.links, response._metadata);
+  //     });
+  //
+  //   return userTemplate;
+  // }
+
+  private getUserTemplate(url: string): Promise<UserResponse> {
+
+    return this.userService.getTemplateAsync(url);
+  }
+
+  getSingleUser(url: string): Promise<any> {
+
+    return this.userService.getById(url);
   }
 }

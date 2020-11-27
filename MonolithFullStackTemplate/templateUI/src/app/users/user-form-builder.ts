@@ -91,10 +91,10 @@ export class UserFormBuilder {
         lastName:  _.isUndefined(user) ? '' : user.lastName,
         username:  _.isUndefined(user) ? '' : user.username,
         password:  _.isUndefined(user) ? '' : user.password,
-        dateOfBirth:  _.isUndefined(user) ? '' : user.dateOfBirth,
+        dateOfBirth:  _.isUndefined(user)  ? '' : user.dateOfBirth,
         active: true,
         roles: Array.of(new ValueViewValue(this.defaultUserRoleId, this.defaultUserRole)),
-        links: '',
+        links: user.links,
         meta: ''
       }
     );

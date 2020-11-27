@@ -83,16 +83,7 @@ export class UserListComponent implements OnInit {
     return null;
   }
 
-  create() {
-
-    // get the template and populate with default values
-    this.user = this.getTemplate(this.userTemplateLink.href);
-    this.userFormBuilder.initializeFormGroupWithTemplateValues(this.user);
-
-    // set default values
-    console.log('The form value is ', this.userFormBuilder.getFormValue());
-    this.userFormBuilder.initializeFormGroup();
-
+  create(): void {
     const signInDialogRef = this.dialog.open(UserComponent, {
       width: '50%',
       height: '50%',
@@ -100,7 +91,7 @@ export class UserListComponent implements OnInit {
       maxHeight: '100vh',
       autoFocus: true,
       disableClose: true,
-      data: {userMeta: this.userCollectionMeta}
+      data: {link: this.userCollectionLinks.createUser}
     });
 
     // subscribe to screen size
@@ -116,26 +107,7 @@ export class UserListComponent implements OnInit {
     });
   }
 
-  /**
-   * Method used to pre-populate the form before creation.
-   * @param url the url
-   */
-  getTemplate(url: string): User {
-    let userTemplate;
-    this.userService.getTemplate(url)
-      .subscribe(response => {
-        const data = response['_data'];
-        const links = response['_links'];
-        const meta = response['meta'];
-
-        userTemplate = this.adapter.adapt(data, links, meta);
-      });
-
-    return userTemplate;
-  }
-
   onEdit(row: User): void {
-
       const signInDialogRef = this.dialog.open(UserComponent, {
         width: '50%',
         height: '50%',
@@ -178,16 +150,6 @@ export class UserListComponent implements OnInit {
 
     // refresh
     // this.loadAll();
-  }
-
-  private buildUserDialogProperties() {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '80%';
-    // dialogConfig.height = '90%';
-
-    return dialogConfig;
   }
 
   private loadAll(url: string): void {
