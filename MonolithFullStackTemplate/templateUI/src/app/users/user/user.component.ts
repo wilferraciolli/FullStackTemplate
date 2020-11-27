@@ -33,13 +33,7 @@ export class UserComponent implements OnInit {
 
     // get the link passed on
     if (data) {
-      // this.userCollectionMeta = data.userMeta;
-      // this.availableRoles = this.getAvailableUserRoles(Object.values(this.userCollectionMeta)
-      //   .filter(g => g.hasOwnProperty('roleIds')));
-
       this.selfLink = data.link;
-      console.log('The link passed in is ', data);
-
     } else {
       console.warn('no link to get single user was passed');
     }
@@ -47,13 +41,10 @@ export class UserComponent implements OnInit {
 
   ngOnInit(): void {
     this.getSingleUser(this.selfLink.href).then((data) => {
-      console.log('The data is ', data);
       this.user = this.adapter.adapt(data._data.user, data._data.user, data._metadata);
       this.availableRoles = this.userService.resolveRoleIds(this.user.meta.roleIds.values);
-      // this.getAvailableUserRoles(this.user.meta.roleIds.values);
 
       this.userFormBuilder.populateForm(this.user);
-      // this.dialog.open(UserComponent, this.buildUserDialogProperties());
     });
   }
 
@@ -125,12 +116,4 @@ export class UserComponent implements OnInit {
     this.userFormBuilder.initializeFormGroup();
     this.dialogRef.close();
   }
-
-  // private getAvailableUserRoles(values: Array<IdValue>):
-  //   Array<ValueViewValue> {
-  //   // console.log('value extracted is ', values);
-  //
-  //   return values
-  //           .map(value => ({value: meta.id, viewValue: meta.value})))[0];
-  // }
 }

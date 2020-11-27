@@ -14,7 +14,7 @@ public abstract class BaseDTO implements Transferable {
 
 //    private Long id;
 
-    @JsonProperty("_links")
+    @JsonProperty("links")
     private final Map<String, LinkDetails> links = new HashMap<>();
     //
     //    @JsonProperty("_links2")
