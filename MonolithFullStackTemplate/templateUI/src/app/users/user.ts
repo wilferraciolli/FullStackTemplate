@@ -13,7 +13,7 @@ export class User {
   active: boolean;
   roleIds: Array<string>;
   links: UserLinks;
-  meta: Array<UserMeta>;
+  meta: UserMeta;
 
   constructor(id: string,
               firstName: string,
@@ -24,7 +24,7 @@ export class User {
               active: boolean,
               roleIds: Array<string>,
               links: UserLinks,
-              meta: Array<UserMeta>) {
+              meta: UserMeta) {
 
     this.id = id;
     this.firstName = firstName;

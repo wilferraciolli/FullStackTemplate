@@ -63,7 +63,7 @@ export class UserFormBuilder {
   /**
    * Initialize the form with default values.
    */
-  initializeFormGroup() {
+  initializeFormGroup(): void {
 
     this.resetArrayFormValues();
 
@@ -81,7 +81,7 @@ export class UserFormBuilder {
     });
   }
 
-  initializeFormGroupWithTemplateValues(user: User) {
+  initializeFormGroupWithTemplateValues(user: User): void {
     console.log('the value of user is', user);
 
     this.form.setValue(
@@ -100,8 +100,8 @@ export class UserFormBuilder {
     );
   }
 
-  populateForm(user: User) {
-    // console.log('the value of user is ', user);
+  populateForm(user: User): void {
+    console.log('the value of user is ', user);
 
     this.form.setValue(
       {
@@ -112,7 +112,7 @@ export class UserFormBuilder {
         password: user.password,
         dateOfBirth: user.dateOfBirth,
         active: user.active,
-        roles: this.transformUserRRolesToRolesViewValue(user),
+        roles: this.transformUserRolesToRolesViewValue(user),
         links: {
           self: user.links.self,
           updateUser: user.links.updateUser,
@@ -124,11 +124,11 @@ export class UserFormBuilder {
     );
   }
 
-  addRoleFormGroup() {
+  addRoleFormGroup(): void {
     this.rolesFormArray.push(this.addEmptyRoleFormGroup());
   }
 
-  deleteRoleFormGroup(index: number) {
+  deleteRoleFormGroup(index: number): void {
     this.rolesFormArray.removeAt(index);
   }
 
@@ -152,15 +152,14 @@ export class UserFormBuilder {
     }
   }
 
-  private transformUserRRolesToRolesViewValue(user: User): Array<ValueViewValue> {
+  private transformUserRolesToRolesViewValue(user: User): Array<ValueViewValue> {
 
-    const UserRolesViewValues = this.userService.resolveUserRoles(Object.values(user.meta)
-      .filter(g => g.hasOwnProperty('roleIds')))
+    const userRolesViewValues = this.userService.resolveRoleIds(user.meta.roleIds.values)
       .filter(role => user.roleIds.includes(role.value));
 
-    this.addRolesFormGroupTRoEachUserRole(UserRolesViewValues.length);
+    this.addRolesFormGroupTRoEachUserRole(userRolesViewValues.length);
 
-    return UserRolesViewValues;
+    return userRolesViewValues;
   }
 
   // Add the same number of user roles to the rolesFormGroup

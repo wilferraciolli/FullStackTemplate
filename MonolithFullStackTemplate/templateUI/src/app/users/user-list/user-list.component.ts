@@ -98,6 +98,8 @@ export class UserListComponent implements OnInit {
       height: '50%',
       maxWidth: '100vw',
       maxHeight: '100vh',
+      autoFocus: true,
+      disableClose: true,
       data: {userMeta: this.userCollectionMeta}
     });
 
@@ -133,16 +135,15 @@ export class UserListComponent implements OnInit {
   }
 
   onEdit(row: User): void {
-    this.getSingleUser(row.links.self.href).then((data) => {
-      this.userFormBuilder.populateForm(this.adapter.adapt(data._data, data._links, data._meta));
-      // this.dialog.open(UserComponent, this.buildUserDialogProperties());
 
       const signInDialogRef = this.dialog.open(UserComponent, {
         width: '50%',
         height: '50%',
         maxWidth: '100vw',
         maxHeight: '100vh',
-        data: {userMeta: data._meta}
+        autoFocus: true,
+        disableClose: true,
+        data: {link: row.links.self}
       });
 
       // subscribe to screen size
@@ -156,12 +157,6 @@ export class UserListComponent implements OnInit {
       signInDialogRef.afterClosed().subscribe(result => {
         smallDialogSubscription.unsubscribe();
       });
-    });
-  }
-
-  getSingleUser(url: string): Promise<any> {
-
-    return this.userService.getById(url);
   }
 
   delete(url: string): void {
@@ -218,7 +213,6 @@ export class UserListComponent implements OnInit {
   }
 
   private convertResponse(collectionBody: any[]): Array<User> {
-    console.log('The collection body is ', collectionBody);
     return collectionBody.map(item =>
       this.adapter.adapt(item, item.links, null));
   }

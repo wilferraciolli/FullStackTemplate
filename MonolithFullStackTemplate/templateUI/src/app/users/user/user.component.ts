@@ -7,6 +7,10 @@ import {UserPayload} from '../user-payload';
 import {UserFormBuilder} from '../user-form-builder';
 import {ValueViewValue} from '../../shared/response/value-viewValue';
 import {UserMeta} from '../user-meta';
+import {User} from '../user';
+import {Link} from '../../shared/response/link';
+import {MetaDataWithValues} from '../../shared/response/meta-data';
+import {IdValue} from '../../shared/response/id-value';
 
 @Component({
   selector: 'app-user',
@@ -16,8 +20,9 @@ import {UserMeta} from '../user-meta';
 export class UserComponent implements OnInit {
 
   hide = true;
-  userCollectionMeta: UserMeta;
   availableRoles: Array<ValueViewValue>;
+  user: User;
+  selfLink: Link;
 
   constructor(private userService: UserServiceService,
               public userFormBuilder: UserFormBuilder,
@@ -26,17 +31,35 @@ export class UserComponent implements OnInit {
               public dialogRef: MatDialogRef<UserComponent>,
               @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
 
-    // get the metadata passed from the caller component
+    // get the link passed on
     if (data) {
-      this.userCollectionMeta = data.userMeta;
-      this.availableRoles = this.getAvailableUserRoles(Object.values(this.userCollectionMeta)
-        .filter(g => g.hasOwnProperty('roleIds')));
+      // this.userCollectionMeta = data.userMeta;
+      // this.availableRoles = this.getAvailableUserRoles(Object.values(this.userCollectionMeta)
+      //   .filter(g => g.hasOwnProperty('roleIds')));
+
+      this.selfLink = data.link;
+      console.log('The link passed in is ', data);
+
     } else {
-      console.warn('no meta was passed');
+      console.warn('no link to get single user was passed');
     }
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.getSingleUser(this.selfLink.href).then((data) => {
+      console.log('The data is ', data);
+      this.user = this.adapter.adapt(data._data.user, data._data.user, data._metadata);
+      this.availableRoles = this.userService.resolveRoleIds(this.user.meta.roleIds.values);
+      // this.getAvailableUserRoles(this.user.meta.roleIds.values);
+
+      this.userFormBuilder.populateForm(this.user);
+      // this.dialog.open(UserComponent, this.buildUserDialogProperties());
+    });
+  }
+
+  getSingleUser(url: string): Promise<any> {
+
+    return this.userService.getById(url);
   }
 
   /**
@@ -103,12 +126,11 @@ export class UserComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  private getAvailableUserRoles(values: any):
-    Array<ValueViewValue> {
-    // console.log('value extracted is ', values);
-
-    return values
-      .map(v => v.roleIds.values
-        .map(meta => ({value: meta.id, viewValue: meta.value})))[0];
-  }
+  // private getAvailableUserRoles(values: Array<IdValue>):
+  //   Array<ValueViewValue> {
+  //   // console.log('value extracted is ', values);
+  //
+  //   return values
+  //           .map(value => ({value: meta.id, viewValue: meta.value})))[0];
+  // }
 }
