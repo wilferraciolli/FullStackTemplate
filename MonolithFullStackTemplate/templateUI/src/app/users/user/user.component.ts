@@ -100,9 +100,9 @@ export class UserComponent implements OnInit {
 
   update(): void {
     console.log('updating');
-    const updateUrl = this.userFormBuilder.form.value.links.updateUser.href;
+    // const updateUrl = this.userFormBuilder.form.value.links.updateUser.href;
 
-    this.userService.update(updateUrl, new UserPayload(this.userFormBuilder.getFormValue()))
+    this.userService.update(this.link.href, this.userFormBuilder.getFormValue())
       .subscribe(data => {
           console.log('Success', data);
           this.notificationService.success('User updated successfully');
