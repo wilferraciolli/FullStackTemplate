@@ -33,7 +33,7 @@ export class UserProfileComponent implements OnInit {
               private adapter: PersonAdapter) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getDataFromParentComponent();
 
     this.userDetailsProfileService.getById(this.personSelfLink)

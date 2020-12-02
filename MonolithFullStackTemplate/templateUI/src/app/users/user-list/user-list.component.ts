@@ -61,9 +61,9 @@ export class UserListComponent implements OnInit {
     if (_.isUndefined(history.state.usersLink)) {
 
       this.router.navigate(['/home']);
+    } else {
+      this.loadAll(history.state.usersLink.href);
     }
-
-    this.loadAll(history.state.usersLink.href);
   }
 
   onSearchClear(): void {
@@ -108,27 +108,27 @@ export class UserListComponent implements OnInit {
   }
 
   onEdit(row: User): void {
-      const signInDialogRef = this.dialog.open(UserComponent, {
-        width: '50%',
-        height: '50%',
-        maxWidth: '100vw',
-        maxHeight: '100vh',
-        autoFocus: true,
-        disableClose: true,
-        data: {link: row.links.self}
-      });
+    const signInDialogRef = this.dialog.open(UserComponent, {
+      width: '50%',
+      height: '50%',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      autoFocus: true,
+      disableClose: true,
+      data: {link: row.links.self}
+    });
 
-      // subscribe to screen size
-      const smallDialogSubscription = this.isExtraSmall.subscribe(result => {
-        if (result.matches) {
-          signInDialogRef.updateSize('100%', '100%');
-        } else {
-          signInDialogRef.updateSize('75%', '75%');
-        }
-      });
-      signInDialogRef.afterClosed().subscribe(result => {
-        smallDialogSubscription.unsubscribe();
-      });
+    // subscribe to screen size
+    const smallDialogSubscription = this.isExtraSmall.subscribe(result => {
+      if (result.matches) {
+        signInDialogRef.updateSize('100%', '100%');
+      } else {
+        signInDialogRef.updateSize('75%', '75%');
+      }
+    });
+    signInDialogRef.afterClosed().subscribe(result => {
+      smallDialogSubscription.unsubscribe();
+    });
   }
 
   delete(url: string): void {

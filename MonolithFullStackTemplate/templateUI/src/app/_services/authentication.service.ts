@@ -15,17 +15,29 @@ export class AuthenticationService {
   private readonly _AUTHENTICATION_URL = '/api/auth';
   private readonly _REFRESH_TOKEN_URL = '/api/auth/refresh/token';
 
+  private refreshTokenTimeout;
+
   public currentUser: Observable<any>;
   public isUserLoggedOn: boolean;
   private currentUserSubject: BehaviorSubject<any>;
 
   constructor(private http: HttpClient) {
+    // check whether the token is expired
+    // if (this.isTokenExpired()) {
+    //   this.removeLocalStorageUserLoggedOn();
+    //
+    //   this.currentUserSubject = new BehaviorSubject<any>({});
+    //   this.currentUser = this.currentUserSubject.asObservable();
+    //   this.isUserLoggedOn = false;
+    // } else {
     this.currentUserSubject = new BehaviorSubject<any>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
     this.isUserLoggedOn = !_.isNull(localStorage.getItem('currentUser'));
+    // }
   }
 
   public get currentUserValue() {
+
     return this.currentUserSubject.value;
   }
 
@@ -61,7 +73,9 @@ export class AuthenticationService {
   getTokenExpirationDate(token: string): Date {
     const decoded = jwt_decode(token);
 
-    if (decoded.exp === undefined) return null;
+    if (decoded.exp === undefined) {
+      return null;
+    }
 
     const date = new Date(0);
     date.setUTCSeconds(decoded.exp);
@@ -69,11 +83,17 @@ export class AuthenticationService {
   }
 
   isTokenExpired(token?: string): boolean {
-    if (!token) token = this.getToken();
-    if (!token) return true;
+    if (!token) {
+      token = this.getToken();
+    }
+    if (!token) {
+      return true;
+    }
 
     const date = this.getTokenExpirationDate(token);
-    if (date === undefined) return false;
+    if (date === undefined) {
+      return false;
+    }
     return !(date.valueOf() > new Date().valueOf());
   }
 
@@ -107,7 +127,7 @@ export class AuthenticationService {
   }
 
   refreshToken() {
-    return this.http.post<any>(environment.baseUrl + this._REFRESH_TOKEN_URL, { 'refreshToken' : this.getRefreshToken() })
+    return this.http.post<any>(environment.baseUrl + this._REFRESH_TOKEN_URL, {'refreshToken': this.getRefreshToken()})
       .pipe(map((user) => {
         this.currentUserSubject.next(user);
         this.startRefreshTokenTimer();
@@ -115,7 +135,7 @@ export class AuthenticationService {
       }));
   }
 
-  private refreshTokenTimeout;
+
   private startRefreshTokenTimer() {
     // parse json object from base64 encoded jwt token
     const jwtToken = jwt_decode(this.getToken());
@@ -125,6 +145,7 @@ export class AuthenticationService {
     const timeout = expires.getTime() - Date.now() - (60 * 1000);
     this.refreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout);
   }
+
   private stopRefreshTokenTimer() {
     clearTimeout(this.refreshTokenTimeout);
   }
@@ -135,19 +156,17 @@ export class AuthenticationService {
     localStorage.removeItem('currentUser');
 
     let user = await this.http.post(environment.baseUrl + this._REFRESH_TOKEN_URL, {refreshToken})
-      .toPromise()
+      .toPromise();
 
     // store user details and jwt token in local storage to keep user logged in between page refreshes
     localStorage.setItem('currentUser', JSON.stringify(user));
     this.currentUserSubject.next(user);
   }
 
-
-  logout() {
+  logout(): void {
     // remove user from local storage and set current user to null
     this.stopRefreshTokenTimer();
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('userProfile');
+    this.removeLocalStorageUserLoggedOn();
     this.currentUserSubject.next(null);
   }
 
@@ -159,6 +178,11 @@ export class AuthenticationService {
         console.log(user);
         return user;
       }));
+  }
+
+  private removeLocalStorageUserLoggedOn(): void {
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('userProfile');
   }
 
 }

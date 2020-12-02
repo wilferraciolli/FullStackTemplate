@@ -9,7 +9,7 @@ import { NotificationService } from '../shared/notification.service';
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
-  constructor(private authenticationService: AuthenticationService,
+  constructor(private authenticationService: AuthService,
               private notificationService: NotificationService) {
   }
 
