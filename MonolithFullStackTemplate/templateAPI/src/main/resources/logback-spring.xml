@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 	<include resource="org/springframework/boot/logging/logback/basic.xml"/>
-	<property name="LOG_FILE" value="log/order-service" />
+	<property name="LOG_FILE" value="log/templateAPI" />
 	<property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } [%t] --- %-40.40logger{39} : %m%n" />
 	<!-- <include resource="org/springframework/boot/logging/logback/file-appender.xml" />
 	<include resource="org/springframework/boot/logging/logback/console-appender.xml" /> -->
@@ -28,7 +28,7 @@
 	</root>
 
 	<logger name="org.hibernate" level="INFO" />
-	<logger name="com.order" level="DEBUG" />
+	<logger name="com.template" level="DEBUG" />
 	<logger name="org.springframework.web" level="DEBUG" />
 	<logger name="org.springframework.security" level="DEBUG" />
 </configuration>

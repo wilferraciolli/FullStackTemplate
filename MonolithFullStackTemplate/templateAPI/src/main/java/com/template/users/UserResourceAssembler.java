@@ -65,7 +65,7 @@ public class UserResourceAssembler {
                 .firstName(entity.getFirstName())
                 .lastName(entity.getLastName())
                 .username(entity.getUsername())
-                .password("***")
+                .password("password1")
                 .dateOfBirth(entity.getDateOfBirth())
                 .active(entity.getActive())
                 .roleIds(roleIds)

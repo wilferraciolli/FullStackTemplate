@@ -24,7 +24,6 @@ public class RefreshTokenService {
                 .orElseGet(() -> createRefreshToken(userName));
 
         return refreshToken.getRefreshToken();
-
     }
 
     private RefreshToken updateRefreshToken(final RefreshToken token) {

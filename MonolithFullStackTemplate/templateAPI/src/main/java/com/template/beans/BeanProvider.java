@@ -21,7 +21,7 @@ public class BeanProvider {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    // This bean is used to configure jackson to add the root name to DTOs
+    // This bean is used to configure jackson serializer
     @Bean
     public Jackson2ObjectMapperBuilder jacksonBuilder() {
         Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();

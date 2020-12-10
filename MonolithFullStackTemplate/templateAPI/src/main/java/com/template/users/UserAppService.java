@@ -59,10 +59,10 @@ public class UserAppService {
     public UserResource createTemplate() {
 
         return UserResource.builder()
-                .firstName("")
-                .lastName("")
-                .username("")
-                .password("")
+                .firstName("Name")
+                .lastName("Surname")
+                .username("user1@wiltech.com")
+                .password("password1")
                 .roleIds(Arrays.asList(UserRoleType.ROLE_USER.name()))
                 .active(true)
                 .build();
@@ -191,6 +191,9 @@ public class UserAppService {
                 .active(user.getActive())
                 .roleIds(user.getRoles())
                 .build();
+
+        List<Link> linksToAdd = Arrays.asList(linkProvider.generateSelfLink(userResource.getId()), linkProvider.generateUpdateLink(userResource.getId()), linkProvider.generateDeleteLink(userResource.getId()));
+        userResource.addLinks(linksToAdd);
 
         return userResource;
     }

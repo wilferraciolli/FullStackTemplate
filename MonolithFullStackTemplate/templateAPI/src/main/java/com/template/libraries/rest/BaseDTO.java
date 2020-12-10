@@ -12,18 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public abstract class BaseDTO implements Transferable {
 
-//    private Long id;
-
     @JsonProperty("links")
     private final Map<String, LinkDetails> links = new HashMap<>();
-    //
-    //    @JsonProperty("_links2")
-    //    private final Map<String, Link> links2 = new HashMap<>();
-
-//    public void addLinks(final Map<String, String> linksToAdd) {
-//        linksToAdd.entrySet()
-//                .forEach(l -> links.put(l.getKey(), new LinkDetails(l.getValue())));
-//    }
 
     /**
      * Add a single link to the resource links.
@@ -42,10 +32,6 @@ public abstract class BaseDTO implements Transferable {
         linksToAdd.stream()
                 .forEach(this::addLink);
     }
-
-//    public Long getId() {
-//        return id;
-//    }
 
     public Map<String, LinkDetails> getLinks() {
         return links;

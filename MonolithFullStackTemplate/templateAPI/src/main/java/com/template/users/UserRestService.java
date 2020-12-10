@@ -63,11 +63,6 @@ public class UserRestService extends BaseRestService {
 
         Map<String, Metadata> metadata = metaFabricator.createMetaForCreatedResource(createdResource.getRoleIds());
 
-        // TODO change to return the same as build response
-//        return ResponseEntity
-//                .created(buildLocationHeader(createdResource.getId()))
-//                .body(createdResource);
-
         return buildResponseCreated(getJsonRootName(UserResource.class), createdResource, metadata);
     }
 
@@ -76,8 +71,8 @@ public class UserRestService extends BaseRestService {
      * @return the response entity
      */
     @GetMapping("")
-    public ResponseEntity<UserResource> findAll() {
-
+    public ResponseEntity<UserResource> findAll() throws InterruptedException {
+        Thread.sleep(100);
         final List<UserResource> resources = this.appService.findUsers();
 
         Set<String> usedRoleIds = appService.resolveUsedRoleIds(resources);

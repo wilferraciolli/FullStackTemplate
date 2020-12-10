@@ -7,9 +7,12 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.template.libraries.rest.BaseDTO;
+import com.template.libraries.rest.CustomNullSerializer;
 import com.template.validation.ValidateUniqueUsername;
 
 import lombok.AccessLevel;
@@ -45,7 +48,7 @@ public class UserResource extends BaseDTO {
     private String lastName;
 
     @NotNull(message = "User name cannot be null.")
-    @ValidateUniqueUsername(message = "{Users.username.NonUnique}")
+   // @ValidateUniqueUsername(message = "{Users.username.NonUnique}")
     private String username;
 
     //    @Pattern(regexp = "^[_A-Za-z0-9-\\\\+]+(\\\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\\\.[A-Za-z0-9]+)*(\\\\.[A-Za-z]{2,})$\"", message = "Email format is not valid: '${validatedValue}' does not matches the email patten}")
@@ -54,6 +57,8 @@ public class UserResource extends BaseDTO {
     @NotNull(message = "Password cannot be null.")
     private String password;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonSerialize(nullsUsing = CustomNullSerializer.class)
     private LocalDate dateOfBirth;
 
     @NotNull(message = "Active cannot be null.")

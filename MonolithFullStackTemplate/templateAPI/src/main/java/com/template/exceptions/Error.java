@@ -6,7 +6,10 @@ import static java.util.Objects.nonNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,8 +28,13 @@ import lombok.ToString;
 public class Error {
 
     private Integer statusCode;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    //    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime dateTime;
+
     private String title;
+
     private List<PropertyField> fields;
 }
 
