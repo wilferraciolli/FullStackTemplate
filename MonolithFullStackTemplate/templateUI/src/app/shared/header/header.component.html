@@ -18,7 +18,7 @@
       </div>
 
       <div class="header-actions">
-        <div *ngIf="currentUser; then userDetails else logInDetails"></div>
+        <div *ngIf="isLoggedOn; then userDetails else logInDetails"></div>
         <ng-template #userDetails>
           <a mat-button class="btn-no-hover" (click)="logout()">Logout </a>
           <!--      <button mat-icon-button routerLink="/people" routerLinkActive="active">-->

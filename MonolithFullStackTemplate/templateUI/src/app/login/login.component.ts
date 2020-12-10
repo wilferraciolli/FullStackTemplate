@@ -2,9 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from '../_services/authentication.service';
-import {first} from 'rxjs/operators';
+import {finalize, first} from 'rxjs/operators';
 import {Authentication} from './authentication';
 import {UserProfileService} from '../_services/user.profile.service';
+import {AuthService} from '../_services/auth-service';
+import {LoadingService} from '../shared/components/loading/loading.service';
 
 @Component({
   selector: 'app-login',
@@ -29,13 +31,21 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: AuthenticationService,
-    private userProfileService: UserProfileService) {
+    private authenticationService: AuthService,
+    // private userProfileService: UserProfileService,
+    private loadingService: LoadingService
+  ) {
 
     // redirect to home if already logged in
-    if (this.authenticationService.currentUserValue) {
-      this.router.navigate(['/']);
-    }
+    this.authenticationService.isUserLoggedOn
+      .subscribe(x => {
+        if (x === true) {
+          this.router.navigate(['/']);
+        }
+      });
+    // if (this.authenticationService.isUserLoggedOn) {
+    //   this.router.navigate(['/']);
+    // }
   }
 
   // convenience getter for easy access to form fields
@@ -51,7 +61,7 @@ export class LoginComponent implements OnInit {
    * Sets the this.returnUrl property to the value passed in the url querystring, or defaults to the home page ('/') if there isn't a value in the querystring. The return url property
    * allows you to redirect the user back to the original page they requested before logging in.
    */
-  ngOnInit() {
+  ngOnInit(): void {
     // initialize form with default values
     this.loginForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.email]],
@@ -78,15 +88,18 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    this.authenticationService.login1(this.getFormValue())
-      .pipe(first())
+    this.loadingService.loadingOn();
+    this.authenticationService.login(this.getFormValue())
+      .pipe(
+        first(),
+        finalize(() => this.loadingService.loadingOff()))
       .subscribe(
         data => {
           // populate user profile service after login
-          this.userProfileService.loadUserProfile()
-            .then((userProfileResponse) => {
-              this.userProfileService.populateUserProfile(userProfileResponse);
-            });
+          // this.userProfileService.loadUserProfile()
+          //   .then((userProfileResponse) => {
+          //     this.userProfileService.populateUserProfile(userProfileResponse);
+          //   });
 
           // redirect
           this.router.navigate([this.returnUrl]);

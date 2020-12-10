@@ -2,13 +2,15 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
-import {map} from 'rxjs/operators';
+import {finalize, map} from 'rxjs/operators';
 import {UserProfileResponse} from '../users/profile/user.profile.response';
 import {UserProfile} from '../users/profile/user.profile';
 import {UserRegistration} from '../registration/user-registration';
 
 import * as _ from 'lodash';
 import * as jwt_decode from 'jwt-decode';
+import {ProfileService} from './profile.service';
+import {LoadingService} from '../shared/components/loading/loading.service';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
@@ -16,92 +18,75 @@ export class AuthService {
   private readonly _AUTHENTICATION_URL = '/api/auth';
   private readonly _REFRESH_TOKEN_URL = '/api/auth/refresh/token';
 
-  private readonly _USER_PROFILE_URL = environment.baseUrl + '/api/userprofile';
-
   private refreshTokenTimeout;
 
-  isUserLoggedOn: BehaviorSubject<boolean>;
-
-  // public currentUserProfile: Observable<UserProfile>;
-  currentUserProfileSubject: BehaviorSubject<UserProfile>;
+  public isUserLoggedOn: Observable<boolean>;
+  private isUserLoggedOnSubject: BehaviorSubject<boolean>;
 
   /**
    * Constructor.
    */
-  constructor(private httpClient: HttpClient) {
+  constructor(
+    private httpClient: HttpClient,
+    private profileService: ProfileService,
+    private loadingService: LoadingService) {
 
-    this.isUserLoggedOn = new BehaviorSubject<boolean>(this.hasValidToken());
-    this.currentUserProfileSubject = new BehaviorSubject<UserProfile>(JSON.parse(localStorage.getItem('templateUI-userProfile')));
-    // this.currentUserProfile = this.currentUserProfileSubject.asObservable();
+    this.isUserLoggedOnSubject = new BehaviorSubject<boolean>(this.hasValidTokenAndCredentials());
+    this.isUserLoggedOn = this.isUserLoggedOnSubject.asObservable();
   }
 
   /**
    * Public method to check whether a user is logged on.
    */
-  isLoggedOn(): Observable<boolean> {
+  public get isLoggedOn(): boolean {
 
-    return this.isUserLoggedOn.asObservable();
-  }
-
-  // Public method to get the user profile who is logged on.
-  getUserProfile(): Observable<UserProfile> {
-
-    return this.currentUserProfileSubject.asObservable();
+    return this.isUserLoggedOnSubject.value;
   }
 
   login(authentication): any {
 
+    this.loadingService.loadingOn();
+
     return this.httpClient
       .post<any>(environment.baseUrl + this._AUTHENTICATION_URL + '/signin', authentication)
-      .pipe(map(authDetails => {
-        this.saveAuthDetails(authDetails);
+      .pipe(
+        map(authDetails => {
+          this.saveAuthDetails(authDetails);
+          this.profileService.fetchUserProfile();
 
-        // get the user profile
-        this.loadUserProfile()
-          .then((userProfileResponse) => {
-            this.populateUserProfile(userProfileResponse);
-          });
-
-        return authDetails;
-      }));
+          return authDetails;
+        }),
+        finalize(() => this.loadingService.loadingOff()));
   }
 
   logout(): void {
-    // remove user from local storage and set current user to null
     this.removeUser();
-    // this.stopRefreshTokenTimer();
-    // this.removeLocalStorageUserLoggedOn();
+    this.profileService.removeUserProfile();
+    this.stopRefreshTokenTimer();
   }
 
   register(userDetails: UserRegistration): any {
     console.log(userDetails);
 
+    this.loadingService.loadingOn();
     return this.httpClient
       .post<any>(environment.baseUrl + this._AUTHENTICATION_URL + '/register', userDetails)
       .pipe(map(user => {
-        console.log(user);
-        return user;
-      }));
+          console.log(user);
+          return user;
+        }),
+        finalize(() => this.loadingService.loadingOff()));
   }
 
-  private hasValidToken(): boolean {
-
-    return false;
-  }
-
-  async loadUserProfile<T>(): Promise<UserProfileResponse> {
-    const data = await this.httpClient
-      .get<UserProfileResponse>(this._USER_PROFILE_URL)
-      .toPromise();
-    // console.log(data);
-
-    return data;
+  private hasValidTokenAndCredentials(): boolean {
+    // get value from storage and check the date
+    return this.isTokenExpired();
   }
 
   /**
    * Get the current user from the local storage.
    */
-  private getToken(): string {
+  getToken(): string {
 
     const authDetails = JSON.parse(localStorage.getItem('templateUI-authDetails'));
 
@@ -112,6 +97,22 @@ export class AuthService {
 
       return null;
     }
+  }
+
+  isTokenExpired(token?: string): boolean {
+    if (!token) {
+      token = this.getToken();
+    }
+    if (!token) {
+      return true;
+    }
+
+    const date = this.getTokenExpirationDate(token);
+    if (date === undefined) {
+      return false;
+    }
+
+    return !(date.valueOf() > new Date().valueOf());
   }
 
   private getRefreshToken(): string {
@@ -140,22 +141,6 @@ export class AuthService {
     return date;
   }
 
-  private isTokenExpired(token?: string): boolean {
-    if (!token) {
-      token = this.getToken();
-    }
-    if (!token) {
-      return true;
-    }
-
-    const date = this.getTokenExpirationDate(token);
-    if (date === undefined) {
-      return false;
-    }
-
-    return !(date.valueOf() > new Date().valueOf());
-  }
-
   private startRefreshTokenTimer(): void {
     // parse json object from base64 encoded jwt token
     const jwtToken = jwt_decode(this.getToken());
@@ -181,29 +166,17 @@ export class AuthService {
       }));
   }
 
-  private populateUserProfile(userProfileResponse: UserProfileResponse): void {
-    console.log('populating userProfile in Auth Service', userProfileResponse);
-
-    const userProfile = new UserProfile(userProfileResponse);
-    localStorage.setItem('templateUI-userProfile', JSON.stringify(userProfile));
-    this.isUserLoggedOn.next(true);
-    this.currentUserProfileSubject.next(userProfile);
-  }
-
   private removeUser(): void {
-    console.log('removing userProfile in Auth Service');
-
-    localStorage.removeItem('templateUI-userProfile');
     localStorage.removeItem('templateUI-authDetails');
 
     // tell all of the subscribers
-    this.currentUserProfileSubject.next(null);
-    this.isUserLoggedOn.next(false);
+    this.isUserLoggedOnSubject.next(false);
   }
 
   private saveAuthDetails(authDetails): void {
     // store user details and jwt token in local storage to keep user logged in between page refreshes
     localStorage.setItem('templateUI-authDetails', JSON.stringify(authDetails));
+    this.isUserLoggedOnSubject.next(true);
     this.startRefreshTokenTimer();
   }
 }

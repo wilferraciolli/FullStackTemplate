@@ -20,6 +20,9 @@ import {Link} from '../../shared/response/link';
 import {Observable} from 'rxjs';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
 import {UserProfileService} from '../../_services/user.profile.service';
+import {LoadingService} from '../../shared/components/loading/loading.service';
+import {finalize} from 'rxjs/operators';
+import {ProfileService} from '../../_services/profile.service';
 
 @Component({
   selector: 'app-user-list',
@@ -48,13 +51,13 @@ export class UserListComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private userService: UserServiceService,
               private userFormBuilder: UserFormBuilder,
-              private userProfileService: UserProfileService,
               private adapter: UserAdapter,
               private linksService: LinksService,
               private notificationService: NotificationService,
               private dialog: MatDialog,
               private dialogService: DialogService,
-              private router: Router) {
+              private router: Router,
+              public loadingService: LoadingService) {
   }
 
   ngOnInit(): void {
@@ -153,7 +156,11 @@ export class UserListComponent implements OnInit {
   }
 
   private loadAll(url: string): void {
+
+    this.loadingService.loadingOn();
+
     this.userService.getAll<UsersResponse>(url)
+      .pipe(finalize(() => this.loadingService.loadingOff()))
       .subscribe((response: UsersResponse) => {
         const collectionData = response._data;
         const collectionMeta: any = response._metadata;

@@ -4,6 +4,8 @@ import {Router} from '@angular/router';
 import {AuthenticationService} from '../../_services/authentication.service';
 import {UserProfileService} from '../../_services/user.profile.service';
 import {LinksService} from '../../_services/links-service';
+import {AuthService} from '../../_services/auth-service';
+import {ProfileService} from '../../_services/profile.service';
 
 @Component({
   selector: 'app-wrapper',
@@ -12,7 +14,7 @@ import {LinksService} from '../../_services/links-service';
 })
 export class WrapperComponent implements OnInit {
 
-  currentUser: any;
+  isLoggedOn: boolean;
   usersAccess: boolean;
   peopleAccess: boolean;
 
@@ -24,25 +26,25 @@ export class WrapperComponent implements OnInit {
    * Subscribe to see whether there is a user currently logged on.
    */
   constructor(private router: Router,
-              private authenticationService: AuthenticationService,
-              private userProfileService: UserProfileService,
+              private authenticationService: AuthService,
+              private profileService: ProfileService,
               private linksService: LinksService) {
 
   }
 
   ngOnInit(): void {
-    this.authenticationService.currentUser.subscribe(x => {
-      this.currentUser = x;
+    this.authenticationService.isUserLoggedOn.subscribe(x => {
+      this.isLoggedOn = x;
     });
 
-    this.userProfileService.currentUserProfile
+    this.profileService.currentUserProfile
       .subscribe(user => {
         this.userProfile = user;
         this.getAreasAccess();
       });
   }
 
-  getUsers() {
+  getUsers(): void {
     this.hideNavBar();
     const dataObject = {state: {usersLink: this.userProfile.links.users}};
     this.router.navigate(['users'], dataObject);

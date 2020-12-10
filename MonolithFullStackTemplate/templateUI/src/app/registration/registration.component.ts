@@ -5,6 +5,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from '../_services/authentication.service';
 import {NotificationService} from '../shared/notification.service';
+import {AuthService} from '../_services/auth-service';
 
 @Component({
   selector: 'app-registration',
@@ -22,13 +23,20 @@ export class RegistrationComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               private route: ActivatedRoute,
               private router: Router,
-              private authenticationService: AuthenticationService,
+              private authenticationService: AuthService,
               private notificationService: NotificationService) {
 
     // redirect to home if already logged in
-    if (this.authenticationService.currentUserValue) {
-      this.router.navigate(['/']);
-    }
+    // if (this.authenticationService.isUserLoggedOn) {
+    //   this.router.navigate(['/']);
+    // }
+
+    this.authenticationService.isUserLoggedOn
+      .subscribe(x => {
+        if (x === true){
+          this.router.navigate(['/']);
+        }
+      });
   }
 
   // convenience getter for easy access to form fields
@@ -36,7 +44,7 @@ export class RegistrationComponent implements OnInit {
     return this.registerForm.controls;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     // initialize form with default values
     this.registerForm = this.formBuilder.group({
       firstName: ['', Validators.required],
@@ -47,7 +55,7 @@ export class RegistrationComponent implements OnInit {
     });
   }
 
-  register() {
+  register(): void {
     this.submitted = true;
 
     // stop here if form is invalid

@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthenticationService } from '../_services/authentication.service';
 import { NotificationService } from '../shared/notification.service';
+import {AuthService} from '../_services/auth-service';
 
 
 @Injectable()

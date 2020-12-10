@@ -24,6 +24,7 @@ import {ErrorInterceptor} from './_helpers/error.interceptor';
 import {JwtInterceptor} from './_helpers/jwt.interceptor';
 import { PersonComponent } from './people/person/person.component';
 import {ConvertIdsToStringValuePipe} from './users/user-role-mapper-pipe';
+import { LoadingComponent } from './shared/components/loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import {ConvertIdsToStringValuePipe} from './users/user-role-mapper-pipe';
     UserDetailsComponent,
     UserProfileComponent,
     UserComponent,
-    PersonComponent
+    PersonComponent,
+    LoadingComponent
   ],
   imports: [
     AppRoutingModule,

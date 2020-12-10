@@ -4,6 +4,8 @@ import {Router} from '@angular/router';
 import {AuthenticationService} from '../../_services/authentication.service';
 import {UserProfileService} from '../../_services/user.profile.service';
 import {LinksService} from '../../_services/links-service';
+import {AuthService} from '../../_services/auth-service';
+import {ProfileService} from '../../_services/profile.service';
 
 @Component({
   selector: 'app-header',
@@ -12,7 +14,7 @@ import {LinksService} from '../../_services/links-service';
 })
 export class HeaderComponent implements OnInit {
 
-  currentUser: any;
+  isLoggedOn: boolean;
   usersAccess: boolean;
   peopleAccess: boolean;
 
@@ -25,18 +27,18 @@ export class HeaderComponent implements OnInit {
    * Subscribe to see whether there is a user currently logged on.
    */
   constructor(private router: Router,
-              private authenticationService: AuthenticationService,
-              private userProfileService: UserProfileService,
+              private authenticationService: AuthService,
+              private profileService: ProfileService,
               private linksService: LinksService) {
   }
 
   ngOnInit(): void {
-    this.authenticationService.currentUser
+    this.authenticationService.isUserLoggedOn
       .subscribe(x => {
-        this.currentUser = x;
+        this.isLoggedOn = x;
       });
 
-    this.userProfileService.currentUserProfile
+    this.profileService.currentUserProfile
       .subscribe(user => {
         this.userProfile = user;
         this.getAreasAccess();
@@ -48,13 +50,13 @@ export class HeaderComponent implements OnInit {
    */
   logout(): void {
     this.authenticationService.logout();
-    this.userProfileService.removeUserProfile();
+    // this.userProfileService.removeUserProfile();
     this.getAreasAccess();
     this.router.navigate(['/home']);
   }
 
   getProfile(): void {
-    // send the user to the user profile component and pass user profile as data
+    // TODO fix get user details profile - send the user to the user profile component and pass user profile as data
     const dataObject = {state: {data: {userProfile: this.userProfile}}};
     this.router.navigate(['userdetails', this.userProfile.id], dataObject);
   }
