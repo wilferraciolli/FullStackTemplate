@@ -8,6 +8,7 @@ import {UserProfileComponent} from './users/user-details/user-profile/user-profi
 import {UserListComponent} from './users/user-list/user-list.component';
 import {UserDetailsComponent} from './users/user-details/user-details.component';
 import {PageNotFoundComponent} from './shared/components/page-not-found/page-not-found.component';
+import {TemplateComponent} from './users/user-details/template/template.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full'},
@@ -16,7 +17,8 @@ const routes: Routes = [
   {
     path: 'userdetails/:id', component: UserDetailsComponent, canActivate: [AuthGuard], children: [
       {path: '', redirectTo: 'profile', pathMatch: 'full'},
-      {path: 'profile', component: UserProfileComponent}
+      {path: 'profile', component: UserProfileComponent},
+      {path: 'template', component: TemplateComponent}
     ]
   },
   {path: 'login', component: LoginComponent},

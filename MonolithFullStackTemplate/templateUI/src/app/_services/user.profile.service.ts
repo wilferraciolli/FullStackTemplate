@@ -6,12 +6,14 @@ import {environment} from '../../environments/environment';
 import {UserProfile} from '../users/profile/user.profile';
 import {UserProfileResponse} from '../users/profile/user.profile.response';
 
+//TODO remove this service as not in use anymore
+
 @Injectable({
   providedIn: 'root'
 })
 export class UserProfileService {
 
-  private readonly _USER_PROFILE_URL = environment.baseUrl + '/api/userprofile';
+  private readonly _USER_PROFILE_URL = environment.baseUrl + '/api/iam/userprofile';
 
   public currentUserProfile: Observable<UserProfile>;
   private currentUserProfileSubject: BehaviorSubject<UserProfile>;

@@ -30,14 +30,14 @@ export class UserDetailsComponent implements OnInit {
         link: './profile',
         index: 0
       }, {
-        label: 'Cars',
-        link: './cars',
+        label: 'Template',
+        link: './template',
         index: 1
       }
     ];
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     // send the request to home if no user details is present
     if (_.isUndefined(history.state.data)) {
       this.router.navigate(['/home']);

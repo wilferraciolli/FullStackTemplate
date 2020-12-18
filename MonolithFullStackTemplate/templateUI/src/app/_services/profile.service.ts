@@ -13,7 +13,7 @@ import * as jwt_decode from 'jwt-decode';
 @Injectable({providedIn: 'root'})
 export class ProfileService {
 
-  private readonly _USER_PROFILE_URL = environment.baseUrl + '/api/userprofile';
+  private readonly _USER_PROFILE_URL = environment.baseUrl + '/api/iam/userprofile';
 
   public currentUserProfile: Observable<UserProfile>;
   private currentUserProfileSubject: BehaviorSubject<UserProfile>;
