@@ -57,8 +57,8 @@ export class HeaderComponent implements OnInit {
 
   getProfile(): void {
     // TODO fix get user details profile - send the user to the user profile component and pass user profile as data
-    const dataObject = {state: {data: {userProfile: this.userProfile}}};
-    this.router.navigate(['userdetails', this.userProfile.id], dataObject);
+    // const dataObject = {state: {data: {userProfile: this.userProfile}}};
+    this.router.navigate(['userdetails', this.userProfile.id]);
   }
 
   getUsers(): void {

@@ -11,6 +11,10 @@ export class PersonAdapter implements Adapter<Person> {
 
   adapt(data: any, links: any, meta: any): Person {
 
+    console.log('The data is ', data);
+    console.log('The links are ', links);
+    console.log('The meta is ', meta);
+
     return new Person(data.person.id,
       data.person.userId,
       data.person.firstName,
@@ -24,8 +28,7 @@ export class PersonAdapter implements Adapter<Person> {
       new PersonLinks(links.self,
         links.updatePerson,
         links.deletePerson,
-        links.people,
-        links.cars),
+        links.people),
       meta);
   }
 }

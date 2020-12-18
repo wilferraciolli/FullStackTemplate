@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {LinksService} from '../../_services/links-service';
 import * as _ from 'lodash';
 import {UserProfile} from '../profile/user.profile';
+import {ProfileService} from '../../_services/profile.service';
 
 @Component({
   selector: 'app-user-details',
@@ -11,17 +11,14 @@ import {UserProfile} from '../profile/user.profile';
 })
 export class UserDetailsComponent implements OnInit {
 
-  id: string;
   userProfile: UserProfile;
-  personSelfLink: string;
-  personCarsLink: string;
 
   activeLinkIndex = -1;
   routeLinks: any[];
 
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,
-              private linksService: LinksService) {
+              private profileService: ProfileService) {
 
     // create navigation links for children
     this.routeLinks = [
@@ -38,8 +35,14 @@ export class UserDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.profileService.currentUserProfile
+      .subscribe(user => {
+        this.userProfile = user;
+      });
+
     // send the request to home if no user details is present
-    if (_.isUndefined(history.state.data)) {
+    if (_.isUndefined(this.userProfile)) {
       this.router.navigate(['/home']);
     } else {
 
@@ -47,13 +50,6 @@ export class UserDetailsComponent implements OnInit {
       this.router.events.subscribe((res) => {
         this.activeLinkIndex = this.routeLinks.indexOf(this.routeLinks.find(tab => tab.link === '.' + this.router.url));
       });
-
-      // get the data sent from the previous component
-      this.id = this.activatedRoute.snapshot.params.id;
-      this.userProfile = history.state.data.userProfile;
-      this.personSelfLink = this.userProfile.links.person.href;
-      this.personCarsLink = this.userProfile.links.users.href;
     }
   }
-
 }

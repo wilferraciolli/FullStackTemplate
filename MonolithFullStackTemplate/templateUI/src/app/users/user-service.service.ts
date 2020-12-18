@@ -9,15 +9,6 @@ import {IdValue} from '../shared/response/id-value';
 })
 export class UserServiceService extends HttpBaseService {
 
-  resolveUserRoles(values: any): Array<ValueViewValue> {
-    //TODO remove it
-    console.log('value extracted is ', values);
-
-    return values
-      .map(v => v.roleIds.values
-        .map(meta => ({value: meta.id, viewValue: meta.value})))[0];
-  }
-
   resolveRoleIds(values: Array<IdValue>): Array<ValueViewValue> {
 
     return values

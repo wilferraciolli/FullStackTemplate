@@ -1,14 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserProfile} from '../../profile/user.profile';
-import {UserDetailsComponent} from '../user-details.component';
-import * as _ from 'lodash';
 import {UserDetailsProfileService} from './user-details-profile.service';
 import {PersonAdapter} from '../../../people/person.adapter';
 import {Person} from '../../../people/person';
 import {ValueViewValue} from '../../../shared/response/value-viewValue';
-import {PersonPayload} from '../../../people/person-payload';
 import {NotificationService} from '../../../shared/notification.service';
+import {ProfileService} from '../../../_services/profile.service';
+import {UserProfileFormBuilder} from './user-profile-form-builds';
+import {UserProfileResponse} from './user-profile-response';
+import {MetadataService} from '../../../_services/metadata.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -17,42 +18,47 @@ import {NotificationService} from '../../../shared/notification.service';
 })
 export class UserProfileComponent implements OnInit {
 
-  id: string;
-  personSelfLink: string;
   userProfile: UserProfile;
-  person: Person;
 
+  person: Person;
   genders: Array<ValueViewValue>;
   maritalStatuses: Array<ValueViewValue>;
 
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute,
               private notificationService: NotificationService,
-              private userDetailsComponent: UserDetailsComponent,
-              public userDetailsProfileService: UserDetailsProfileService,
-              private adapter: PersonAdapter) {
+              private profileService: ProfileService,
+              public userProfileFormBuilder: UserProfileFormBuilder,
+              private userDetailsProfileService: UserDetailsProfileService,
+              private adapter: PersonAdapter,
+              private metadataService: MetadataService) {
   }
 
   ngOnInit(): void {
-    this.getDataFromParentComponent();
 
-    this.userDetailsProfileService.getById(this.personSelfLink)
-      .then((data) => {
-        this.userDetailsProfileService.populateForm(this.adapter.adapt(data._data, data._links, data._meta));
-        this.person = this.adapter.adapt(data._data, data._links, data._meta);
-
-        this.genders = this.getGenders(Object.values(this.person.meta).filter(g => g.hasOwnProperty('genderId')));
-        this.maritalStatuses = this.getMaritalStatuses(Object.values(this.person.meta).filter(g => g.hasOwnProperty('maritalStatusId')));
+    this.profileService.currentUserProfile
+      .subscribe(user => {
+        this.userProfile = user;
       });
 
+    this.userDetailsProfileService.getById(this.userProfile.links.person.href)
+      .then((response: UserProfileResponse) => {
+        console.log(response);
+
+        // get person details and populate form
+        this.person = this.adapter.adapt(response._data, response._data.person.links, response._metadata);
+        this.userProfileFormBuilder.populateForm(this.person);
+
+        // map metadata
+        this.genders = this.metadataService.resolveMetadataIdValues(response._metadata.genderId.values);
+        this.maritalStatuses = this.metadataService.resolveMetadataIdValues(response._metadata.maritalStatusId.values);
+      });
   }
 
-  updatePerson() {
+  updatePerson(): void {
     console.log('Updating person');
 
-    const updateUrl = this.userDetailsProfileService.form.value.links.updatePerson.href;
-
-    this.userDetailsProfileService.update(updateUrl, new PersonPayload(this.userDetailsProfileService.getFormValue()))
+    this.userDetailsProfileService.update(this.person.links.updatePerson.href, this.userProfileFormBuilder.getFormValue())
       .subscribe(data => {
           console.log('success ', data);
           this.notificationService.success('Person updated successfully');
@@ -62,33 +68,5 @@ export class UserProfileComponent implements OnInit {
           this.notificationService.error('Person could not be updated');
         }
       );
-  }
-
-  getDataFromParentComponent() {
-    if (_.isUndefined(this.userDetailsComponent.userProfile)) {
-      this.router.navigate(['/home']);
-    } else {
-      // get the user details from the parent
-      this.id = this.activatedRoute.parent.snapshot.params.id;
-      this.userProfile = this.userDetailsComponent.userProfile;
-      this.personSelfLink = this.userProfile.links.person.href;
-    }
-  }
-
-  getGenders(values: any):
-    Array<ValueViewValue> {
-
-    return values
-      .map(v => v.genderId.values
-        .map(meta => ({value: meta.id, viewValue: meta.value})))[0];
-  }
-
-  getMaritalStatuses(values: any):
-    Array<ValueViewValue> {
-    // console.log('value extracted is ', values);
-
-    return values
-      .map(v => v.maritalStatusId.values
-        .map(meta => ({value: meta.id, viewValue: meta.value})))[0];
   }
 }
