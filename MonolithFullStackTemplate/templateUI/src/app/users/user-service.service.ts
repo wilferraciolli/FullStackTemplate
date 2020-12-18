@@ -9,9 +9,4 @@ import {IdValue} from '../shared/response/id-value';
 })
 export class UserServiceService extends HttpBaseService {
 
-  resolveRoleIds(values: Array<IdValue>): Array<ValueViewValue> {
-
-    return values
-      .map(meta => (new ValueViewValue(meta.id, meta.value)));
-  }
 }

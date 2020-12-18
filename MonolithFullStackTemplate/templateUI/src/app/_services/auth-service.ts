@@ -79,8 +79,10 @@ export class AuthService {
   }
 
   private hasValidTokenAndCredentials(): boolean {
+
+    console.log('is logged on ' , this.isTokenExpired());
     // get value from storage and check the date
-    return this.isTokenExpired();
+    return !this.isTokenExpired();
   }
 
   /**

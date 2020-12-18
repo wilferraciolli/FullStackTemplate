@@ -43,7 +43,6 @@ export class UserProfileComponent implements OnInit {
 
     this.userDetailsProfileService.getById(this.userProfile.links.person.href)
       .then((response: UserProfileResponse) => {
-        console.log(response);
 
         // get person details and populate form
         this.person = this.adapter.adapt(response._data, response._data.person.links, response._metadata);

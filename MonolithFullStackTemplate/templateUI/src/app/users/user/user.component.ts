@@ -10,6 +10,7 @@ import {User} from '../user';
 import {Link} from '../../shared/response/link';
 import {UserResponse} from './user-response';
 import {LinksService} from '../../_services/links-service';
+import {MetadataService} from '../../_services/metadata.service';
 
 @Component({
   selector: 'app-user',
@@ -29,6 +30,7 @@ export class UserComponent implements OnInit {
               private notificationService: NotificationService,
               private linkService: LinksService,
               public dialogRef: MatDialogRef<UserComponent>,
+              private metadataService: MetadataService,
               @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
 
     // get the link passed on
@@ -42,8 +44,8 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
     if (this.linkService.isTemplateLink(this.link)) {
       this.getUserTemplate(this.link.href).then((data: UserResponse) => {
-        this.user =  this.adapter.adapt(data._data.user, data._data.user.links, data._metadata);
-        this.availableRoles = this.userService.resolveRoleIds(this.user.meta.roleIds.values);
+        this.user = this.adapter.adapt(data._data.user, data._data.user.links, data._metadata);
+        this.availableRoles = this.metadataService.resolveMetadataIdValues(this.user.meta.roleIds.values);
 
         this.userFormBuilder.initializeFormGroupWithTemplateValues(this.user);
       });
@@ -51,7 +53,7 @@ export class UserComponent implements OnInit {
 
       this.getSingleUser(this.link.href).then((data) => {
         this.user = this.adapter.adapt(data._data.user, data._data.user.links, data._metadata);
-        this.availableRoles = this.userService.resolveRoleIds(this.user.meta.roleIds.values);
+        this.availableRoles = this.metadataService.resolveMetadataIdValues(this.user.meta.roleIds.values);
 
         this.userFormBuilder.populateForm(this.user);
       });
@@ -68,7 +70,6 @@ export class UserComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log('the value of the form is ', this.userFormBuilder.getFormValue());
     if (this.userFormBuilder.form.valid) {
 
       if (this.userFormBuilder.form.value.$key) {
@@ -100,7 +101,6 @@ export class UserComponent implements OnInit {
 
   update(): void {
     console.log('updating');
-    // const updateUrl = this.userFormBuilder.form.value.links.updateUser.href;
 
     this.userService.update(this.link.href, this.userFormBuilder.getFormValue())
       .subscribe(data => {
@@ -122,23 +122,12 @@ export class UserComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  // private getUserTemplate(href: string): User {
-  //   let userTemplate;
-  //   this.userService.getTemplate(href)
-  //     .subscribe((response: UserResponse) => {
-  //       console.log('The response is ', response);
-  //       userTemplate = this.adapter.adapt(response._data.user, response._data.user.links, response._metadata);
-  //     });
-  //
-  //   return userTemplate;
-  // }
-
   private getUserTemplate(url: string): Promise<UserResponse> {
 
     return this.userService.getTemplateAsync(url);
   }
 
-  getSingleUser(url: string): Promise<any> {
+  private getSingleUser(url: string): Promise<any> {
 
     return this.userService.getById(url);
   }

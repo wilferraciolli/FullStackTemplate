@@ -23,6 +23,7 @@ import {UserProfileService} from '../../_services/user.profile.service';
 import {LoadingService} from '../../shared/components/loading/loading.service';
 import {finalize} from 'rxjs/operators';
 import {ProfileService} from '../../_services/profile.service';
+import {MetadataService} from '../../_services/metadata.service';
 
 @Component({
   selector: 'app-user-list',
@@ -57,7 +58,8 @@ export class UserListComponent implements OnInit {
               private dialog: MatDialog,
               private dialogService: DialogService,
               private router: Router,
-              public loadingService: LoadingService) {
+              public loadingService: LoadingService,
+              private metadataService: MetadataService) {
   }
 
   ngOnInit(): void {
@@ -171,7 +173,7 @@ export class UserListComponent implements OnInit {
         this.userCollectionMeta = this.resolveCollectionMeta(collectionMeta);
         this.userCollectionLinks = this.resolveCollectionLinks(metaLinks);
         this.userCreateAccess = this.linksService.hasLink(this.userCollectionLinks.createUser);
-        this.userCollectionRoleIds = this.userService.resolveRoleIds(this.userCollectionMeta.roleIds.values);
+        this.userCollectionRoleIds = this.metadataService.resolveMetadataIdValues(this.userCollectionMeta.roleIds.values);
 
         this.assignUsers(collectionData.user);
       });

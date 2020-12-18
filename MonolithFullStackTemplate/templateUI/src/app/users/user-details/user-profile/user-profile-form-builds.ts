@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {UserServiceService} from '../../user-service.service';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Person} from '../../../people/person';
 
 @Injectable({
@@ -44,8 +43,6 @@ export class UserProfileFormBuilder {
   }
 
   populateForm(person: Person): void {
-
-    console.log('value to populate is ', person);
 
     this.form.setValue(
       {

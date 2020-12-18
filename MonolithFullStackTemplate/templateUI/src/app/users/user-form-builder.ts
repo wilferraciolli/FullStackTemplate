@@ -4,6 +4,7 @@ import { User } from './user';
 import { ValueViewValue } from '../shared/response/value-viewValue';
 import { UserServiceService } from './user-service.service';
 import * as _ from 'lodash';
+import {MetadataService} from '../_services/metadata.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class UserFormBuilder {
   defaultUserRole = 'User';
 
   constructor(private formBuilder: FormBuilder,
-              private userService: UserServiceService) {
+              private userService: UserServiceService,
+              private metadataService: MetadataService) {
 
     this.form = this.formBuilder.group({
       $key: [null],
@@ -154,7 +156,7 @@ export class UserFormBuilder {
 
   private transformUserRolesToRolesViewValue(user: User): Array<ValueViewValue> {
 
-    const userRolesViewValues = this.userService.resolveRoleIds(user.meta.roleIds.values)
+    const userRolesViewValues = this.metadataService.resolveMetadataIdValues(user.meta.roleIds.values)
       .filter(role => user.roleIds.includes(role.value));
 
     this.addRolesFormGroupTRoEachUserRole(userRolesViewValues.length);

@@ -10,9 +10,4 @@ import {ValueViewValue} from '../../../shared/response/value-viewValue';
 })
 export class UserDetailsProfileService extends HttpBaseService {
 
-  resolveGenderIds(values: Array<IdValue>): Array<ValueViewValue> {
-
-    return values
-      .map(meta => (new ValueViewValue(meta.id, meta.value)));
-  }
 }

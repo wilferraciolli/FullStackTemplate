@@ -1,8 +1,8 @@
 // class to implement the model adapter pattern
-import { Injectable } from '@angular/core';
-import { Adapter } from '../shared/response/adapter';
-import { Person } from './person';
-import { PersonLinks } from './person-links';
+import {Injectable} from '@angular/core';
+import {Adapter} from '../shared/response/adapter';
+import {Person} from './person';
+import {PersonLinks} from './person-links';
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +10,6 @@ import { PersonLinks } from './person-links';
 export class PersonAdapter implements Adapter<Person> {
 
   adapt(data: any, links: any, meta: any): Person {
-
-    console.log('The data is ', data);
-    console.log('The links are ', links);
-    console.log('The meta is ', meta);
 
     return new Person(data.person.id,
       data.person.userId,

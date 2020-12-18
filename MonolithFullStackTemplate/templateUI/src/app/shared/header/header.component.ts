@@ -1,8 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {UserProfile} from '../../users/profile/user.profile';
 import {Router} from '@angular/router';
-import {AuthenticationService} from '../../_services/authentication.service';
-import {UserProfileService} from '../../_services/user.profile.service';
 import {LinksService} from '../../_services/links-service';
 import {AuthService} from '../../_services/auth-service';
 import {ProfileService} from '../../_services/profile.service';
@@ -50,14 +48,11 @@ export class HeaderComponent implements OnInit {
    */
   logout(): void {
     this.authenticationService.logout();
-    // this.userProfileService.removeUserProfile();
     this.getAreasAccess();
     this.router.navigate(['/home']);
   }
 
   getProfile(): void {
-    // TODO fix get user details profile - send the user to the user profile component and pass user profile as data
-    // const dataObject = {state: {data: {userProfile: this.userProfile}}};
     this.router.navigate(['userdetails', this.userProfile.id]);
   }
 
