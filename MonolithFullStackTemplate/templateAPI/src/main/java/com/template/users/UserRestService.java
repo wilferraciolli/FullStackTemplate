@@ -1,12 +1,8 @@
 package com.template.users;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -32,7 +28,7 @@ import com.template.libraries.rest.Metadata;
  * The type User rest service.
  */
 @RestController()
-@RequestMapping(value = "/users", produces =  MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/iam/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserRestService extends BaseRestService {
 
     @Autowired

@@ -22,6 +22,7 @@ import com.template.libraries.mails.NotificationEmail;
 import com.template.users.details.UserDetailsView;
 import com.template.users.details.UserDetailsViewRepository;
 import com.template.users.events.UserCreatedEvent;
+import com.template.users.events.UserUpdatedEvent;
 import com.template.users.user.User;
 import com.template.users.user.UserRepository;
 
@@ -126,6 +127,9 @@ public class UserAppService {
         user.updateUser(userResourcePayload.getUsername(), this.passwordEncoder.encode(userResourcePayload.getPassword()),
                 userResourcePayload.getRoleIds());
         this.userRepository.save(user);
+
+        this.eventPublisher.publishEvent(new UserUpdatedEvent(this, id, userResourcePayload.getFirstName(), userResourcePayload.getLastName(),
+                userResourcePayload.getUsername(), userResourcePayload.getDateOfBirth()));
 
         return this.transpose(user);
     }

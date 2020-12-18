@@ -1,9 +1,3 @@
-/*
- * (c) Midland Software Limited 2019
- * Name     : UserCreatedEventHandler.java
- * Author   : ferraciolliw
- * Date     : 13 Nov 2019
- */
 package com.template.people.events.handler;
 
 import org.springframework.beans.factory.annotation.Autowired;

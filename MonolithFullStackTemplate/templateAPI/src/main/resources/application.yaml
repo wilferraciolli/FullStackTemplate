@@ -40,7 +40,7 @@ security:
       jwt:
         key-value: j3H5Ld5nYmGWyULy6xwpOgfSH++NgKXnJMq20vpfd+8=t
         token:
-          expire-length: 180000
+          expire-length: 360000
 
 # Prevent DDos by IP, restrict up to 50 calls per second
 bucket4j:

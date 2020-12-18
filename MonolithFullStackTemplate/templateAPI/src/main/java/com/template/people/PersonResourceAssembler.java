@@ -12,14 +12,20 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
+
+import com.template.users.UserLinkProvider;
 
 /**
  * The type Person resource assembler.
  */
 @Service
 public class PersonResourceAssembler {
+
+    @Autowired
+    private PersonLinkProvider linkProvider;
 
     /**
      * Convert to entity person.
@@ -47,7 +53,7 @@ public class PersonResourceAssembler {
      */
     public PersonResource convertToDTO(final Person entity) {
 
-        return PersonResource.builder()
+        PersonResource personResource = PersonResource.builder()
                 .id(entity.getId())
                 .userId(entity.getUserId())
                 .firstName(entity.getFirstName())
@@ -59,6 +65,15 @@ public class PersonResourceAssembler {
                 .maritalStatusId(entity.getMaritalStatus())
                 .numberOfDependants(entity.getNumberOfDependants())
                 .build();
+
+        List<Link> linksToAdd = Arrays.asList(
+                linkProvider.generateSelfLink(personResource.getId()),
+                linkProvider.generateGetAllPeopleLink(),
+                linkProvider.generateUpdateLink(personResource.getId()),
+                linkProvider.generateDeleteLink(personResource.getId()));
+        personResource.addLinks(linksToAdd);
+
+        return personResource;
     }
 
     /**

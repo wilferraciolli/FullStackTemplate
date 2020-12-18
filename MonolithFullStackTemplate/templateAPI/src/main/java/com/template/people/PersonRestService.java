@@ -3,13 +3,16 @@ package com.template.people;
 import static org.springframework.http.ResponseEntity.noContent;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,13 +23,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.template.libraries.rest.BaseRestService;
+import com.template.libraries.rest.Metadata;
 import com.template.users.UserResource;
 
 /**
  * The type Person rest controller.
  */
 @RestController
-@RequestMapping(value = "/people", produces = "application/json")
+@RequestMapping(value = "/hrm/people", produces = MediaType.APPLICATION_JSON_VALUE)
 public class PersonRestService extends BaseRestService {
 
     @Autowired
@@ -90,13 +94,15 @@ public class PersonRestService extends BaseRestService {
      * @return the response entity
      */
     @GetMapping("/{id}")
-    public ResponseEntity<PersonResource> findById(@PathVariable final long id) {
+    @PreAuthorize(value = "hasRole('ROLE_ADMIN') or checkOwnerByUserId(#id)")
+    public ResponseEntity<PersonResource> findById(@PathVariable final Long id) {
 
         final PersonResource resource = appService.findById(id);
 
         // TODO add meta and links
+        Map<String, Metadata> metadata = metaFabricator.createMetaForSingleResource();
 
-        return buildResponseOk(getJsonRootName(UserResource.class), resource);
+        return buildResponseOk(getJsonRootName(PersonResource.class), resource, metadata);
     }
 
     /**

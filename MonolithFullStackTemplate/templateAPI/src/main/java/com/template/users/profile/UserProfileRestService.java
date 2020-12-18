@@ -20,7 +20,7 @@ import com.template.users.UserResource;
  */
 @CrossOrigin
 @RestController
-@RequestMapping(value = "/userprofile" , produces =  MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/iam/userprofile", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserProfileRestService extends BaseRestService {
 
     @Autowired

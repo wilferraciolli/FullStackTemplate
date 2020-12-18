@@ -3,32 +3,47 @@ package com.template.people;
 import java.time.LocalDate;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.template.libraries.rest.BaseDTO;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.Value;
 
 /**
  * The type Person resource.
  */
-@Value
+@JsonRootName("person")
 @Builder
-@JsonTypeName("person")
-//@JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
+@EqualsAndHashCode
+@ToString
 public class PersonResource extends BaseDTO {
 
     private Long id;
 
     private Long userId;
 
-    @NotNull(message = "User name cannot be null.")
+    @JsonProperty("firstName")
+    @NotNull
+    @Size(max = 80, message = "First name cannot have more than {max} characters")
     private String firstName;
 
-    @NotNull(message = "User name cannot be null.")
+    @NotNull
+    @Size(max = 80, message = "Last name cannot have more than {max} characters")
     private String lastName;
 
     @NotNull(message = "Email name cannot be null.")
@@ -36,9 +51,13 @@ public class PersonResource extends BaseDTO {
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
+
     private PersonGenderType genderId;
+
     private PersonMaritalStatusType maritalStatusId;
+
     private Integer numberOfDependants;
+
     private String phoneNumber;
 
 }

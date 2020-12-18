@@ -6,10 +6,16 @@
  */
 package com.template.people;
 
+import java.util.Optional;
+
+import javax.validation.constraints.NotNull;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * The interface Person repository.
  */
 public interface PersonRepository extends JpaRepository<Person, Long> {
+
+    public Optional<Person> findByUserId(@NotNull Long userId);
 }

@@ -70,4 +70,11 @@ public class Person {
         this.maritalStatus = personResource.getMaritalStatusId();
         this.numberOfDependants = personResource.getNumberOfDependants();
     }
+
+    public void updatePersonDetails(final String firstName, final String lastName, final String email, final LocalDate dateOfBirth) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.dateOfBirth = dateOfBirth;
+    }
 }
