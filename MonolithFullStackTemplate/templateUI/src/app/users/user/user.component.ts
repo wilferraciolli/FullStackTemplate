@@ -11,6 +11,7 @@ import {Link} from '../../shared/response/link';
 import {UserResponse} from './user-response';
 import {LinksService} from '../../_services/links-service';
 import {MetadataService} from '../../_services/metadata.service';
+import {DateTimeService} from '../../_services/date-time.service';
 
 @Component({
   selector: 'app-user',

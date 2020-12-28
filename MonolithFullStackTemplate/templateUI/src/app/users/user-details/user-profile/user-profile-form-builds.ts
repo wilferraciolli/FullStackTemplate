@@ -1,11 +1,16 @@
 import {Injectable} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Person} from '../../../people/person';
+import {DatePipe, formatDate} from '@angular/common';
+import {DateTimeService} from '../../../_services/date-time.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserProfileFormBuilder {
+
+  constructor(private dateTimeService: DateTimeService) {
+  }
 
   form: FormGroup = new FormGroup({
     $key: new FormControl(null),
@@ -23,6 +28,7 @@ export class UserProfileFormBuilder {
   });
 
   getFormValue(): Person {
+console.log('The date birth is ', this.dateTimeService.parseDate(this.form.controls.dateOfBirth.value));
 
     const person = new Person(
       this.form.controls.$key.value,
@@ -30,7 +36,7 @@ export class UserProfileFormBuilder {
       this.form.controls.firstName.value,
       this.form.controls.lastName.value,
       this.form.controls.email.value,
-      this.form.controls.dateOfBirth.value,
+      this.dateTimeService.parseDate(this.form.controls.dateOfBirth.value),
       this.form.controls.genderId.value,
       this.form.controls.maritalStatusId.value,
       this.form.controls.numberOfDependants.value,

@@ -50,6 +50,12 @@ export class WrapperComponent implements OnInit {
     this.router.navigate(['users'], dataObject);
   }
 
+  getPeople(): void {
+    this.hideNavBar();
+    const dataObject = {state: {usersLink: this.userProfile.links.people}};
+    this.router.navigate(['people'], dataObject);
+  }
+
   hideNavBar(): void {
     this.isNavBarOpen = false;
   }

@@ -5,6 +5,7 @@ import { ValueViewValue } from '../shared/response/value-viewValue';
 import { UserServiceService } from './user-service.service';
 import * as _ from 'lodash';
 import {MetadataService} from '../_services/metadata.service';
+import {DateTimeService} from '../_services/date-time.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,8 @@ export class UserFormBuilder {
 
   constructor(private formBuilder: FormBuilder,
               private userService: UserServiceService,
-              private metadataService: MetadataService) {
+              private metadataService: MetadataService,
+              private dateTimeService: DateTimeService) {
 
     this.form = this.formBuilder.group({
       $key: [null],
@@ -52,7 +54,7 @@ export class UserFormBuilder {
       this.form.controls.lastName.value,
       this.form.controls.username.value,
       this.form.controls.password.value,
-      this.form.controls.dateOfBirth.value,
+      this.dateTimeService.parseDate(this.form.controls.dateOfBirth.value),
       this.form.controls.active.value,
       this.getRoleIds(this.form.controls.roles.value),
       this.form.controls.links.value,

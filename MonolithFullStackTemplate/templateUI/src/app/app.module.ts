@@ -26,6 +26,8 @@ import { PersonComponent } from './people/person/person.component';
 import {ConvertIdsToStringValuePipe} from './users/user-role-mapper-pipe';
 import { LoadingComponent } from './shared/components/loading/loading.component';
 import { TemplateComponent } from './users/user-details/template/template.component';
+import { PersonListComponent } from './people/person-list/person-list.component';
+import {DatePipe} from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,8 @@ import { TemplateComponent } from './users/user-details/template/template.compon
     UserComponent,
     PersonComponent,
     LoadingComponent,
-    TemplateComponent
+    TemplateComponent,
+    PersonListComponent
   ],
   imports: [
     AppRoutingModule,
@@ -61,6 +64,7 @@ import { TemplateComponent } from './users/user-details/template/template.compon
     { provide: MAT_DIALOG_DATA, useValue: [] },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    DatePipe
   ],
   bootstrap: [AppComponent],
   // add components used in pop ups

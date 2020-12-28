@@ -9,11 +9,13 @@ import {UserListComponent} from './users/user-list/user-list.component';
 import {UserDetailsComponent} from './users/user-details/user-details.component';
 import {PageNotFoundComponent} from './shared/components/page-not-found/page-not-found.component';
 import {TemplateComponent} from './users/user-details/template/template.component';
+import {PersonListComponent} from './people/person-list/person-list.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
   {path: 'users', component: UserListComponent, canActivate: [AuthGuard]},
+  {path: 'people', component: PersonListComponent, canActivate: [AuthGuard]},
   {
     path: 'userdetails/:id', component: UserDetailsComponent, canActivate: [AuthGuard], children: [
       {path: '', redirectTo: 'profile', pathMatch: 'full'},

@@ -61,6 +61,11 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['users'], dataObject);
   }
 
+  getPeople(): void {
+    const dataObject = {state: {usersLink: this.userProfile.links.people}};
+    this.router.navigate(['people'], dataObject);
+  }
+
   /**
    * Get the user profile for the person logged on. This can be used to work out areas access.
    */

@@ -10,6 +10,7 @@
       <div class="wrapper-sidenav-menu">
         <a mat-button class="btn-no-hover" routerLink="/home" (click)="sidenav.toggle()">Home</a>
         <a mat-button class="btn-no-hover" [hidden]="!usersAccess" (click)="getUsers()">Users</a>
+        <a mat-button class="btn-no-hover" [hidden]="!peopleAccess" (click)="getPeople()">People</a>
       </div>
     </mat-sidenav>
 
