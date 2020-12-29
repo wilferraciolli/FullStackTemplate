@@ -13,14 +13,14 @@ import { ValueViewValue } from '../shared/response/value-viewValue';
 export class ConvertIdsToStringValuePipe implements PipeTransform {
 
   transform(ids: Array<string>, idValues: Array<ValueViewValue>): string {
-    const roleValues = new Array();
+    const values = new Array();
 
     idValues.forEach(id => {
       if (ids.includes(id.value)) {
-        roleValues.push(id.viewValue);
+        values.push(id.viewValue);
       }
     });
 
-    return roleValues.join(', ');
+    return values.join(', ');
   }
 }

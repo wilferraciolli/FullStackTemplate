@@ -52,7 +52,7 @@ export class WrapperComponent implements OnInit {
 
   getPeople(): void {
     this.hideNavBar();
-    const dataObject = {state: {usersLink: this.userProfile.links.people}};
+    const dataObject = {state: {peopleLink: this.userProfile.links.people}};
     this.router.navigate(['people'], dataObject);
   }
 

@@ -45,7 +45,7 @@ export class UserProfileComponent implements OnInit {
       .then((response: UserProfileResponse) => {
 
         // get person details and populate form
-        this.person = this.adapter.adapt(response._data, response._data.person.links, response._metadata);
+        this.person = this.adapter.adapt(response._data.person, response._data.person.links, response._metadata);
         this.userProfileFormBuilder.populateForm(this.person);
 
         // map metadata

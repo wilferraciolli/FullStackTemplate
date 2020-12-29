@@ -23,15 +23,17 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {ErrorInterceptor} from './_helpers/error.interceptor';
 import {JwtInterceptor} from './_helpers/jwt.interceptor';
 import { PersonComponent } from './people/person/person.component';
-import {ConvertIdsToStringValuePipe} from './users/user-role-mapper-pipe';
+import {ConvertIdsToStringValuePipe} from './_helpers/user-role-mapper-pipe';
 import { LoadingComponent } from './shared/components/loading/loading.component';
 import { TemplateComponent } from './users/user-details/template/template.component';
 import { PersonListComponent } from './people/person-list/person-list.component';
 import {DatePipe} from '@angular/common';
+import {ConvertIdToStringValuePipe} from './_helpers/convert-id-to-value.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
+    ConvertIdToStringValuePipe,
     ConvertIdsToStringValuePipe,
     WrapperComponent,
     FooterComponent,

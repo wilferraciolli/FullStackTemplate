@@ -1,1 +1,57 @@
-<p>person-list works!</p>
+<div class="container">
+  <mat-toolbar>
+    <h2>People</h2>
+  </mat-toolbar>
+
+  <div class="person-list">
+    <div class="person-list-search">
+      <mat-form-field floatLabel="never" class="full-width">
+        <input matInput type="text" [(ngModel)]="searchKey" placeholder="Search" autocomplete="off"
+               (keyup)="applyFilter()">
+        <button (click)="onSearchClear()" mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchKey">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+
+    <div class="person-list-search-actions">
+      <button mat-raised-button (click)="create()" [disabled]="!personCreateAccess">
+        <mat-icon>add</mat-icon>
+        <span>Create</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- List of persons -->
+  <div class="person-list-content">
+
+    <mat-card class="person-list-content-card" *ngFor="let person of people">
+      <div><mat-icon class="material-icons md-48">face</mat-icon></div>
+      <div> {{person.firstName}} {{person.lastName}}</div>
+      <div> {{person.genderId | convertIdToValues: personCollectionGenderIds}}</div>
+      <div class="person-list-content-card-actions">
+        <button mat-icon-button [disabled]="!person.links.updatePerson.href" (click)="onEdit(person)">
+          <mat-icon>launch</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" [disabled]="!person.links.deletePerson.href" (click)="delete(person.links.deletePerson.href)">
+          <mat-icon>delete_outline</mat-icon>
+        </button>
+      </div>
+    </mat-card>
+  </div>
+
+  <!--      &lt;!&ndash; Style the table footer (used only when the table is null &ndash;&gt;-->
+  <!--      <ng-container matColumnDef="loading">-->
+  <!--        <mat-footer-cell *matFooterCellDef colspan="6">-->
+  <!--          Loading data...-->
+  <!--        </mat-footer-cell>-->
+  <!--      </ng-container>-->
+
+  <!--      &lt;!&ndash; Style footer when there are no data to display&ndash;&gt;-->
+  <!--      <ng-container matColumnDef="noData">-->
+  <!--        <mat-footer-cell *matFooterCellDef colspan="6">-->
+  <!--          No Users found.-->
+  <!--        </mat-footer-cell>-->
+  <!--      </ng-container>-->
+
+</div>

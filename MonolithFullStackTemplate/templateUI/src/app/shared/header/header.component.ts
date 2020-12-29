@@ -62,7 +62,7 @@ export class HeaderComponent implements OnInit {
   }
 
   getPeople(): void {
-    const dataObject = {state: {usersLink: this.userProfile.links.people}};
+    const dataObject = {state: {peopleLink: this.userProfile.links.people}};
     this.router.navigate(['people'], dataObject);
   }
 
