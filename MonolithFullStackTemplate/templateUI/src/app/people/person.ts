@@ -14,7 +14,7 @@ export class Person {
   numberOfDependants?: number;
   phoneNumber?: string;
   links: PersonLinks;
-  meta: Array<PersonMeta>;
+  meta: PersonMeta;
 
   constructor(id: string,
               userId: string,
@@ -27,7 +27,7 @@ export class Person {
               numberOfDependants: number,
               phoneNumber: string,
               links: PersonLinks,
-              meta: Array<PersonMeta>) {
+              meta: PersonMeta) {
 
     this.id = id;
     this.userId = userId;

@@ -105,7 +105,7 @@ export class UserFormBuilder {
   }
 
   populateForm(user: User): void {
-    console.log('the value of user is ', user);
+    // console.log('the value of user is ', user);
 
     this.form.setValue(
       {

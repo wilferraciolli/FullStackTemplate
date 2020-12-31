@@ -21,9 +21,9 @@ import {DateTimeService} from '../../_services/date-time.service';
 export class UserComponent implements OnInit {
 
   hide = true;
-  availableRoles: Array<ValueViewValue>;
-  user: User;
   link: Link;
+  user: User;
+  availableRoles: Array<ValueViewValue>;
 
   constructor(private userService: UserServiceService,
               public userFormBuilder: UserFormBuilder,

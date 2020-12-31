@@ -16,7 +16,7 @@ export class ConvertIdToStringValuePipe implements PipeTransform {
     // console.log('the value to convert is ', id);
     // console.log('the values available are ', idValues);
 
-    let convertedValue = 'Unknown value';
+    let convertedValue = '';
     idValues.forEach(i => {
       if (i.value === id) {
 

@@ -9,9 +9,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {DialogService} from '../../shared/dialog.service';
 import {LoadingService} from '../../shared/components/loading/loading.service';
 import {MetadataService} from '../../_services/metadata.service';
-import {UserComponent} from '../../users/user/user.component';
 import {Link} from '../../shared/response/link';
-import {UserLinksCollection} from '../../users/user-links-collection';
 import {PersonMeta} from '../person-meta';
 import {PersonLinksCollection} from '../person-links-collection';
 import * as _ from 'lodash';
@@ -77,7 +75,7 @@ export class PersonListComponent implements OnInit {
   }
 
   create(): void {
-    const signInDialogRef = this.dialog.open(UserComponent, {
+    const signInDialogRef = this.dialog.open(PersonComponent, {
       width: '50%',
       height: '50%',
       maxWidth: '100vw',
@@ -129,13 +127,14 @@ export class PersonListComponent implements OnInit {
   }
 
   private convertResponse(collectionBody: any[]): Array<Person> {
+
     return collectionBody.map(item =>
       this.adapter.adapt(item, item.links, null));
   }
 
   private resolveCollectionLinks(metaLinks: any): PersonLinksCollection {
 
-    return new UserLinksCollection(metaLinks.self, metaLinks.createPerson);
+    return new PersonLinksCollection(metaLinks.self, metaLinks.createPerson);
   }
 
   private resolveCollectionMeta(collectionMeta: any): PersonMeta {
