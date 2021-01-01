@@ -6,17 +6,12 @@
  */
 package com.template.people;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
-
-import com.template.users.UserLinkProvider;
 
 /**
  * The type Person resource assembler.
@@ -74,22 +69,6 @@ public class PersonResourceAssembler {
         personResource.addLinks(linksToAdd);
 
         return personResource;
-    }
-
-    /**
-     * Create links to collection list.
-     * @return the list
-     */
-    public static List<Link> createLinksToCollection() {
-        //add self link to the list
-        final Link selfRel = linkTo(methodOn(PersonRestService.class)
-                .findAll()).withSelfRel();
-
-        //add create/template link to the list
-        final Link createLink = linkTo(methodOn(PersonRestService.class)
-                .template()).withRel("createPerson");
-
-        return Arrays.asList(selfRel, createLink);
     }
 
 }

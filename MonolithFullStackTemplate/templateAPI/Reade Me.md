@@ -61,3 +61,8 @@ Contains information for a user with added person details.
 Cache was added to this application. aa tutorial can be found in here
 https://www.baeldung.com/spring-boot-ehcache
 
+# Resources
+For domain events within spring see the following url
+https://reflectoring.io/spring-boot-application-events-explained/
+ and this
+https://panlw.github.io/15459049161482.html

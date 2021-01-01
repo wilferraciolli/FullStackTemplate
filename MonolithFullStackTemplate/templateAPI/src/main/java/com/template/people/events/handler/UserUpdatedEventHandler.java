@@ -16,7 +16,7 @@ import com.template.users.events.UserUpdatedEvent;
  * The type Use updated event handler.
  */
 @Service
-public class UseUpdatedEventHandler implements ApplicationListener<UserUpdatedEvent> {
+public class UserUpdatedEventHandler implements ApplicationListener<UserUpdatedEvent> {
 
     @Autowired
     private PersonRepository repository;

@@ -4,12 +4,14 @@ import static org.springframework.http.ResponseEntity.noContent;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Link;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -40,37 +42,6 @@ public class PersonRestService extends BaseRestService {
     private PersonMetaFabricator metaFabricator;
 
     /**
-     * Template response entity.
-     * @return the response entity
-     */
-    @GetMapping("/template")
-    public ResponseEntity<PersonResource> template() {
-
-        final PersonResource resource = PersonResource.builder()
-                .build();
-// TODO add meta and links
-//        final PersonResourceResponse response = new PersonResourceResponse(resource, metaFabricator.createMetaForTemplate());
-//        response.add(buildSelfLink());
-
-        return buildResponseOk(getJsonRootName(PersonResource.class), resource);
-    }
-
-    /**
-     * Create response entity.
-     * @param payload the person from request
-     * @return the response entity
-     */
-    @PostMapping("")
-    public ResponseEntity<PersonResource> create(@RequestBody @Valid final PersonResource payload) {
-        final PersonResource createdResource = appService.create(payload);
-
-        // TODO change to return the same as build response
-        return ResponseEntity
-                .created(buildLocationHeader(createdResource.getId()))
-                .body(createdResource);
-    }
-
-    /**
      * Find all response entity.
      * @return the response entity
      */
@@ -79,13 +50,11 @@ public class PersonRestService extends BaseRestService {
 
         final List<PersonResource> resources = appService.findAll();
 
-        //TODO get the resource collection and add link to the collection
-//        final PersonResourceCollectionResponse<PersonResourceResponse> response = new PersonResourceCollectionResponse<>(
-//                new CollectionModel(resources),
-//                PersonResourceAssembler.createLinksToCollection(),
-//                metaFabricator.createMetaForCollectionResource());
+        Map<String, Metadata> metaForCollectionResource = metaFabricator.createMetaForCollectionResource(
+                appService.resolveMaritalStatusesIds(resources),
+                appService.resolveGenderIds(resources));
 
-        return buildResponseOk(getJsonRootName(PersonResource.class), resources);
+        return buildResponseOk(getJsonRootName(PersonResource.class), resources, metaForCollectionResource);
     }
 
     /**
@@ -99,7 +68,6 @@ public class PersonRestService extends BaseRestService {
 
         final PersonResource resource = appService.findById(id);
 
-        // TODO add meta and links
         Map<String, Metadata> metadata = metaFabricator.createMetaForSingleResource();
 
         return buildResponseOk(getJsonRootName(PersonResource.class), resource, metadata);
@@ -112,13 +80,13 @@ public class PersonRestService extends BaseRestService {
      * @return the response entity
      */
     @PutMapping("/{id}")
-    public ResponseEntity<PersonResource> update(@PathVariable("id") final long id,
+    public ResponseEntity<PersonResource> update(@PathVariable("id") final Long id,
             @RequestBody @Valid final PersonResource personFromRequest) {
         final PersonResource updatedResource = appService.update(id, personFromRequest);
 
-        // TODO add meta and links
+        Map<String, Metadata> metadata = metaFabricator.createMetaForSingleResource();
 
-        return buildResponseOk(getJsonRootName(UserResource.class), updatedResource);
+        return buildResponseOk(getJsonRootName(UserResource.class), updatedResource, metadata);
     }
 
     /**
@@ -127,7 +95,7 @@ public class PersonRestService extends BaseRestService {
      * @return the response entity
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable("id") final long id) {
+    public ResponseEntity<?> deleteById(@PathVariable("id") final Long id) {
         appService.deleteById(id);
 
         return noContent().build();

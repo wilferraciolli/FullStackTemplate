@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 
-import com.template.people.PersonAppService;
-import com.template.people.PersonResource;
+import com.template.people.Person;
+import com.template.people.PersonRepository;
 import com.template.users.events.UserCreatedEvent;
 
 /**
@@ -15,12 +15,12 @@ import com.template.users.events.UserCreatedEvent;
 public class UserCreatedEventHandler implements ApplicationListener<UserCreatedEvent> {
 
     @Autowired
-    private PersonAppService personAppService;
+    private PersonRepository repository;
 
     @Override
     public void onApplicationEvent(final UserCreatedEvent event) {
 
-        personAppService.create(PersonResource.builder()
+        repository.save(Person.builder()
                 .userId(event.getUserId())
                 .firstName(event.getFirstName())
                 .lastName(event.getLastName())
@@ -28,4 +28,5 @@ public class UserCreatedEventHandler implements ApplicationListener<UserCreatedE
                 .dateOfBirth(event.getDateOfBirth())
                 .build());
     }
+
 }

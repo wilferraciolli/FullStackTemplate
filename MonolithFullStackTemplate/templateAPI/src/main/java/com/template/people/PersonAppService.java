@@ -6,19 +6,32 @@
  */
 package com.template.people;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.template.people.events.PersonUpdatedEvent;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * The type Person app service.
  */
 @Service
+@Transactional
+@Slf4j
 public class PersonAppService {
 
     @Autowired
@@ -26,6 +39,9 @@ public class PersonAppService {
 
     @Autowired
     private PersonResourceAssembler assembler;
+
+    @Autowired
+    private ApplicationEventPublisher publisher;
 
     /**
      * Find all list.
@@ -36,18 +52,6 @@ public class PersonAppService {
         return repository.findAll().stream()
                 .map(assembler::convertToDTO)
                 .collect(Collectors.toList());
-    }
-
-    /**
-     * Create person resource.
-     * @param payload the payload
-     * @return the person resource
-     */
-    public PersonResource create(@Valid final PersonResource payload) {
-
-        final Person Person = repository.save(assembler.convertToEntity(payload));
-
-        return assembler.convertToDTO(Person);
     }
 
     /**
@@ -63,17 +67,22 @@ public class PersonAppService {
     }
 
     /**
-     * Update person resource.
+     * Update person resource. This method requires a new transaction to be created as
+     * the the publisher and listener of events will be handled at the same time.
      * @param id the id
      * @param PersonResource the person resource
      * @return the person resource
      */
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public PersonResource update(final Long id, @Valid final PersonResource PersonResource) {
         final Person person = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException());
 
         person.updatePerson(PersonResource);
         repository.save(person);
+        sendPersonUpdatedEvent(person);
+
+        log.error("Sending event person updated " + person.toString());
 
         return assembler.convertToDTO(person);
     }
@@ -87,5 +96,38 @@ public class PersonAppService {
                 .orElseThrow(() -> new EntityNotFoundException());
 
         repository.delete(person);
+    }
+
+    public Set<String> resolveMaritalStatusesIds(List<PersonResource> resources) {
+
+        return resources.stream()
+                .filter(p -> Objects.nonNull(p.getMaritalStatusId()))
+                .map(p -> p.getMaritalStatusId().name())
+                .collect(Collectors.toSet());
+    }
+
+    public Set<String> resolveGenderIds(List<PersonResource> resources) {
+
+        return resources.stream()
+                .filter(p -> Objects.nonNull(p.getGenderId()))
+                .map(p -> p.getGenderId().name())
+                .collect(Collectors.toSet());
+    }
+
+    private void sendPersonUpdatedEvent(final Person person) {
+
+        PersonUpdatedEvent personUpdatedEvent = PersonUpdatedEvent.builder()
+                .id(person.getId())
+                .firstName(person.getFirstName())
+                .lastName(person.getLastName())
+                .email(person.getEmail())
+                .dateOfBirth(person.getDateOfBirth())
+                .genderId(PersonGenderType.resolveId(person.getGender()))
+                .maritalStatusId(PersonMaritalStatusType.resolveId(person.getMaritalStatus()))
+                .numberOfDependants(person.getNumberOfDependants())
+                .phoneNumber(person.getPhoneNumber())
+                .build();
+
+        publisher.publishEvent(personUpdatedEvent);
     }
 }

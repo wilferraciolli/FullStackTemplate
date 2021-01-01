@@ -1,5 +1,6 @@
 package com.template.people;
 
+import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
@@ -37,6 +38,25 @@ public enum PersonGenderType {
      */
     public String getDescription() {
         return description;
+    }
+
+    /**+
+     * Helper method to resold the id of the enum with null safe.
+     * @param personGenderType The enum to check for its id.
+     * @return the id of the enum or null if not valid.
+     */
+    public static String resolveId(PersonGenderType personGenderType) {
+
+        if (Objects.isNull(personGenderType)){
+
+            return null;
+        }
+
+        return stream()
+                .filter(p -> p.name().equals(personGenderType.name()))
+                .map(p -> p.name())
+                .findFirst()
+                .orElse(null);
     }
 
     /**

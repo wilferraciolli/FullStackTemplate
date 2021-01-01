@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,7 +49,7 @@ public class AuthenticationRestService extends BaseRestService {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/accountverification/{userId}")
+    @GetMapping("/accountverification/{userId}")
     public ResponseEntity verifyAccount(@PathVariable("userId") final Long userId) {
         this.authenticateService.verifyAccount(userId);
 

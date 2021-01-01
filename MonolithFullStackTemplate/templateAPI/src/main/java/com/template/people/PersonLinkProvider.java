@@ -18,11 +18,6 @@ public class PersonLinkProvider {
         return linkTo(methodOn(PersonRestService.class).findAll()).withRel("people");
     }
 
-    public Link generateCreatePersonLink() {
-
-        return linkTo(methodOn(PersonRestService.class).template()).withRel("createPerson");
-    }
-
     public Link generateSelfLink(final Long id) {
         if (Objects.nonNull(id)){
 
