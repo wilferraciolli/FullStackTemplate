@@ -10,6 +10,7 @@ import {UserDetailsComponent} from './users/user-details/user-details.component'
 import {PageNotFoundComponent} from './shared/components/page-not-found/page-not-found.component';
 import {TemplateComponent} from './users/user-details/template/template.component';
 import {PersonListComponent} from './people/person-list/person-list.component';
+import {UserSettingsComponent} from './users/user-details/user-settings/user-settings.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full'},
@@ -20,6 +21,7 @@ const routes: Routes = [
     path: 'userdetails/:id', component: UserDetailsComponent, canActivate: [AuthGuard], children: [
       {path: '', redirectTo: 'profile', pathMatch: 'full'},
       {path: 'profile', component: UserProfileComponent},
+      {path: 'settings', component: UserSettingsComponent},
       {path: 'template', component: TemplateComponent}
     ]
   },

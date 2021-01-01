@@ -1,0 +1,34 @@
+$tabletSize: 800px;
+
+.user-settings {
+  padding: 20px;
+
+  &-toolbar, span {
+    text-align: center;
+  }
+
+  &-content {
+    padding: 30px;
+    display: flex;
+    flex-flow: column;
+
+    @media (min-width: $tabletSize) {
+      flex-direction: row;
+    }
+
+    &-item {
+      width: 100%;
+      padding-left: 10%;
+      padding-right: 10%;
+
+      @media (min-width: $tabletSize) {
+        width: 100%;
+        padding: 5%;
+      }
+    }
+
+    &-item > * {
+      width: 80%;
+    }
+  }
+}

@@ -1,0 +1,40 @@
+<div class="user-settings">
+
+
+  <mat-card>
+    <div class="user-settings-toolbar">
+      <mat-toolbar>
+        <span>Select your personal settings</span>
+      </mat-toolbar>
+    </div>
+
+    <div class="user-settings-content">
+      <div class="user-settings-content-item">
+        <!-- language -->
+        <mat-form-field>
+          <mat-label>Language</mat-label>
+          <mat-select>
+            <mat-option *ngFor="let setting of availableLanguages" [value]="setting.value">
+              {{setting.viewValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="user-settings-content-item">
+        <!-- timezone -->
+        <mat-form-field>
+          <mat-label>Timezone</mat-label>
+          <mat-select>
+            <mat-option *ngFor="let setting of availableLocale" [value]="setting.value">
+              {{setting.viewValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+    </div>
+  </mat-card>
+
+</div>
+

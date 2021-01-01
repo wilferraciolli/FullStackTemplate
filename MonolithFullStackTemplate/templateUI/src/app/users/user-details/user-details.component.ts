@@ -27,9 +27,14 @@ export class UserDetailsComponent implements OnInit {
         link: './profile',
         index: 0
       }, {
+        label: 'User Settings',
+        link: './settings',
+        index: 1
+      },
+      {
         label: 'Template',
         link: './template',
-        index: 1
+        index: 2
       }
     ];
   }

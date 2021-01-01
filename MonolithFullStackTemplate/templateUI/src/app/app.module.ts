@@ -29,6 +29,7 @@ import { TemplateComponent } from './users/user-details/template/template.compon
 import { PersonListComponent } from './people/person-list/person-list.component';
 import {DatePipe} from '@angular/common';
 import {ConvertIdToStringValuePipe} from './_helpers/convert-id-to-value.pipe';
+import { UserSettingsComponent } from './users/user-details/user-settings/user-settings.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import {ConvertIdToStringValuePipe} from './_helpers/convert-id-to-value.pipe';
     PersonComponent,
     LoadingComponent,
     TemplateComponent,
-    PersonListComponent
+    PersonListComponent,
+    UserSettingsComponent
   ],
   imports: [
     AppRoutingModule,
