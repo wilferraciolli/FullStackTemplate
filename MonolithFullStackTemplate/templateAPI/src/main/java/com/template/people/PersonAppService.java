@@ -6,7 +6,6 @@
  */
 package com.template.people;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -17,11 +16,11 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.template.people.events.PersonDeletedEvent;
 import com.template.people.events.PersonUpdatedEvent;
 
 import lombok.extern.slf4j.Slf4j;
@@ -80,7 +79,7 @@ public class PersonAppService {
 
         person.updatePerson(PersonResource);
         repository.save(person);
-        sendPersonUpdatedEvent(person);
+        publishPersonUpdatedEvent(person);
 
         log.error("Sending event person updated " + person.toString());
 
@@ -91,11 +90,17 @@ public class PersonAppService {
      * Delete by id.
      * @param id the id
      */
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void deleteById(final Long id) {
         final Person person = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException());
 
         repository.delete(person);
+        publisher.publishEvent(PersonDeletedEvent.builder()
+                .id(id)
+                .userId(person.getUserId())
+                .email(person.getEmail())
+                .build());
     }
 
     public Set<String> resolveMaritalStatusesIds(List<PersonResource> resources) {
@@ -114,7 +119,7 @@ public class PersonAppService {
                 .collect(Collectors.toSet());
     }
 
-    private void sendPersonUpdatedEvent(final Person person) {
+    private void publishPersonUpdatedEvent(final Person person) {
 
         PersonUpdatedEvent personUpdatedEvent = PersonUpdatedEvent.builder()
                 .id(person.getId())
