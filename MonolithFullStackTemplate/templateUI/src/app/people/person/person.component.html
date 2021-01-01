@@ -1,4 +1,97 @@
-<div class="container">
-  <span>Person Details </span>
+<mat-card>
+  <div class="hidden-small-screen">
+    <mat-toolbar>
+      <span>{{personFormBuilder.form.controls['$key'].value ? "Modify Person" : "New Person"}}</span>
+      <span class="fill-remaining-space"></span>
+      <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1">
+        <mat-icon>clear</mat-icon>
+      </button>
+    </mat-toolbar>
+  </div>
+  <div class="shown-small-screen" align="end">
+    <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1">
+      <mat-icon>clear</mat-icon>
+    </button>
+  </div>
 
-</div>
+  <mat-card-content>
+    <form [formGroup]="personFormBuilder.form">
+      <div class="person-dialog-form-container">
+
+        <div class="person-dialog-form-content">
+          <input type="hidden" formControlName="$key">
+
+          <mat-form-field color="primary">
+            <input formControlName="firstName" required matInput placeholder="First Name">
+            <!-- adding validation message based on error type -->
+            <mat-error *ngIf="personFormBuilder.form.controls['firstName'].errors?.required">Mandatory</mat-error>
+            <mat-error *ngIf="personFormBuilder.form.controls['firstName'].errors?.minLength">Minimum 2 characters
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field color="primary">
+            <input formControlName="lastName" required matInput placeholder="Last Name">
+            <!-- adding validation message based on error type -->
+            <mat-error *ngIf="personFormBuilder.form.controls['lastName'].errors?.required">Mandatory</mat-error>
+            <mat-error *ngIf="personFormBuilder.form.controls['lastName'].errors?.minLength">Minimum 2 characters
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field color="primary">
+            <input formControlName="email" matInput placeholder="Email" disabled="true">
+          </mat-form-field>
+
+          <mat-form-field color="primary">
+            <mat-label>Date of Birth</mat-label>
+            <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="dateOfBirth">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+        </div>
+
+        <div class="person-dialog-form-content">
+
+          <mat-form-field color="primary">
+            <mat-label>Gender</mat-label>
+            <mat-select formControlName="genderId">
+              <mat-option *ngFor="let gender of availableGenders" [value]="gender.value">
+                {{gender.viewValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field color="primary">
+            <mat-label>Gender</mat-label>
+            <mat-select formControlName="maritalStatusId">
+              <mat-option *ngFor="let maritalStatus of availableMaritalStatuses" [value]="maritalStatus.value">
+                {{maritalStatus.viewValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field color="primary">
+            <input formControlName="numberOfDependants" matInput placeholder="Number of dependants">
+          </mat-form-field>
+
+          <mat-form-field color="primary">
+            <input formControlName="phoneNumber" matInput placeholder="Telephone number">
+          </mat-form-field>
+
+        </div>
+
+      </div>
+
+      <mat-card-actions class="person-dialog-form-actions">
+        <div align="end">
+          <button mat-raised-button (click)="onClear()">Clear</button>
+          <button mat-raised-button color="primary" type="submit"
+                  [disabled]="personFormBuilder.form.invalid"
+                  (click)="onSubmit()">Submit
+          </button>
+        </div>
+      </mat-card-actions>
+    </form>
+
+  </mat-card-content>
+</mat-card>

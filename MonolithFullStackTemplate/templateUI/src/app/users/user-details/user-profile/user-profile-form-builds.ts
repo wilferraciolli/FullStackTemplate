@@ -28,7 +28,6 @@ export class UserProfileFormBuilder {
   });
 
   getFormValue(): Person {
-console.log('The date birth is ', this.dateTimeService.parseDate(this.form.controls.dateOfBirth.value));
 
     const person = new Person(
       this.form.controls.$key.value,

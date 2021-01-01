@@ -5,6 +5,7 @@ import {MetadataService} from '../_services/metadata.service';
 import {DateTimeService} from '../_services/date-time.service';
 import {PersonService} from './person.service';
 import {Person} from './person';
+import {ValueViewValue} from '../shared/response/value-viewValue';
 
 @Injectable({
   providedIn: 'root'
@@ -106,5 +107,28 @@ export class PersonFormBuilder {
       }
     );
 
+  }
+
+  /**
+   * Initialize the form with default values.
+   */
+  resetFormGroup(): void {
+
+    this.form.setValue(
+      {
+        $key: null,
+        userId: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        dateOfBirth: '',
+        genderId: '',
+        maritalStatusId: '',
+        numberOfDependants: 0,
+        phoneNumber: '',
+        links: null,
+        meta: ''
+      }
+    );
   }
 }

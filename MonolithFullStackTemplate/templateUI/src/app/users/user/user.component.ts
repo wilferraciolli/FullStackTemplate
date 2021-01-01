@@ -66,7 +66,7 @@ export class UserComponent implements OnInit {
    */
   onClear(): void {
     this.userFormBuilder.form.reset();
-    this.userFormBuilder.initializeFormGroup();
+    this.userFormBuilder.resetFormGroup();
     this.notificationService.success('Form cleared successfully');
   }
 
@@ -80,8 +80,9 @@ export class UserComponent implements OnInit {
       }
 
       this.userFormBuilder.form.reset();
-      this.userFormBuilder.initializeFormGroup();
-      this.userService.reloadCurrentRoute();
+      this.userFormBuilder.resetFormGroup();
+
+    //  this.userService.reloadCurrentRoute(); //TODO this reloads the page and send back to home
       this.onClose();
     }
   }
@@ -119,7 +120,7 @@ export class UserComponent implements OnInit {
    */
   onClose(): void {
     this.userFormBuilder.form.reset();
-    this.userFormBuilder.initializeFormGroup();
+    this.userFormBuilder.resetFormGroup();
     this.dialogRef.close();
   }
 

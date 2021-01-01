@@ -61,6 +61,69 @@ export class PersonComponent implements OnInit {
     }
   }
 
+  /**
+   * Method to be called once the add dialog is closed.
+   */
+  onClose(): void {
+    this.personFormBuilder.form.reset();
+    this.personFormBuilder.resetFormGroup();
+    this.dialogRef.close();
+  }
+
+  /**
+   * Clear out form and re initialize it
+   */
+  onClear(): void {
+    this.personFormBuilder.form.reset();
+    this.personFormBuilder.resetFormGroup();
+    this.notificationService.success('Form cleared successfully');
+  }
+
+  onSubmit(): void {
+    if (this.personFormBuilder.form.valid) {
+
+      if (this.personFormBuilder.form.value.$key) {
+        this.update();
+      } else {
+        this.create();
+      }
+
+      this.personFormBuilder.form.reset();
+      this.personFormBuilder.resetFormGroup();
+
+      //this.personService.reloadCurrentRoute(); //TODO this reloads the page and send back to home
+      this.onClose();
+    }
+  }
+
+  create(): void {
+    console.log('Adding');
+
+    this.personService.add(this.linkService.getCreateUrlFromTemplateUrl(this.link), this.personFormBuilder.getFormValue())
+      .subscribe(data => {
+          console.log('Success', data);
+          this.notificationService.success('Person created successfully');
+        },
+        error => {
+          console.log('Error', error);
+          this.notificationService.error('Person could not be created');
+        });
+  }
+
+  update(): void {
+    console.log('updating');
+
+    this.personService.update(this.link.href, this.personFormBuilder.getFormValue())
+      .subscribe(data => {
+          console.log('Success', data);
+          this.notificationService.success('Person updated successfully');
+        },
+        error => {
+          console.log('Error', error);
+          this.notificationService.error('Person could not be updated');
+        });
+  }
+
   private getPersonTemplate(url: string): Promise<PersonResponse> {
 
     return this.personService.getTemplateAsync(url);
@@ -70,5 +133,4 @@ export class PersonComponent implements OnInit {
 
     return this.personService.getById(url);
   }
-
 }

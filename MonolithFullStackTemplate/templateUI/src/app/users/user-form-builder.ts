@@ -67,7 +67,7 @@ export class UserFormBuilder {
   /**
    * Initialize the form with default values.
    */
-  initializeFormGroup(): void {
+  resetFormGroup(): void {
 
     this.resetArrayFormValues();
 
