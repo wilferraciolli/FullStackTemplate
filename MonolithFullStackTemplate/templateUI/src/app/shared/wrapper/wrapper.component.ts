@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {UserProfile} from '../../users/profile/user.profile';
 import {Router} from '@angular/router';
-import {AuthenticationService} from '../../_services/authentication.service';
-import {UserProfileService} from '../../_services/user.profile.service';
 import {LinksService} from '../../_services/links-service';
 import {AuthService} from '../../_services/auth-service';
 import {ProfileService} from '../../_services/profile.service';

@@ -10,7 +10,7 @@ import {ValueViewValue} from '../../shared/response/value-viewValue';
 import {UserLinksCollection} from '../user-links-collection';
 import {UserMeta} from '../user-meta';
 import {LinksService} from '../../_services/links-service';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {NotificationService} from '../../shared/notification.service';
 import {DialogService} from '../../shared/dialog.service';
 import {UserComponent} from '../user/user.component';
@@ -19,10 +19,8 @@ import * as _ from 'lodash';
 import {Link} from '../../shared/response/link';
 import {Observable} from 'rxjs';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
-import {UserProfileService} from '../../_services/user.profile.service';
 import {LoadingService} from '../../shared/components/loading/loading.service';
 import {finalize} from 'rxjs/operators';
-import {ProfileService} from '../../_services/profile.service';
 import {MetadataService} from '../../_services/metadata.service';
 
 @Component({

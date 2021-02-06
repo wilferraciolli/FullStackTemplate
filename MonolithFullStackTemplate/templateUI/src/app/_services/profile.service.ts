@@ -70,21 +70,4 @@ export class ProfileService {
     localStorage.setItem('templateUI-userProfile', JSON.stringify(userProfile));
     this.currentUserProfileSubject.next(userProfile);
   }
-
-  // /**
-  //  * Public method to check whether a user is logged on.
-  //  */
-  // isLoggedOn(): Observable<boolean> {
-  //
-  //   return this.isUserLoggedOn.asObservable();
-  // }
-  //
-  // // Public method to get the user profile who is logged on.
-  // getUserProfile(): Observable<UserProfile> {
-  //
-  //   return this.currentUserProfileSubject.asObservable();
-  // }
-  //
-
-
 }

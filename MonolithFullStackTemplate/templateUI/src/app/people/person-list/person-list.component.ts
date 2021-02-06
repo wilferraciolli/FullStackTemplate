@@ -39,7 +39,7 @@ export class PersonListComponent implements OnInit {
   personCollectionMaritalStatusesIds: Array<ValueViewValue>;
 
   isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(Breakpoints.XSmall);
-  personCreateAccess: boolean;
+  userCreateAccess: boolean;
 
   constructor(
     private personService: PersonService,
@@ -57,7 +57,6 @@ export class PersonListComponent implements OnInit {
 
   ngOnInit(): void {
     if (_.isUndefined(history.state.peopleLink)) {
-      console.log(history.state);
       console.log('could not find the get people link');
       this.router.navigate(['/home']);
     } else {
@@ -82,7 +81,7 @@ export class PersonListComponent implements OnInit {
       maxHeight: '100vh',
       autoFocus: true,
       disableClose: true,
-      data: {link: this.personCollectionLinks.createPerson}
+      data: {link: this.personCollectionLinks.createUser}
     });
 
     // subscribe to screen size
@@ -113,7 +112,7 @@ export class PersonListComponent implements OnInit {
 
         this.personCollectionMeta = this.resolveCollectionMeta(collectionMeta);
         this.personCollectionLinks = this.resolveCollectionLinks(metaLinks);
-        this.personCreateAccess = this.linksService.hasLink(this.personCollectionLinks.createPerson);
+        this.userCreateAccess = this.linksService.hasLink(this.personCollectionLinks.createUser);
 
         this.personCollectionGenderIds = this.metadataService.resolveMetadataIdValues(this.personCollectionMeta.genderId.values);
         this.personCollectionMaritalStatusesIds = this.metadataService.resolveMetadataIdValues(this.personCollectionMeta.maritalStatusId.values);
@@ -134,7 +133,7 @@ export class PersonListComponent implements OnInit {
 
   private resolveCollectionLinks(metaLinks: any): PersonLinksCollection {
 
-    return new PersonLinksCollection(metaLinks.self, metaLinks.createPerson);
+    return new PersonLinksCollection(metaLinks.self, metaLinks.createUser);
   }
 
   private resolveCollectionMeta(collectionMeta: any): PersonMeta {

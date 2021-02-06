@@ -14,7 +14,7 @@ export interface PeopleResponse {
     self: {
       href: string
     },
-    createPerson: {
+    createUser: {
       href: string
     }
   };

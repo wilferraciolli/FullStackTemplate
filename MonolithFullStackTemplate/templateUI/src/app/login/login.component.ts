@@ -1,10 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AuthenticationService} from '../_services/authentication.service';
 import {finalize, first} from 'rxjs/operators';
 import {Authentication} from './authentication';
-import {UserProfileService} from '../_services/user.profile.service';
 import {AuthService} from '../_services/auth-service';
 import {LoadingService} from '../shared/components/loading/loading.service';
 
