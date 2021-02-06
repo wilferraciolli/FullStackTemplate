@@ -40,8 +40,15 @@ Followed by adding it to the main.ts file
          *   exp: 1393286893,
          *   iat: 1393268893  }
          */
+###### translation
+The tutorial can be found here
+https://www.codeandweb.com/babeledit/tutorials/how-to-translate-your-angular8-app-with-ngx-translate
+it uses the ngxTranslation service
 
-
+Run the following command
+    ```
+        npm install @ngx-translate/core @ngx-translate/http-loader rxjs --save
+    ```
 ## Creating lazily loading modules
     ```
     ng generate module moduleName --route routeName --module app.module

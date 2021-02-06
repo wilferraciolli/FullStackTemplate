@@ -10,6 +10,7 @@ import {ProfileService} from '../../../_services/profile.service';
 import {UserProfileFormBuilder} from './user-profile-form-builds';
 import {UserProfileResponse} from './user-profile-response';
 import {MetadataService} from '../../../_services/metadata.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-profile',
@@ -31,7 +32,8 @@ export class UserProfileComponent implements OnInit {
               public userProfileFormBuilder: UserProfileFormBuilder,
               private userDetailsProfileService: UserDetailsProfileService,
               private adapter: PersonAdapter,
-              private metadataService: MetadataService) {
+              private metadataService: MetadataService,
+              private translate: TranslateService) {
   }
 
   ngOnInit(): void {
@@ -67,5 +69,9 @@ export class UserProfileComponent implements OnInit {
           this.notificationService.error('Person could not be updated');
         }
       );
+  }
+
+  useLanguage(language: string): void {
+    this.translate.use(language);
   }
 }
