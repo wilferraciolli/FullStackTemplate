@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.template.libraries.rest.BaseRestService;
@@ -53,9 +55,24 @@ public class PersonRestService extends BaseRestService {
         Map<String, Metadata> metaForCollectionResource = metaFabricator.createMetaForCollectionResource(
                 appService.resolveMaritalStatusesIds(resources),
                 appService.resolveGenderIds(resources));
+        List<Link> metaLinks = appService.generateCollectionLinks();
 
         return buildResponseOk(getJsonRootName(PersonResource.class), resources, metaForCollectionResource);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<PersonResource> search(@RequestParam String query) {
+
+        final List<PersonResource> resources = appService.search(StringUtils.defaultString(query));
+
+        Map<String, Metadata> metaForCollectionResource = metaFabricator.createMetaForCollectionResource(
+                appService.resolveMaritalStatusesIds(resources),
+                appService.resolveGenderIds(resources));
+        List<Link> metaLinks = appService.generateCollectionLinks();
+
+        return buildResponseOk(getJsonRootName(PersonResource.class), resources, metaForCollectionResource);
+    }
+
 
     /**
      * Find by id response entity.

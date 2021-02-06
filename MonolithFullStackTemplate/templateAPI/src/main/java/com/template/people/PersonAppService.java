@@ -6,6 +6,7 @@
  */
 package com.template.people;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -14,14 +15,17 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.template.people.events.PersonDeletedEvent;
 import com.template.people.events.PersonUpdatedEvent;
+import com.template.users.UserLinkProvider;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -42,6 +46,9 @@ public class PersonAppService {
     @Autowired
     private ApplicationEventPublisher publisher;
 
+    @Autowired
+    private UserLinkProvider linkProvider;
+
     /**
      * Find all list.
      * @return the list
@@ -49,6 +56,14 @@ public class PersonAppService {
     public List<PersonResource> findAll() {
 
         return repository.findAll().stream()
+                .map(assembler::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<PersonResource> search(final String query) {
+
+        return repository.searchByNameAndSurname(query)
+                .stream()
                 .map(assembler::convertToDTO)
                 .collect(Collectors.toList());
     }
@@ -119,6 +134,13 @@ public class PersonAppService {
                 .collect(Collectors.toSet());
     }
 
+    public List<Link> generateCollectionLinks() {
+        List<Link> links = new ArrayList<>();
+        links.add(linkProvider.generateCreateUserLink());
+
+        return links;
+    }
+
     private void publishPersonUpdatedEvent(final Person person) {
 
         PersonUpdatedEvent personUpdatedEvent = PersonUpdatedEvent.builder()
@@ -135,4 +157,5 @@ public class PersonAppService {
 
         publisher.publishEvent(personUpdatedEvent);
     }
+
 }
