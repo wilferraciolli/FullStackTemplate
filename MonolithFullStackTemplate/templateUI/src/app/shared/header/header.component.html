@@ -12,7 +12,8 @@
           <span>Template UI</span>
         </div>
         <a mat-button class="btn-no-hover" routerLink="/home">{{'header.home' | translate}}</a>
-        <a mat-button class="btn-no-hover" *ngIf="usersAccess" (click)="getUsers()">{{'header.users' | translate}}</a>
+        <a mat-button class="btn-no-hover" *ngIf="usersAccess"
+           (click)="getUsers()">{{'header.users' | translate}}</a>
         <a mat-button class="btn-no-hover" *ngIf="peopleAccess"
            (click)="getPeople()">{{'header.people' | translate}}</a>
       </div>
