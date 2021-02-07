@@ -24,12 +24,18 @@ values (1003, 'Test@wiltech.com', '{bcrypt}$2a$10$2WacIN6u7bxhQOkx9gxPAOaTZjab0G
 insert into User_Roles(user_id, role)
 values (1003, 'ROLE_USER');
 
+insert into User(id, username, password, active)
+values (1004, 'athina@wiltech.com', '{bcrypt}$2a$10$2WacIN6u7bxhQOkx9gxPAOaTZjab0GCzoCSdJF7HU5ajf5CC4hgga', 1);
+insert into User_Roles(user_id, role)
+values (1004, 'ROLE_USER');
+
 insert into person(id, user_Id, first_name, last_name, email, gender, phone_Number, date_of_birth, marital_status, number_of_dependants)
 values (2000, 1000, 'Wiliam', 'Ferraciolli', 'WilFerraciolli@wiltech.com', 'MALE', '+44 7540595289', '1985-02-16', 'MARRIED', 1);
 insert into person(id, user_Id, first_name, last_name, email, gender, phone_Number, date_of_birth, marital_status, number_of_dependants)
 values (2001, 1001, 'George', 'Ferraciolli', 'George@wiltech.com', 'MALE', '+44 7540595289', '2015-07-13', 'SINGLE', 0);
 insert into person(id, user_Id, first_name, last_name, email, gender, phone_Number, date_of_birth, marital_status, number_of_dependants)
 values (2002, 1002, 'Maria', 'Georgiou', 'Maria@wiltech.com', 'FEMALE', '+44 7540595289', '2015-07-13', 'SINGLE', 1);
-
 insert into person(id, user_Id, first_name, last_name, email, gender, phone_Number, date_of_birth, marital_status, number_of_dependants)
 values (2003, 1003, 'Test', 'User', 'Test@wiltech.com', null, null, null, null, 0);
+insert into person(id, user_Id, first_name, last_name, email, gender, phone_Number, date_of_birth, marital_status, number_of_dependants)
+values (2004, 1004, 'Athina', 'Theodorou', 'athina@wiltech.com', 'FEMALE', '+44 7540595289', '2007-04-11', 'DIVORCED', 1);
