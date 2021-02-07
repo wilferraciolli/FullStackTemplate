@@ -13,22 +13,36 @@
         </div>
         <a mat-button class="btn-no-hover" routerLink="/home">{{'header.home' | translate}}</a>
         <a mat-button class="btn-no-hover" *ngIf="usersAccess" (click)="getUsers()">{{'header.users' | translate}}</a>
-        <a mat-button class="btn-no-hover" *ngIf="peopleAccess"(click)="getPeople()">{{'header.users' | translate}}</a>
-
+        <a mat-button class="btn-no-hover" *ngIf="peopleAccess"
+           (click)="getPeople()">{{'header.people' | translate}}</a>
       </div>
 
       <div class="header-actions">
+        <button mat-icon-button [matMenuTriggerFor]="languageMenu">
+          <mat-icon>language</mat-icon>
+        </button>
+        <mat-menu #languageMenu="matMenu">
+          <ng-template matMenuContent>
+            <button mat-menu-item *ngFor="let language of availableLanguages"
+                    [value]="language.value"
+                    (click)="useLanguage(language.value)">
+              {{language.viewValue}}
+            </button>
+          </ng-template>
+        </mat-menu>
+
         <div *ngIf="isLoggedOn; then userDetails else logInDetails"></div>
+
         <ng-template #userDetails>
-          <a mat-button class="btn-no-hover" (click)="logout()">{{'header.logOut' | translate}} </a>
-          <!--      <button mat-icon-button routerLink="/people" routerLinkActive="active">-->
           <button mat-icon-button (click)="getProfile()">
             <mat-icon>account_circle</mat-icon>
           </button>
+          <a mat-button class="btn-no-hover" (click)="logout()">{{'header.logOut' | translate}} </a>
         </ng-template>
+
         <ng-template #logInDetails>
-          <a mat-button class="btn-no-hover" routerLink="/register">Register</a>
-          <a mat-button class="btn-no-hover" routerLink="/login">Login</a>
+          <a mat-button class="btn-no-hover" routerLink="/register">{{'header.register' | translate}}</a>
+          <a mat-button class="btn-no-hover" routerLink="/login">{{'header.login' | translate}}</a>
         </ng-template>
       </div>
 

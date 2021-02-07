@@ -3,6 +3,17 @@
     "home": "Home",
     "users": "Users",
     "people": "People",
+    "register": "Register",
+    "login": "Login",
     "logOut": "Log out"
+  },
+  "home": {
+    "title": "Welcome"
+  },
+  "userList": {
+    "title": "Users"
+  },
+  "personList": {
+    "title": "People"
   }
 }

@@ -32,8 +32,7 @@ export class UserProfileComponent implements OnInit {
               public userProfileFormBuilder: UserProfileFormBuilder,
               private userDetailsProfileService: UserDetailsProfileService,
               private adapter: PersonAdapter,
-              private metadataService: MetadataService,
-              private translate: TranslateService) {
+              private metadataService: MetadataService) {
   }
 
   ngOnInit(): void {
@@ -69,9 +68,5 @@ export class UserProfileComponent implements OnInit {
           this.notificationService.error('Person could not be updated');
         }
       );
-  }
-
-  useLanguage(language: string): void {
-    this.translate.use(language);
   }
 }

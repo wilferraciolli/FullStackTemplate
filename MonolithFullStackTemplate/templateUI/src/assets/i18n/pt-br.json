@@ -1,8 +1,19 @@
 {
   "header": {
     "home": "Home",
-    "users": "Usuário ",
+    "users": "Usuários",
     "people": "Pessoas",
+    "register": "Registrar",
+    "login": "Entrar",
     "logOut": "Sair"
+  },
+  "home": {
+    "title": "Bem vindo"
+  },
+  "userList": {
+    "title": "Usuários"
+  },
+  "personList": {
+    "title": "Pessoas"
   }
 }

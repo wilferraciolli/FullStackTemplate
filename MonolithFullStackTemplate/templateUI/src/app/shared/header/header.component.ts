@@ -4,6 +4,9 @@ import {Router} from '@angular/router';
 import {LinksService} from '../../_services/links-service';
 import {AuthService} from '../../_services/auth-service';
 import {ProfileService} from '../../_services/profile.service';
+import {TranslateService} from '@ngx-translate/core';
+import {ValueViewValue} from '../response/value-viewValue';
+import {LocaleType} from '../locale.enum';
 
 @Component({
   selector: 'app-header',
@@ -16,8 +19,9 @@ export class HeaderComponent implements OnInit {
   usersAccess: boolean;
   peopleAccess: boolean;
 
-  userProfile: UserProfile;
+  availableLanguages: Array<ValueViewValue>;
 
+  userProfile: UserProfile;
   @Output()
   toggleSidenav = new EventEmitter<void>(); // event used to toggle sidenav
 
@@ -27,10 +31,19 @@ export class HeaderComponent implements OnInit {
   constructor(private router: Router,
               private authenticationService: AuthService,
               private profileService: ProfileService,
-              private linksService: LinksService) {
+              private linksService: LinksService,
+              private translate: TranslateService) {
   }
 
   ngOnInit(): void {
+
+    // TODO move to get it from user pref
+    this.availableLanguages = [
+      new ValueViewValue(LocaleType.ENGLISH, 'English'),
+      new ValueViewValue(LocaleType.GREEK, 'Greek'),
+      new ValueViewValue(LocaleType.PORTUGUESE, 'Portuguese')
+    ];
+
     this.authenticationService.isUserLoggedOn
       .subscribe(x => {
         this.isLoggedOn = x;
@@ -78,5 +91,16 @@ export class HeaderComponent implements OnInit {
       this.usersAccess = false;
       this.peopleAccess = false;
     }
+  }
+
+  /**
+   * Set the language to be used.
+   * @param language the language id to be used
+   */
+  useLanguage(language: string): void {
+
+   console.log('changed language to ', language);
+    localStorage.setItem('templateUI-chosenLanguage', language);
+    this.translate.use(language);
   }
 }

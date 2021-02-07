@@ -18,6 +18,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatMenuModule} from '@angular/material/menu';
 
 const MODULES = [
   MatButtonModule,
@@ -29,6 +30,7 @@ const MODULES = [
   MatGridListModule,
   MatIconModule,
   MatInputModule,
+  MatMenuModule,
   MatNativeDateModule,
   MatPaginatorModule,
   MatProgressSpinnerModule,
