@@ -57,7 +57,7 @@ public class PersonRestService extends BaseRestService {
                 appService.resolveGenderIds(resources));
         List<Link> metaLinks = appService.generateCollectionLinks();
 
-        return buildResponseOk(getJsonRootName(PersonResource.class), resources, metaForCollectionResource);
+        return buildResponseOk(getJsonRootName(PersonResource.class), resources, metaForCollectionResource, metaLinks);
     }
 
     @GetMapping("/search")
