@@ -19,6 +19,7 @@ import {PeopleResponse} from './people-response';
 import {ValueViewValue} from '../../shared/response/value-viewValue';
 import {PersonAdapter} from '../person.adapter';
 import {PersonComponent} from '../person/person.component';
+import {UserComponent} from '../../users/user/user.component';
 
 @Component({
   selector: 'app-person-list',
@@ -74,7 +75,7 @@ export class PersonListComponent implements OnInit {
   }
 
   create(): void {
-    const signInDialogRef = this.dialog.open(PersonComponent, {
+    const signInDialogRef = this.dialog.open(UserComponent, {
       width: '50%',
       height: '50%',
       maxWidth: '100vw',

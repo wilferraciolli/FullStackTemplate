@@ -11,12 +11,16 @@ import {PageNotFoundComponent} from './shared/components/page-not-found/page-not
 import {TemplateComponent} from './users/user-details/template/template.component';
 import {PersonListComponent} from './people/person-list/person-list.component';
 import {UserSettingsComponent} from './users/user-details/user-settings/user-settings.component';
+import {PersonListResolver} from './people/person-list/person-list.resolver';
 
 const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
   {path: 'users', component: UserListComponent, canActivate: [AuthGuard]},
-  {path: 'people', component: PersonListComponent, canActivate: [AuthGuard]},
+  {
+    path: 'people', component: PersonListComponent, canActivate: [AuthGuard],
+    resolve: {link: PersonListResolver}
+  },
   {
     path: 'userdetails/:id', component: UserDetailsComponent, canActivate: [AuthGuard], children: [
       {path: '', redirectTo: 'profile', pathMatch: 'full'},
