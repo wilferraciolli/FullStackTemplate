@@ -56,17 +56,15 @@ export class UserListComponent implements OnInit {
               private dialog: MatDialog,
               private dialogService: DialogService,
               private router: Router,
+              private activateRoute: ActivatedRoute,
               public loadingService: LoadingService,
               private metadataService: MetadataService) {
   }
 
   ngOnInit(): void {
-    if (_.isUndefined(history.state.usersLink)) {
 
-      this.router.navigate(['/home']);
-    } else {
-      this.loadAll(history.state.usersLink.href);
-    }
+    this.activatedRoute.data.subscribe((data: { link: Link }) =>
+      this.loadAll(data.link.href));
   }
 
   onSearchClear(): void {

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Person} from '../person';
 import {Observable} from 'rxjs';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {LinksService} from '../../_services/links-service';
 import {NotificationService} from '../../shared/notification.service';
 import {MatDialog} from '@angular/material/dialog';
@@ -51,18 +51,16 @@ export class PersonListComponent implements OnInit {
     private dialogService: DialogService,
     private adapter: PersonAdapter,
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     public loadingService: LoadingService,
     private metadataService: MetadataService
   ) {
   }
 
   ngOnInit(): void {
-    if (_.isUndefined(history.state.peopleLink)) {
-      console.log('could not find the get people link');
-      this.router.navigate(['/home']);
-    } else {
-      this.loadAll(history.state.peopleLink.href);
-    }
+
+    this.activatedRoute.data.subscribe((data: {link: Link}) =>
+      this.loadAll(data.link.href));
   }
 
   onSearchClear(): void {

@@ -5,7 +5,7 @@ import {ProfileService} from '../../_services/profile.service';
 import {UserProfile} from '../../users/profile/user.profile';
 
 @Injectable({providedIn: 'root'})
-export class PersonListResolver implements Resolve<Link> {
+export class UserListResolver implements Resolve<Link> {
 
   userProfile: UserProfile;
 
@@ -19,6 +19,6 @@ export class PersonListResolver implements Resolve<Link> {
         this.userProfile = user;
       });
 
-    return this.userProfile.links.people;
+    return this.userProfile.links.users;
   }
 }

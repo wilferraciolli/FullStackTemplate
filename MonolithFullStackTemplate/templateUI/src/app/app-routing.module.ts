@@ -12,26 +12,30 @@ import {TemplateComponent} from './users/user-details/template/template.componen
 import {PersonListComponent} from './people/person-list/person-list.component';
 import {UserSettingsComponent} from './users/user-details/user-settings/user-settings.component';
 import {PersonListResolver} from './people/person-list/person-list.resolver';
+import {UserListResolver} from './users/user-list/user-list.resolver';
 
 const routes: Routes = [
-  {path: '', redirectTo: '/home', pathMatch: 'full'},
-  {path: 'home', component: HomeComponent},
-  {path: 'users', component: UserListComponent, canActivate: [AuthGuard]},
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent },
+  {
+    path: 'users', component: UserListComponent, canActivate: [AuthGuard],
+    resolve: { link: UserListResolver }
+  },
   {
     path: 'people', component: PersonListComponent, canActivate: [AuthGuard],
-    resolve: {link: PersonListResolver}
+    resolve: { link: PersonListResolver }
   },
   {
     path: 'userdetails/:id', component: UserDetailsComponent, canActivate: [AuthGuard], children: [
-      {path: '', redirectTo: 'profile', pathMatch: 'full'},
-      {path: 'profile', component: UserProfileComponent},
-      {path: 'settings', component: UserSettingsComponent},
-      {path: 'template', component: TemplateComponent}
+      { path: '', redirectTo: 'profile', pathMatch: 'full' },
+      { path: 'profile', component: UserProfileComponent },
+      { path: 'settings', component: UserSettingsComponent },
+      { path: 'template', component: TemplateComponent }
     ]
   },
-  {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegistrationComponent},
-  {path: '**', component: PageNotFoundComponent},
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegistrationComponent },
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({
