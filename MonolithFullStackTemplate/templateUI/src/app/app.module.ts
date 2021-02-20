@@ -49,7 +49,6 @@ import { SharedModule } from './shared/shared.module';
     BrowserAnimationsModule,
     BrowserModule,
     CommonModule,
-    // HttpClientModule,
     SharedModule,
     TranslateModule.forRoot({
       loader: {

@@ -10,10 +10,30 @@
   "home": {
     "title": "Welcome"
   },
+  "form": {
+    "submit": "Submit",
+    "clear": "Clear",
+    "chooseADate": "Choose a date"
+  },
   "userList": {
     "title": "Users"
   },
   "personList": {
-    "title": "People"
+    "title": "People",
+    "add": "Create User"
+  },
+  "person": {
+    "form": {
+      "newPerson": "New person",
+      "updatePerson": "Modify person"
+    },
+    "firstName": "First name",
+    "lastName": "Last name",
+    "dateOfBirth": "Date of birth",
+    "email": "Email",
+    "gender": "Gender",
+    "maritalStatus": "Marital status",
+    "numberOfDependants": "Number of dependants",
+    "telephoneNumber": "Telephone number"
   }
 }

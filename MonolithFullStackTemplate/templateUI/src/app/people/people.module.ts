@@ -1,10 +1,7 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { PeopleRoutingModule } from './people-routing.module';
 import { PersonComponent } from './person/person.component';
 import { PersonListComponent } from './person-list/person-list.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 import { MatConfirmDialogComponent } from '../shared/components/mat-confirm-dialog/mat-confirm-dialog.component';
 import { SharedModule } from '../shared/shared.module';
 
@@ -14,11 +11,8 @@ import { SharedModule } from '../shared/shared.module';
     PersonListComponent
   ],
   imports: [
-    CommonModule,
-    HttpClientModule,
     PeopleRoutingModule,
-    SharedModule,
-    ReactiveFormsModule
+    SharedModule
   ],
   // add components used in pop ups
   entryComponents: [PersonComponent, MatConfirmDialogComponent]
