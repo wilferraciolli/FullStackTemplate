@@ -1,5 +1,10 @@
 {
   "header": {
+    "language": {
+      "english": "Αγγλικά",
+      "greek": "Ελληνικά",
+      "portuguese": "Πορτογαλικά"
+    },
     "home": "Αρχική σελίδα",
     "users": "Χρήστες",
     "people": "Ανθρωποι",
@@ -16,7 +21,22 @@
   "chooseADate": "Επιλέξτε μια ημερομηνία"
 },
   "userList": {
-    "title": "Χρήστες"
+    "title": "Χρήστες",
+    "add": "Δημιουργία χρήστη"
+  },
+  "user": {
+    "form": {
+      "newUser": "Δημιουργία χρήστη",
+      "updateUser": "Τροποποίηση χρήστη"
+    },
+    "firstName": "Ονομα",
+    "lastName": "Επίθετο",
+    "username": "Email",
+    "password": "Κωδικός πρόσβασης",
+    "active": "Ενεργός",
+    "dateOfBirth": "Ημερομηνια γεννησης",
+    "roles": "Ρόλοι",
+    "role": "Ρόλος"
   },
   "personList": {
     "title": "Ανθρωποι",
@@ -24,7 +44,6 @@
   },
   "person": {
     "form": {
-      "newPerson": "Νέο άτομο",
       "updatePerson": "Ενημέρωση ατόμου"
     },
     "firstName": "Ονομα",

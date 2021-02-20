@@ -39,9 +39,9 @@ export class HeaderComponent implements OnInit {
 
     // TODO move to get it from user pref
     this.availableLanguages = [
-      new ValueViewValue(LocaleType.ENGLISH, 'English'),
-      new ValueViewValue(LocaleType.GREEK, 'Greek'),
-      new ValueViewValue(LocaleType.PORTUGUESE, 'Portuguese')
+      new ValueViewValue(LocaleType.ENGLISH, 'header.language.english'),
+      new ValueViewValue(LocaleType.GREEK, 'header.language.greek'),
+      new ValueViewValue(LocaleType.PORTUGUESE, 'header.language.portuguese')
     ];
 
     this.authenticationService.isUserLoggedOn

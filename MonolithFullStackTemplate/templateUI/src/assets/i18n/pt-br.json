@@ -1,5 +1,10 @@
 {
   "header": {
+    "language": {
+      "english": "Inglês",
+      "greek": "Grego",
+      "portuguese": "Português"
+    },
     "home": "Home",
     "users": "Usuários",
     "people": "Pessoas",
@@ -11,20 +16,34 @@
     "title": "Bem vindo"
   },
   "form": {
-    "submit": "Salvar",
+    "submit": "Submeter",
     "clear": "Limpar"
   },
   "userList": {
-    "title": "Usuários"
+    "title": "Usuários",
+    "add": "Criar usuário"
+  },
+  "user": {
+    "form": {
+      "newUser": "Criar usuário",
+      "updateUser": "Atualizar usuário"
+    },
+    "firstName": "Nome",
+    "lastName": "Sobrenome",
+    "username": "Username",
+    "password": "Senha",
+    "active": "Ative",
+    "dateOfBirth": "Data de nascimento",
+    "roles": "Roles",
+    "role": "Role"
   },
   "personList": {
     "title": "Pessoas",
-    "add": "Criar pessoa",
+    "add": "Criar usuário",
     "chooseADate": "Seleione uma data"
   },
   "person": {
     "form": {
-      "newPerson": "Criar pessoa",
       "updatePerson": "Atualizar pessoa"
     },
     "firstName": "Nome",

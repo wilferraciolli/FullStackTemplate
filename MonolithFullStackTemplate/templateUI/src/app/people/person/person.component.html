@@ -1,9 +1,7 @@
 <mat-card>
   <div class="hidden-small-screen">
     <mat-toolbar>
-      <span *ngIf="personFormBuilder.form.controls['$key'].value; then update else create"></span>
-      <ng-template #update>{{'person.form.newPerson' | translate}}</ng-template>
-      <ng-template #create>{{'person.form.updatePerson' | translate}}</ng-template>
+      <span>{{'person.form.updatePerson' | translate}}</span>
       <span class="fill-remaining-space"></span>
       <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1">
         <mat-icon>clear</mat-icon>

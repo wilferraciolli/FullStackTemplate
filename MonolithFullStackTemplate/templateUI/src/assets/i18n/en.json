@@ -1,5 +1,10 @@
 {
   "header": {
+    "language": {
+      "english": "English",
+      "greek": "Greek",
+      "portuguese": "Portuguese"
+    },
     "home": "Home",
     "users": "Users",
     "people": "People",
@@ -16,7 +21,22 @@
     "chooseADate": "Choose a date"
   },
   "userList": {
-    "title": "Users"
+    "title": "Users",
+    "add": "Create User"
+  },
+  "user": {
+    "form": {
+      "newUser": "New user",
+      "updateUser": "Modify user"
+    },
+    "firstName": "First name",
+    "lastName": "Last name",
+    "username": "Username",
+    "password": "Password",
+    "active": "Active",
+    "dateOfBirth": "Date of birth",
+    "roles": "Roles",
+    "role": "Role"
   },
   "personList": {
     "title": "People",
@@ -24,7 +44,6 @@
   },
   "person": {
     "form": {
-      "newPerson": "New person",
       "updatePerson": "Modify person"
     },
     "firstName": "First name",
