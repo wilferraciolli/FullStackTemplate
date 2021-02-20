@@ -18,8 +18,8 @@ const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   {
-    path: 'users', component: UserListComponent, canActivate: [AuthGuard],
-    resolve: { link: UserListResolver }
+    path: 'users',
+    loadChildren: async () => (await  import('./users/users.module')).UsersModule
   },
   {
     path: 'people',

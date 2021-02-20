@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PersonListComponent } from './person-list/person-list.component';
 import { AuthGuard } from '../_helpers/auth.guard';
-import { PersonListResolver } from './person-list/person-list.resolver';
+import { UserListComponent } from './user-list/user-list.component';
+import { UserListResolver } from './user-list/user-list.resolver';
 
 const routes: Routes = [
   {
     path: '',
-    component: PersonListComponent,
+    component: UserListComponent,
     canActivate: [AuthGuard],
-    resolve: { link: PersonListResolver }
+    resolve: { link: UserListResolver }
   }
 ];
 
@@ -17,5 +17,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class PeopleRoutingModule {
+export class UsersRoutingModule {
 }

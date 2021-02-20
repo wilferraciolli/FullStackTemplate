@@ -5,9 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { WrapperComponent } from './shared/wrapper/wrapper.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
-import { ProjectMaterialModule } from './app.module.material';
+import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { FooterComponent } from './shared/footer/footer.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { HomeComponent } from './home/home.component';
@@ -15,7 +13,6 @@ import { RegistrationComponent } from './registration/registration.component';
 import { MatConfirmDialogComponent } from './shared/components/mat-confirm-dialog/mat-confirm-dialog.component';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 import { LoginComponent } from './login/login.component';
-import { UserListComponent } from './users/user-list/user-list.component';
 import { UserDetailsComponent } from './users/user-details/user-details.component';
 import { UserProfileComponent } from './users/user-details/user-profile/user-profile.component';
 import { UserComponent } from './users/user/user.component';
@@ -42,10 +39,8 @@ import { SharedModule } from './shared/shared.module';
     PageNotFoundComponent,
     RegistrationComponent,
     TemplateComponent,
-    UserListComponent,
     UserDetailsComponent,
     UserProfileComponent,
-    UserComponent,
     UserSettingsComponent,
     WrapperComponent
   ],

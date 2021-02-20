@@ -4,9 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConvertIdToStringValuePipe } from '../_helpers/convert-id-to-value.pipe';
 import { ConvertIdsToStringValuePipe } from '../_helpers/user-role-mapper-pipe';
 import { ProjectMaterialModule } from '../app.module.material';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateModule } from '@ngx-translate/core';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   imports: [
