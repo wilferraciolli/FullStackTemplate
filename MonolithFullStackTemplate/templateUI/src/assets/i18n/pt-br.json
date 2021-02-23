@@ -1,9 +1,9 @@
 {
   "header": {
     "language": {
-      "english": "Inglês",
-      "greek": "Grego",
-      "portuguese": "Português"
+      "english": "EG - Inglês",
+      "greek": "GR - Grego",
+      "portuguese": "PT - Português"
     },
     "home": "Home",
     "users": "Usuários",
@@ -17,7 +17,20 @@
   },
   "form": {
     "submit": "Submeter",
-    "clear": "Limpar"
+    "update": "Atualizar",
+    "clear": "Limpar",
+    "chooseADate": "Selecione uma data"
+  },
+  "userProfile": {
+    "title": "User Profile",
+    "firstName": "Nome",
+    "lastName": "Sobrenome",
+    "email": "Email",
+    "dateOfBirth": "Data de nascimento",
+    "gender": "Sexo",
+    "maritalStatus": "Estado civil",
+    "numberOfDependants": "Número de dependentes",
+    "phoneNumber": "Número de telefone"
   },
   "userList": {
     "title": "Usuários",
@@ -32,7 +45,7 @@
     "lastName": "Sobrenome",
     "username": "Username",
     "password": "Senha",
-    "active": "Ative",
+    "active": "Ativo",
     "dateOfBirth": "Data de nascimento",
     "roles": "Roles",
     "role": "Role"

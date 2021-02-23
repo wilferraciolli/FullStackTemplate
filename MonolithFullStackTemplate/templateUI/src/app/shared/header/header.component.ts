@@ -1,12 +1,12 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {UserProfile} from '../../users/profile/user.profile';
-import {Router} from '@angular/router';
-import {LinksService} from '../../_services/links-service';
-import {AuthService} from '../../_services/auth-service';
-import {ProfileService} from '../../_services/profile.service';
-import {TranslateService} from '@ngx-translate/core';
-import {ValueViewValue} from '../response/value-viewValue';
-import {LocaleType} from '../locale.enum';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { UserProfile } from '../../users/profile/user.profile';
+import { Router } from '@angular/router';
+import { LinksService } from '../../_services/links-service';
+import { AuthService } from '../../_services/auth-service';
+import { ProfileService } from '../../_services/profile.service';
+import { TranslateService } from '@ngx-translate/core';
+import { ValueViewValue } from '../response/value-viewValue';
+import { LocaleType } from '../locale.enum';
 
 @Component({
   selector: 'app-header',
@@ -70,12 +70,12 @@ export class HeaderComponent implements OnInit {
   }
 
   getUsers(): void {
-    const dataObject = {state: {usersLink: this.userProfile.links.users}};
+    const dataObject = { state: { usersLink: this.userProfile.links.users } };
     this.router.navigate(['users'], dataObject);
   }
 
   getPeople(): void {
-    const dataObject = {state: {peopleLink: this.userProfile.links.people}};
+    const dataObject = { state: { peopleLink: this.userProfile.links.people } };
     this.router.navigate(['people'], dataObject);
   }
 
@@ -99,8 +99,8 @@ export class HeaderComponent implements OnInit {
    */
   useLanguage(language: string): void {
 
-   console.log('changed language to ', language);
     localStorage.setItem('templateUI-chosenLanguage', language);
     this.translate.use(language);
   }
+
 }

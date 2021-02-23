@@ -1,9 +1,9 @@
 {
   "header": {
     "language": {
-      "english": "Αγγλικά",
-      "greek": "Ελληνικά",
-      "portuguese": "Πορτογαλικά"
+      "english": "EG - Αγγλικά",
+      "greek": "GR - Ελληνικά",
+      "portuguese": "PT - Πορτογαλικά"
     },
     "home": "Αρχική σελίδα",
     "users": "Χρήστες",
@@ -16,10 +16,22 @@
     "title": "Καλώς ορίσατε"
   },
   "form": {
-  "submit": "υποβάλλουν",
-  "clear": "Σαφή",
-  "chooseADate": "Επιλέξτε μια ημερομηνία"
-},
+    "submit": "υποβάλλουν",
+    "update": "Εκσυγχρονίζω",
+    "clear": "Σαφή",
+    "chooseADate": "Επιλέξτε μια ημερομηνία"
+  },
+  "userProfile": {
+    "title": "Προφίλ χρήστη",
+    "firstName": "Ονομα",
+    "lastName": "Επίθετο",
+    "email": "Email",
+    "dateOfBirth": "Ημερομηνια γεννησης",
+    "gender": "Γένος",
+    "maritalStatus": "οικογενειακή κατάσταση",
+    "numberOfDependants": "Αριθμός Εξαρτωμένων",
+    "phoneNumber": "Αριθμός τηλεφώνου"
+  },
   "userList": {
     "title": "Χρήστες",
     "add": "Δημιουργία χρήστη"

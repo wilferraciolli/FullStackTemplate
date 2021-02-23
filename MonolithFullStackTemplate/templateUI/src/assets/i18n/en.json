@@ -1,9 +1,9 @@
 {
   "header": {
     "language": {
-      "english": "English",
-      "greek": "Greek",
-      "portuguese": "Portuguese"
+      "english": "EG - English",
+      "greek": "GR - Greek",
+      "portuguese": "PT - Portuguese"
     },
     "home": "Home",
     "users": "Users",
@@ -17,8 +17,20 @@
   },
   "form": {
     "submit": "Submit",
+    "update": "Update",
     "clear": "Clear",
     "chooseADate": "Choose a date"
+  },
+  "userProfile": {
+    "title": "User Profile",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "dateOfBirth": "Date of birth",
+    "gender": "Gender",
+    "maritalStatus": "Marital status",
+    "numberOfDependants": "Number of dependants",
+    "phoneNumber": "Telephone number"
   },
   "userList": {
     "title": "Users",
