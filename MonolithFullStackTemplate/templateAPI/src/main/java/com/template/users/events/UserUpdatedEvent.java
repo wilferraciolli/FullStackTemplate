@@ -1,6 +1,7 @@
 package com.template.users.events;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
@@ -26,8 +27,11 @@ public class UserUpdatedEvent extends ApplicationEvent {
     @NotNull
     private String email;
 
+    private Boolean active;
+
     private LocalDate dateOfBirth;
 
+    private List<String> roleIds;
 
     public UserUpdatedEvent(final Object source, @NotNull final Long userId, @NotNull final String firstName,
             @NotNull final String lastName, @NotNull final String email, final LocalDate dateOfBirth) {

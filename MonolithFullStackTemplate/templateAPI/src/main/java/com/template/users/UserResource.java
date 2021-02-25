@@ -13,6 +13,8 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.template.libraries.rest.BaseDTO;
 import com.template.libraries.rest.CustomNullSerializer;
+import com.template.validation.ValidateUniqueEmail;
+import com.template.validation.ValidateUniqueEmailValidator;
 import com.template.validation.ValidateUniqueUsername;
 
 import lombok.AccessLevel;
@@ -33,6 +35,7 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode
 @ToString
+@ValidateUniqueEmail(message = "{Users.username.NonUnique}")
 public class UserResource extends BaseDTO {
 
     @JsonProperty("id")

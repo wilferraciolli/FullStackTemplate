@@ -18,6 +18,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -38,6 +39,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @NamedQuery(name = "User.checkUsernameExists", query = "SELECT COUNT(u.id) FROM User u WHERE u.username = :username")
+@NamedQuery(name = "User.checkUsernameIsAvailableIgnoringSelf", query = "SELECT CASE WHEN COUNT(u.id) = 0 THEN true ELSE false END FROM User u " +
+        "WHERE u.username = :username AND u.id != :id")
 public class User implements UserDetails {
 
     private static final long serialVersionUID = 4076308342289028053L;
@@ -71,9 +74,10 @@ public class User implements UserDetails {
                 .collect(toList());
     }
 
-    public void updateUser(final String username, final String password, final List<String> roles) {
+    public void updateUser(final String username, final String password, final boolean active, final List<String> roles) {
         this.username = username;
         this.password = password;
+        this.active = active;
         this.roles = roles;
     }
 

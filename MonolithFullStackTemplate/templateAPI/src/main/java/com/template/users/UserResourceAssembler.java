@@ -1,19 +1,13 @@
 package com.template.users;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import com.template.users.details.UserDetailsView;
+import com.template.users.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.template.users.details.UserDetailsView;
-import com.template.users.user.User;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The type User resource assembler.
@@ -26,6 +20,7 @@ public class UserResourceAssembler {
 
     /**
      * Convert to entity user.
+     *
      * @param payload the payload
      * @return the user
      */

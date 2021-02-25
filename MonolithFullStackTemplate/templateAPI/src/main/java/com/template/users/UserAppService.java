@@ -91,7 +91,7 @@ public class UserAppService {
         this.userRepository.save(user);
 
         this.publishUserCreatedEventWithPersonDetails(user.getId(), userResourceCreate);
-       this.sendEmailVerification(user.getId(), user.getUsername());
+        this.sendEmailVerification(user.getId(), user.getUsername());
 
         return this.transpose(user);
     }
@@ -125,7 +125,7 @@ public class UserAppService {
                 .orElseThrow(() -> new EntityNotFoundException("could not find user for given id"));
 
         user.updateUser(userResourcePayload.getUsername(), this.passwordEncoder.encode(userResourcePayload.getPassword()),
-                userResourcePayload.getRoleIds());
+                userResourcePayload.getActive(), userResourcePayload.getRoleIds());
         this.userRepository.save(user);
 
         this.eventPublisher.publishEvent(new UserUpdatedEvent(this, id, userResourcePayload.getFirstName(), userResourcePayload.getLastName(),

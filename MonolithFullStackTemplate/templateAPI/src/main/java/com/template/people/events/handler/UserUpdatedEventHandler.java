@@ -27,6 +27,7 @@ public class UserUpdatedEventHandler implements ApplicationListener<UserUpdatedE
         Person person = repository.findByUserId(event.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("Could not find person for given user id"));
 
+        //TODO no username/email changes to be allowed
         person.updatePersonDetails(event.getFirstName(), event.getLastName(), event.getEmail(), event.getDateOfBirth());
     }
 }

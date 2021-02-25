@@ -1,8 +1,11 @@
 package com.template.users.user;
 
+import java.util.List;
 import java.util.Optional;
 
+import com.template.people.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  * The interface User repository.
@@ -23,4 +26,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @return the boolean
      */
     Long checkUsernameExists(String username);
+
+
+    Boolean checkUsernameIsAvailableIgnoringSelf(String username, Long id);
 }
