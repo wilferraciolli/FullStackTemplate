@@ -21,6 +21,23 @@
     "clear": "Σαφή",
     "chooseADate": "Επιλέξτε μια ημερομηνία"
   },
+  "registration": {
+    "title": "Εγγραφή ",
+    "firstName": "Ονομα",
+    "lastName": "Επίθετο",
+    "email": "Email",
+    "password": "Κωδικός πρόσβασης",
+    "dateOfBirth": "Ημερομηνια γεννησης",
+    "login": "Σύνδεση",
+    "register": "ΚΑΝΩ ΕΓΓΡΑΦΗ"
+  },
+  "login": {
+    "title": "Σύνδεση",
+    "email": "Email",
+    "password": "Κωδικός πρόσβασης",
+    "register": "Εγγραφή",
+    "login": "ΣΥΝΔΕΣΗ"
+  },
   "userProfile": {
     "title": "Προφίλ χρήστη",
     "firstName": "Ονομα",

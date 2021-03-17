@@ -21,6 +21,23 @@
     "clear": "Clear",
     "chooseADate": "Choose a date"
   },
+  "registration": {
+    "title": "Register",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "password": "Password",
+    "dateOfBirth": "Date of birth",
+    "login": "Login",
+    "register": "REGISTER"
+  },
+  "login": {
+    "title": "Login",
+    "email": "Email",
+    "password": "Password",
+    "register": "Register",
+    "login": "LOGIN"
+  },
   "userProfile": {
     "title": "User Profile",
     "firstName": "First name",

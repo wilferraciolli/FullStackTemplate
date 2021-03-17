@@ -21,6 +21,23 @@
     "clear": "Limpar",
     "chooseADate": "Selecione uma data"
   },
+  "registration": {
+    "title": "Registrar",
+    "firstName": "Nome",
+    "lastName": "Sobrenome",
+    "email": "Email",
+    "password": "Password",
+    "dateOfBirth": "Data de nascimento",
+    "login": "Login",
+    "register": "REGISTRAR"
+  },
+  "login": {
+    "title": "Login",
+    "email": "Email",
+    "password": "Password",
+    "register": "Registrar",
+    "login": "LOGAR"
+  },
   "userProfile": {
     "title": "User Profile",
     "firstName": "Nome",
