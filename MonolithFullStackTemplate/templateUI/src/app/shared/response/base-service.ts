@@ -70,8 +70,8 @@ export class HttpBaseService {
   }
 
   add<T>(url: string, payloadToAdd: T) {
-    console.log('Adding inside');
-    console.log(payloadToAdd);
+    // console.log('Adding inside');
+    // console.log(payloadToAdd);
 
     return this.httpClient.post<T>(url, payloadToAdd, { headers: this.headers });
   }

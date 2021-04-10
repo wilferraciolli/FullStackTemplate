@@ -65,9 +65,12 @@ export class PersonComponent implements OnInit {
    * Method to be called once the add dialog is closed.
    */
   onClose(): void {
+    //TODO need to make sure that form is not empty
+    // close the dialog and pass the form value to the requester
+    this.dialogRef.close(this.personFormBuilder.getFormValue());
+
     this.personFormBuilder.form.reset();
     this.personFormBuilder.resetFormGroup();
-    this.dialogRef.close();
   }
 
   /**

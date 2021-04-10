@@ -9,7 +9,7 @@ const routes: Routes = [
     path: '',
     component: PersonListComponent,
     canActivate: [AuthGuard],
-    resolve: { link: PersonListResolver }
+    resolve: { peopleResponse: PersonListResolver }
   }
 ];
 

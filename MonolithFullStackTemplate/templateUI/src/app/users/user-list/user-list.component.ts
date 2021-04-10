@@ -104,6 +104,8 @@ export class UserListComponent implements OnInit {
       }
     });
     signInDialogRef.afterClosed().subscribe(result => {
+      console.log('The value returned from the dialog ', result);
+
       this.userService.reloadCurrentRoute();
       smallDialogSubscription.unsubscribe();
     });
@@ -129,6 +131,8 @@ export class UserListComponent implements OnInit {
       }
     });
     signInDialogRef.afterClosed().subscribe(result => {
+
+      console.log('The value returned from the dialog ', result);
       // TODO not working reload
       this.userService.reloadCurrentRoute();
 
@@ -152,9 +156,6 @@ export class UserListComponent implements OnInit {
             });
       }
     });
-
-    // refresh
-    // this.loadAll();
   }
 
   private loadAll(url: string): void {

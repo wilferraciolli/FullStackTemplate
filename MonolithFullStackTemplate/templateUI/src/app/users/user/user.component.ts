@@ -79,20 +79,15 @@ export class UserComponent implements OnInit {
         this.create();
       }
 
-      this.userFormBuilder.form.reset();
-      this.userFormBuilder.resetFormGroup();
-
-    //  this.userService.reloadCurrentRoute(); //TODO this reloads the page and send back to home
       this.onClose();
     }
   }
 
   create(): void {
-    console.log('Adding');
-
     this.userService.add(this.linkService.getCreateUrlFromTemplateUrl(this.link), this.userFormBuilder.getFormValue())
-      .subscribe(data => {
+      .subscribe((data: User) => {
           console.log('Success', data);
+          this.user = data;
           this.notificationService.success('User created successfully');
         },
         error => {
@@ -105,8 +100,9 @@ export class UserComponent implements OnInit {
     console.log('updating');
 
     this.userService.update(this.link.href, this.userFormBuilder.getFormValue())
-      .subscribe(data => {
+      .subscribe((data: User) => {
           console.log('Success', data);
+          this.user = data;
           this.notificationService.success('User updated successfully');
         },
         error => {
@@ -119,9 +115,11 @@ export class UserComponent implements OnInit {
    * Method to be called once the add dialog is closed.
    */
   onClose(): void {
+    // pass returned data to the caller
+    this.dialogRef.close(this.user);
+
     this.userFormBuilder.form.reset();
     this.userFormBuilder.resetFormGroup();
-    this.dialogRef.close();
   }
 
   private getUserTemplate(url: string): Promise<UserResponse> {

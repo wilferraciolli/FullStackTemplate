@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Person } from '../person';
 import { Observable } from 'rxjs';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
@@ -12,7 +12,6 @@ import { MetadataService } from '../../_services/metadata.service';
 import { Link } from '../../shared/response/link';
 import { PersonMeta } from '../person-meta';
 import { PersonLinksCollection } from '../person-links-collection';
-import * as _ from 'lodash';
 import { finalize } from 'rxjs/operators';
 import { PersonService } from '../person.service';
 import { PeopleResponse } from './people-response';
@@ -20,7 +19,6 @@ import { ValueViewValue } from '../../shared/response/value-viewValue';
 import { PersonAdapter } from '../person.adapter';
 import { PersonComponent } from '../person/person.component';
 import { UserComponent } from '../../users/user/user.component';
-import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-person-list',
@@ -60,8 +58,8 @@ export class PersonListComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.activatedRoute.data.subscribe((data: { link: Link }) =>
-      this.loadAll(data.link.href));
+    this.activatedRoute.data.subscribe((data: { peopleResponse: PeopleResponse }) =>
+      this.loadAll(data.peopleResponse));
   }
 
   onSearchClear(): void {
@@ -101,7 +99,7 @@ export class PersonListComponent implements OnInit {
     });
   }
 
-  private loadAll(url: string): void {
+  private loadAllDeleteMe(url: string): void {
 
     this.loadingService.loadingOn();
 
@@ -123,6 +121,26 @@ export class PersonListComponent implements OnInit {
 
         this.assignPeople(collectionData.person);
       });
+  }
+
+  private loadAll(response: PeopleResponse): void {
+
+    const collectionData = response._data;
+    const collectionMeta: any = response._metadata;
+    const metaLinks: any = response._metaLinks;
+
+    console.log('After resolver people ', response);
+
+    this.personTemplateLink = metaLinks.creratePerson;
+
+    this.personCollectionMeta = this.resolveCollectionMeta(collectionMeta);
+    this.personCollectionLinks = this.resolveCollectionLinks(metaLinks);
+    this.userCreateAccess = this.linksService.hasLink(this.personCollectionLinks.createUser);
+
+    this.personCollectionGenderIds = this.metadataService.resolveMetadataIdValues(this.personCollectionMeta.genderId.values);
+    this.personCollectionMaritalStatusesIds = this.metadataService.resolveMetadataIdValues(this.personCollectionMeta.maritalStatusId.values);
+
+    this.assignPeople(collectionData.person);
   }
 
   onEdit(row: Person): void {
