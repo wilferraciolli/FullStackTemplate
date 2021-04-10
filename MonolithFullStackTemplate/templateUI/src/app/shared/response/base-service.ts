@@ -99,7 +99,7 @@ export class HttpBaseService {
     return throwError(errorMessage);
   }
 
-  reloadCurrentRoute() {
+  reloadCurrentRoute(): void {
 
     const currentUrl = this.router.url;
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {

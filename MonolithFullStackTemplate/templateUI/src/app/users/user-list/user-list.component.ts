@@ -104,6 +104,7 @@ export class UserListComponent implements OnInit {
       }
     });
     signInDialogRef.afterClosed().subscribe(result => {
+      this.userService.reloadCurrentRoute();
       smallDialogSubscription.unsubscribe();
     });
   }
@@ -128,6 +129,9 @@ export class UserListComponent implements OnInit {
       }
     });
     signInDialogRef.afterClosed().subscribe(result => {
+      // TODO not working reload
+      this.userService.reloadCurrentRoute();
+
       smallDialogSubscription.unsubscribe();
     });
   }
@@ -140,7 +144,7 @@ export class UserListComponent implements OnInit {
           .subscribe(data => {
               console.log('Success', data);
               this.notificationService.warn('User deleted successfully');
-              this.userService.reloadCurrentRoute(); // not working
+              this.userService.reloadCurrentRoute();
             },
             error => {
               console.log('Error', error);

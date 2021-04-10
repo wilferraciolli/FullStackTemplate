@@ -1,25 +1,26 @@
-import {Component, OnInit} from '@angular/core';
-import {Person} from '../person';
-import {Observable} from 'rxjs';
-import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
-import {ActivatedRoute, Router} from '@angular/router';
-import {LinksService} from '../../_services/links-service';
-import {NotificationService} from '../../shared/notification.service';
-import {MatDialog} from '@angular/material/dialog';
-import {DialogService} from '../../shared/dialog.service';
-import {LoadingService} from '../../shared/components/loading/loading.service';
-import {MetadataService} from '../../_services/metadata.service';
-import {Link} from '../../shared/response/link';
-import {PersonMeta} from '../person-meta';
-import {PersonLinksCollection} from '../person-links-collection';
+import { Component, Inject, OnInit } from '@angular/core';
+import { Person } from '../person';
+import { Observable } from 'rxjs';
+import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
+import { ActivatedRoute, Router } from '@angular/router';
+import { LinksService } from '../../_services/links-service';
+import { NotificationService } from '../../shared/notification.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogService } from '../../shared/dialog.service';
+import { LoadingService } from '../../shared/components/loading/loading.service';
+import { MetadataService } from '../../_services/metadata.service';
+import { Link } from '../../shared/response/link';
+import { PersonMeta } from '../person-meta';
+import { PersonLinksCollection } from '../person-links-collection';
 import * as _ from 'lodash';
-import {finalize} from 'rxjs/operators';
-import {PersonService} from '../person.service';
-import {PeopleResponse} from './people-response';
-import {ValueViewValue} from '../../shared/response/value-viewValue';
-import {PersonAdapter} from '../person.adapter';
-import {PersonComponent} from '../person/person.component';
-import {UserComponent} from '../../users/user/user.component';
+import { finalize } from 'rxjs/operators';
+import { PersonService } from '../person.service';
+import { PeopleResponse } from './people-response';
+import { ValueViewValue } from '../../shared/response/value-viewValue';
+import { PersonAdapter } from '../person.adapter';
+import { PersonComponent } from '../person/person.component';
+import { UserComponent } from '../../users/user/user.component';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-person-list',
@@ -59,7 +60,7 @@ export class PersonListComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.activatedRoute.data.subscribe((data: {link: Link}) =>
+    this.activatedRoute.data.subscribe((data: { link: Link }) =>
       this.loadAll(data.link.href));
   }
 
@@ -80,7 +81,7 @@ export class PersonListComponent implements OnInit {
       maxHeight: '100vh',
       autoFocus: true,
       disableClose: true,
-      data: {link: this.personCollectionLinks.createUser}
+      data: { link: this.personCollectionLinks.createUser }
     });
 
     // subscribe to screen size
@@ -92,6 +93,10 @@ export class PersonListComponent implements OnInit {
       }
     });
     signInDialogRef.afterClosed().subscribe(result => {
+      console.log('The value of creating a person is ', result);
+
+      // TODO reloading the page is not working
+      this.personService.reloadCurrentRoute();
       smallDialogSubscription.unsubscribe();
     });
   }
@@ -120,6 +125,49 @@ export class PersonListComponent implements OnInit {
       });
   }
 
+  onEdit(row: Person): void {
+    const signInDialogRef = this.dialog.open(PersonComponent, {
+      width: '50%',
+      height: '50%',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      autoFocus: true,
+      disableClose: true,
+      data: { link: row.links.self }
+    });
+
+    // subscribe to screen size
+    const smallDialogSubscription = this.isExtraSmall.subscribe(result => {
+      if (result.matches) {
+        signInDialogRef.updateSize('100%', '100%');
+      } else {
+        signInDialogRef.updateSize('75%', '75%');
+      }
+    });
+    signInDialogRef.afterClosed().subscribe(result => {
+      this.personService.reloadCurrentRoute();
+      smallDialogSubscription.unsubscribe();
+    });
+  }
+
+  delete(url: string): void {
+    this.dialogService.openConfirmDialog('Are you sure you want to delete this person?')
+      .afterClosed().subscribe(res => {
+      if (res) {
+        this.personService.delete(url)
+          .subscribe(data => {
+              console.log('Success', data);
+              this.notificationService.warn('Person deleted successfully');
+              this.personService.reloadCurrentRoute();
+            },
+            error => {
+              console.log('Error', error);
+              this.notificationService.error('Person could not be deleted');
+            });
+      }
+    });
+  }
+
   private assignPeople(collectionBody: any[]): void {
     this.people = this.convertResponse(collectionBody);
   }
@@ -138,47 +186,5 @@ export class PersonListComponent implements OnInit {
   private resolveCollectionMeta(collectionMeta: any): PersonMeta {
 
     return collectionMeta;
-  }
-
-  onEdit(row: Person): void {
-    const signInDialogRef = this.dialog.open(PersonComponent, {
-      width: '50%',
-      height: '50%',
-      maxWidth: '100vw',
-      maxHeight: '100vh',
-      autoFocus: true,
-      disableClose: true,
-      data: {link: row.links.self}
-    });
-
-    // subscribe to screen size
-    const smallDialogSubscription = this.isExtraSmall.subscribe(result => {
-      if (result.matches) {
-        signInDialogRef.updateSize('100%', '100%');
-      } else {
-        signInDialogRef.updateSize('75%', '75%');
-      }
-    });
-    signInDialogRef.afterClosed().subscribe(result => {
-      smallDialogSubscription.unsubscribe();
-    });
-  }
-
-  delete(url: string): void {
-    this.dialogService.openConfirmDialog('Are you sure you want to delete this person?')
-      .afterClosed().subscribe(res => {
-      if (res) {
-        this.personService.delete(url)
-          .subscribe(data => {
-              console.log('Success', data);
-              this.notificationService.warn('Person deleted successfully');
-              this.personService.reloadCurrentRoute(); // not working
-            },
-            error => {
-              console.log('Error', error);
-              this.notificationService.error('Person could not be deleted');
-            });
-      }
-    });
   }
 }
