@@ -28,6 +28,11 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot i
         //            return user.getOrganization().getId().longValue() == OrganizationId.longValue();
     }
 
+    public boolean notSelf(final Long id) {
+        final User user = (User) this.getPrincipal();
+        return !user.getId().equals(id);
+    }
+
     @Override
     public Object getFilterObject() {
         return this.filterObject;
