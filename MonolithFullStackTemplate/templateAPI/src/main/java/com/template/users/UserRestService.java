@@ -115,7 +115,7 @@ public class UserRestService extends BaseRestService {
      * @param id the id
      * @return the response entity
      */
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN') and notSelf(#id)")
+    @PreAuthorize(value = "hasRole('ROLE_ADMIN') and notSelfByUserId(#id)")
     @DeleteMapping("/{id}")
     public ResponseEntity deleteById(@PathVariable("id") final Long id) {
         this.appService.deleteById(id);

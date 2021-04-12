@@ -33,7 +33,7 @@ then add the folowing properties on the properties file
     spring.datasource.url=jdbc:h2:file:~/test
     spring.datasource.driver-class-name=org.h2.Driver
 
-Then go the the page `http://localhost:5001/api/h2-console` and log in
+Then go the the page `http://localhost:5001/api/h2-console` and log in - make sure that the path is set to jdbc:h2:mem:database
 
 #Encryption password
 plain value = password

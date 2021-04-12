@@ -5,6 +5,7 @@ import org.springframework.security.access.expression.method.MethodSecurityExpre
 import org.springframework.security.core.Authentication;
 
 import com.template.users.user.User;
+import org.springframework.stereotype.Component;
 
 /**
  * The type Is owner security expression root.
@@ -24,12 +25,14 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot i
 
     public boolean checkOwnerByUserId(final Long id) {
         final User user = (User) this.getPrincipal();
+
         return user.getId().equals(id);
         //            return user.getOrganization().getId().longValue() == OrganizationId.longValue();
     }
 
-    public boolean notSelf(final Long id) {
+    public boolean notSelfByUserId(final Long id) {
         final User user = (User) this.getPrincipal();
+
         return !user.getId().equals(id);
     }
 

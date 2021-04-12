@@ -12,14 +12,21 @@ import com.template.validation.ValidateUniqueUsername;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.Value;
 
 /**
  * The type Registration request.
  */
-@Value
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
+@EqualsAndHashCode
+@ToString
 public class RegistrationRequest {
 
     @NotNull

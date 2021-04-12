@@ -80,7 +80,7 @@ public class PersonRestService extends BaseRestService {
      * @return the response entity
      */
     @GetMapping("/{id}")
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN') or checkOwnerByUserId(#id)")
+    @PreAuthorize(value = "hasRole('ROLE_ADMIN') or @personPermissionAccess.checkOwnerByPersonId(#id)")
     public ResponseEntity<PersonResource> findById(@PathVariable final Long id) {
 
         final PersonResource resource = appService.findById(id);

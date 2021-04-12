@@ -37,7 +37,7 @@ public class UserRegisteredEventHandler implements ApplicationListener<UserRegis
                 .username(user.getEmail())
                 .password(user.getPassword())
                 .dateOfBirth(user.getDateOfBirth())
-                .active(false)
+                .active(true)
                 .roleIds(asList(UserRoleType.ROLE_USER.name()))
                 .build());
     }
