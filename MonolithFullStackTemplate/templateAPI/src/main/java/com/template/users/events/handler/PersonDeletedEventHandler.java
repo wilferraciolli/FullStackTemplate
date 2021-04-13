@@ -1,5 +1,6 @@
 package com.template.users.events.handler;
 
+import com.template.users.UserAppService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
@@ -17,14 +18,11 @@ import lombok.extern.slf4j.Slf4j;
 public class PersonDeletedEventHandler {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserAppService userAppService;
 
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void handlePersonCreatedEvent(final PersonDeletedEvent personDeletedEvent) {
 
-        final User user = this.userRepository.findById(personDeletedEvent.getUserId())
-                .orElseThrow(() -> new EntityNotFoundException("could not find user for given id"));
-
-        this.userRepository.delete(user);
+        userAppService.deleteById(personDeletedEvent.getUserId());
     }
 }

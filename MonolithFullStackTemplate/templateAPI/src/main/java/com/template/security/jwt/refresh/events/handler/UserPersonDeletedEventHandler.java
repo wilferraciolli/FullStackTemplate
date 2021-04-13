@@ -1,5 +1,6 @@
 package com.template.security.jwt.refresh.events.handler;
 
+import com.template.people.events.PersonDeletedEvent;
 import com.template.people.events.PersonUpdatedEvent;
 import com.template.security.jwt.refresh.RefreshTokenService;
 import com.template.users.events.UserDeletedEvent;
@@ -15,7 +16,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
  */
 @Component
 @Slf4j
-public class UsedDeletedEventHandler {
+public class UserPersonDeletedEventHandler {
 
     @Autowired
     private RefreshTokenService refreshTokenService;
@@ -28,5 +29,11 @@ public class UsedDeletedEventHandler {
     public void handleUserDeletedEvent(final UserDeletedEvent userDeletedEvent) {
 
        refreshTokenService.deleteRefreshTokenByUserId(userDeletedEvent.getUserId());
+    }
+
+    @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
+    public void handlePersonDeletedEvent(final PersonDeletedEvent personDeletedEvent) {
+
+        refreshTokenService.deleteRefreshTokenByUserId(personDeletedEvent.getUserId());
     }
 }
