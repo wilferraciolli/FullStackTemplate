@@ -1,10 +1,14 @@
 package com.template.users.events;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import com.template.libraries.core.Event;
+import lombok.Builder;
+import lombok.Value;
 import org.springframework.context.ApplicationEvent;
 
 import lombok.Getter;
@@ -12,8 +16,9 @@ import lombok.Getter;
 /**
  * The type User updated event.
  */
-@Getter
-public class UserUpdatedEvent extends ApplicationEvent {
+@Value
+@Builder
+public class UserUpdatedEvent implements Event {
 
     @NotNull
     private Long userId;
@@ -32,15 +37,5 @@ public class UserUpdatedEvent extends ApplicationEvent {
     private LocalDate dateOfBirth;
 
     private List<String> roleIds;
-
-    public UserUpdatedEvent(final Object source, @NotNull final Long userId, @NotNull final String firstName,
-            @NotNull final String lastName, @NotNull final String email, final LocalDate dateOfBirth) {
-        super(source);
-        this.userId = userId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.dateOfBirth = dateOfBirth;
-    }
 
 }

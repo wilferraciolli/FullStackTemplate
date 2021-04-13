@@ -6,28 +6,32 @@
  */
 package com.template.security.authentication.events;
 
+import com.template.libraries.core.Event;
+import com.template.validation.ValidateUniqueUsername;
+import lombok.Builder;
+import lombok.Value;
 import org.springframework.context.ApplicationEvent;
 
 import com.template.security.authentication.RegistrationRequest;
 
 import lombok.Getter;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.time.LocalDate;
+
 /**
  * The type User registered event.
  */
-@Getter
-public class UserRegisteredEvent extends ApplicationEvent {
+@Value
+@Builder
+public class UserRegisteredEvent implements Event {
 
-    private RegistrationRequest registrationRequest;
-
-    /**
-     * Create a new ApplicationEvent.
-     * @param source the object on which the event initially occurred (never {@code null})
-     * @param registrationRequest the registration request
-     */
-    public UserRegisteredEvent(final Object source, final RegistrationRequest registrationRequest) {
-        super(source); //Calling this super class constructor is necessary
-        this.registrationRequest = registrationRequest;
-    }
-
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
+    private LocalDate dateOfBirth;
 }
+

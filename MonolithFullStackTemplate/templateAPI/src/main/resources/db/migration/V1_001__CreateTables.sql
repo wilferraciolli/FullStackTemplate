@@ -49,6 +49,7 @@ drop table IF EXISTS refresh_token;
 create TABLE refresh_token
 (
     id            BIGINT        NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    user_id       BIGINT        NOT NULL,
     username      VARCHAR(255)  NOT NULL,
     refresh_Token VARCHAR(2000) NOT NULL,
     created_Date  TIMESTAMP

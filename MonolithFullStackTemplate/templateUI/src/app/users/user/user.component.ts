@@ -91,7 +91,7 @@ export class UserComponent implements OnInit {
           this.notificationService.success('User created successfully');
         },
         error => {
-          console.log('Error', error);
+          console.log('error send from creating duplicated user', error);
           this.notificationService.error('User could not be created');
         });
   }

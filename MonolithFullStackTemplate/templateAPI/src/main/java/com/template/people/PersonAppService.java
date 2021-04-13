@@ -87,7 +87,7 @@ public class PersonAppService {
      * @param PersonResource the person resource
      * @return the person resource
      */
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRED)
     public PersonResource update(final Long id, @Valid final PersonResource PersonResource) {
         final Person person = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException());
@@ -105,7 +105,7 @@ public class PersonAppService {
      * Delete by id.
      * @param id the id
      */
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRED)
     public void deleteById(final Long id) {
         final Person person = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException());

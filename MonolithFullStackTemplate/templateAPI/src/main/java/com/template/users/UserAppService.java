@@ -9,7 +9,9 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import com.template.users.events.UserDeletedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.hateoas.Link;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,6 +27,8 @@ import com.template.users.events.UserCreatedEvent;
 import com.template.users.events.UserUpdatedEvent;
 import com.template.users.user.User;
 import com.template.users.user.UserRepository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * The type User app service.
@@ -85,6 +89,7 @@ public class UserAppService {
      * @param userResourceCreate the user resource create
      * @return the user resource
      */
+    @Transactional(propagation = Propagation.REQUIRED)
     public UserResource create(@Valid final UserResource userResourceCreate) {
         final User user = assembler.convertToEntity(userResourceCreate);
 
@@ -120,6 +125,7 @@ public class UserAppService {
      * @param userResourcePayload the user resource payload
      * @return the user resource
      */
+    @Transactional(propagation = Propagation.REQUIRED)
     public UserResource update(final Long id, final UserResource userResourcePayload) {
         final User user = this.userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("could not find user for given id"));
@@ -128,8 +134,13 @@ public class UserAppService {
                 userResourcePayload.getActive(), userResourcePayload.getRoleIds());
         this.userRepository.save(user);
 
-        this.eventPublisher.publishEvent(new UserUpdatedEvent(this, id, userResourcePayload.getFirstName(), userResourcePayload.getLastName(),
-                userResourcePayload.getUsername(), userResourcePayload.getDateOfBirth()));
+        this.eventPublisher.publishEvent(UserUpdatedEvent.builder()
+                .userId(id)
+                .firstName(userResourcePayload.getFirstName())
+                .lastName(userResourcePayload.getLastName())
+                .email(userResourcePayload.getUsername())
+                .dateOfBirth(userResourcePayload.getDateOfBirth())
+                .build());
 
         return this.transpose(user);
     }
@@ -138,10 +149,14 @@ public class UserAppService {
      * Delete user buy id.
      * @param id the id
      */
+    @Transactional(propagation = Propagation.REQUIRED)
     public void deleteById(final Long id) {
         final User user = this.userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("could not find user for given id"));
 
+        eventPublisher.publishEvent(UserDeletedEvent.builder()
+                .userId(id)
+                .build());
         this.userRepository.delete(user);
     }
 
@@ -163,8 +178,14 @@ public class UserAppService {
 
     private void publishUserCreatedEventWithPersonDetails(final Long userId, final UserResource userResourceCreated) {
 
-        this.eventPublisher.publishEvent(new UserCreatedEvent(this, userId, userResourceCreated.getFirstName(), userResourceCreated.getLastName(),
-                userResourceCreated.getUsername(), userResourceCreated.getDateOfBirth()));
+        this.eventPublisher.publishEvent(
+                UserCreatedEvent.builder()
+                        .userId(userId)
+                        .firstName(userResourceCreated.getFirstName())
+                        .lastName(userResourceCreated.getLastName())
+                        .email(userResourceCreated.getUsername())
+                        .dateOfBirth(userResourceCreated.getDateOfBirth())
+                        .build());
     }
 
     private void sendEmailVerification(final Long userId, final String username) {

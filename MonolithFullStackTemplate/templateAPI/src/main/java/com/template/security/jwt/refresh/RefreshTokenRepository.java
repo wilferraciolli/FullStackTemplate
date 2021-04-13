@@ -23,7 +23,15 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long
      * @param username the username
      * @return the optional
      */
+    @Deprecated
     Optional<RefreshToken> findByUsername(String username);
+
+    /**
+     * Find by user id optional.
+     * @param userId the user id
+     * @return the optional
+     */
+    Optional<RefreshToken> findByUserId(Long userId);
 
     /**
      * Delete by refresh token.

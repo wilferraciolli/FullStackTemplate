@@ -1,13 +1,15 @@
 package com.template.people.events;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import lombok.Builder;
 import lombok.Value;
+import org.springframework.context.ApplicationEvent;
 
 @Value
 @Builder
-public class PersonUpdatedEvent {
+public class PersonUpdatedEvent implements Serializable {
 
     private Long id;
 
