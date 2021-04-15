@@ -112,6 +112,7 @@ public class PersonRestService extends BaseRestService {
      * @return the response entity
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize(value = "hasRole('ROLE_ADMIN') and @personPermissionAccess.notSelfByPersonId(#id)")
     public ResponseEntity<?> deleteById(@PathVariable("id") final Long id) {
         appService.deleteById(id);
 
