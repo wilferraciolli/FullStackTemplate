@@ -12,6 +12,8 @@ import {flatMap} from 'rxjs/internal/operators';
 @Injectable({providedIn: 'root'})
 export class PersonListResolver implements Resolve<Observable<PeopleResponse>> {
 
+  userProfile: UserProfile;
+
   constructor(private profileService: ProfileService,
               private personService: PersonService,
               public loadingService: LoadingService) {
@@ -21,10 +23,21 @@ export class PersonListResolver implements Resolve<Observable<PeopleResponse>> {
 
     this.loadingService.loadingOn();
 
-    return this.profileService.currentUserProfile
-      .pipe(flatMap((user: UserProfile) =>
-        this.personService.getAll<PeopleResponse>(user.links.people.href)
-          .pipe(finalize(() => this.loadingService.loadingOff()))
-      ));
+
+    this.profileService.currentUserProfile
+      .subscribe(user => {
+        this.userProfile = user;
+      });
+
+    const url = this.userProfile.links.people.href;
+    return this.personService.getAll<PeopleResponse>(url)
+      .pipe(finalize(() => this.loadingService.loadingOff()));
+
+    // TODO not working
+    // return this.profileService.currentUserProfile
+    //   .pipe(flatMap((user: UserProfile) =>
+    //     this.personService.getAll<PeopleResponse>(user.links.people.href)
+    //       .pipe(finalize(() => this.loadingService.loadingOff()))
+    //   ));
   }
 }
