@@ -19,6 +19,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 
@@ -74,6 +76,7 @@ public class AuthenticationService extends BaseApplicationService {
      * Register.
      * @param data the data
      */
+    @Transactional(propagation = Propagation.REQUIRED)
     public void register(@Valid final RegistrationRequest data) {
 
         this.eventPublisher.publishEvent(UserRegisteredEvent.builder()

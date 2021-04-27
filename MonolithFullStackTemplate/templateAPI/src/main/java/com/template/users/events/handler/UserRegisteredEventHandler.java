@@ -28,6 +28,8 @@ public class UserRegisteredEventHandler {
 
     private void createUser(final UserRegisteredEvent user) {
 
+        // TODO this should trigger the user created event which would trigger the person created event, however not working
+
         this.userAppService.create(UserResource.builder()
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
