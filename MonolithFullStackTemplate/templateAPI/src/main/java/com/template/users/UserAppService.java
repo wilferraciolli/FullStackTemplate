@@ -34,13 +34,17 @@ import org.springframework.transaction.annotation.Transactional;
  * The type User app service.
  */
 @Service
+@Transactional
 public class UserAppService {
 
     @Autowired
     private UserDetailsService userDetailsService;
+//
+//    @Autowired
+//    private UserRepository userRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
     private UserDetailsViewRepository userDetailsViewRepository;
@@ -50,16 +54,16 @@ public class UserAppService {
 
     @Autowired
     private UserLinkProvider linkProvider;
+//
+//    //TODO remove
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
 
-    //TODO remove
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+//    @Autowired
+//    private EventPublisher eventPublisher;
 
-    @Autowired
-    private EventPublisher eventPublisher;
-
-    @Autowired
-    private MailService mailService;
+//    @Autowired
+//    private MailService mailService;
 
     public UserResource createTemplate() {
 
@@ -91,14 +95,14 @@ public class UserAppService {
      */
     @Transactional(propagation = Propagation.REQUIRED)
     public UserResource create(@Valid final UserResource userResourceCreate) {
-        final User user = assembler.convertToEntity(userResourceCreate);
+        //final User user = assembler.convertToEntity(userResourceCreate);
 
-        this.userRepository.save(user);
+        User createdUser = this.userService.createUser(userResourceCreate);
 
-        this.publishUserCreatedEventWithPersonDetails(user.getId(), userResourceCreate);
-        this.sendEmailVerification(user.getId(), user.getUsername());
+        // this.publishUserCreatedEventWithPersonDetails(createdUser.getId(), userResourceCreate);
+        //  this.sendEmailVerification(user.getId(), user.getUsername());
 
-        return this.transpose(user);
+        return this.transpose(createdUser);
     }
 
     /**
@@ -114,11 +118,6 @@ public class UserAppService {
         return this.convertToDTO(user);
     }
 
-    public boolean checkUsernameAvailability(final String username) {
-
-        return Long.valueOf(0L).equals(this.userRepository.checkUsernameExists(username));
-    }
-
     /**
      * Update user resource.
      * @param id the id
@@ -127,20 +126,7 @@ public class UserAppService {
      */
     @Transactional(propagation = Propagation.REQUIRED)
     public UserResource update(final Long id, final UserResource userResourcePayload) {
-        final User user = this.userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("could not find user for given id"));
-
-        user.updateUser(userResourcePayload.getUsername(), this.passwordEncoder.encode(userResourcePayload.getPassword()),
-                userResourcePayload.getActive(), userResourcePayload.getRoleIds());
-        this.userRepository.save(user);
-
-        this.eventPublisher.publishEvent(UserUpdatedEvent.builder()
-                .userId(id)
-                .firstName(userResourcePayload.getFirstName())
-                .lastName(userResourcePayload.getLastName())
-                .email(userResourcePayload.getUsername())
-                .dateOfBirth(userResourcePayload.getDateOfBirth())
-                .build());
+        User user = this.userService.updateUser(id, userResourcePayload);
 
         return this.transpose(user);
     }
@@ -151,13 +137,13 @@ public class UserAppService {
      */
     @Transactional(propagation = Propagation.REQUIRED)
     public void deleteById(final Long id) {
-        final User user = this.userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("could not find user for given id"));
 
-        eventPublisher.publishEvent(UserDeletedEvent.builder()
-                .userId(id)
-                .build());
-        this.userRepository.delete(user);
+        this.userService.deleteUserById(id);
+    }
+
+    public boolean checkUsernameAvailability(final String username) {
+
+        return this.userService.checkUsernameAvailability(username);
     }
 
     public List<Link> generateCollectionLinks() {
@@ -176,25 +162,25 @@ public class UserAppService {
                 .collect(Collectors.toSet());
     }
 
-    private void publishUserCreatedEventWithPersonDetails(final Long userId, final UserResource userResourceCreated) {
+//    private void publishUserCreatedEventWithPersonDetails(final Long userId, final UserResource userResourceCreated) {
+//
+//        this.eventPublisher.publishEvent(
+//                UserCreatedEvent.builder()
+//                        .userId(userId)
+//                        .firstName(userResourceCreated.getFirstName())
+//                        .lastName(userResourceCreated.getLastName())
+//                        .email(userResourceCreated.getUsername())
+//                        .dateOfBirth(userResourceCreated.getDateOfBirth())
+//                        .build());
+//    }
 
-        this.eventPublisher.publishEvent(
-                UserCreatedEvent.builder()
-                        .userId(userId)
-                        .firstName(userResourceCreated.getFirstName())
-                        .lastName(userResourceCreated.getLastName())
-                        .email(userResourceCreated.getUsername())
-                        .dateOfBirth(userResourceCreated.getDateOfBirth())
-                        .build());
-    }
-
-    private void sendEmailVerification(final Long userId, final String username) {
-
-        this.mailService.sendEmail(new NotificationEmail("Please active your account", username,
-                "Please click on the link below to activate your account "
-                        + "http://localhost:5001/api/auth/accountverification/"
-                        + userId));
-    }
+//    private void sendEmailVerification(final Long userId, final String username) {
+//
+//        this.mailService.sendEmail(new NotificationEmail("Please active your account", username,
+//                "Please click on the link below to activate your account "
+//                        + "http://localhost:5001/api/auth/accountverification/"
+//                        + userId));
+//    }
 
     private UserResource convertToDTO(final UserDetailsView userDetailsView) {
 
@@ -205,7 +191,6 @@ public class UserAppService {
 
         return userResource;
     }
-
 
     private UserResource transpose(final User user) {
         final UserResource userResource = UserResource.builder()

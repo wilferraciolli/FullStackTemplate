@@ -1,5 +1,6 @@
 package com.template.users.events.handler;
 
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
@@ -12,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PersonUpdatedEventHandler {
 
-    @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
+    @TransactionalEventListener
     public void handlePersonCreatedEvent(final PersonUpdatedEvent personUpdatedEvent) {
 
         //TODO implement person updated event

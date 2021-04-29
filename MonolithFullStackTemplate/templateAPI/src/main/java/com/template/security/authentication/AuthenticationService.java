@@ -29,6 +29,7 @@ import javax.validation.Valid;
  * The type Authentication service.
  */
 @Service
+@Transactional
 public class AuthenticationService extends BaseApplicationService {
 
     private static final String TOKEN_TYPE = "bearer";

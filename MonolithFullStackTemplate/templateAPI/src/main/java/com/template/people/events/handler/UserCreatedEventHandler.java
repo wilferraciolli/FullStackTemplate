@@ -5,7 +5,9 @@ import com.template.people.PersonRepository;
 import com.template.users.events.UserCreatedEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
@@ -14,13 +16,17 @@ import org.springframework.transaction.event.TransactionalEventListener;
  */
 @Component
 @Slf4j
+@Transactional
 public class UserCreatedEventHandler {
 
     @Autowired
     private PersonRepository repository;
 
-    @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
+//    @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
+    @TransactionalEventListener
     public void handleUserCreatedEvent(final UserCreatedEvent event) {
+
+        log.error("handling user created event handler");
 
         repository.save(Person.builder()
                 .userId(event.getUserId())

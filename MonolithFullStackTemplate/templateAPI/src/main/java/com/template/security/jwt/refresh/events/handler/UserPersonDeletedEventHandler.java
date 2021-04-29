@@ -25,13 +25,13 @@ public class UserPersonDeletedEventHandler {
      * Handle user deleted event.
      * @param userDeletedEvent the user deleted event
      */
-    @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
+    @TransactionalEventListener
     public void handleUserDeletedEvent(final UserDeletedEvent userDeletedEvent) {
 
        refreshTokenService.deleteRefreshTokenByUserId(userDeletedEvent.getUserId());
     }
 
-    @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
+    @TransactionalEventListener
     public void handlePersonDeletedEvent(final PersonDeletedEvent personDeletedEvent) {
 
         refreshTokenService.deleteRefreshTokenByUserId(personDeletedEvent.getUserId());
