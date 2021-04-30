@@ -74,9 +74,16 @@ public class User implements UserDetails {
                 .collect(toList());
     }
 
+    @Deprecated
     public void updateUser(final String username, final String password, final boolean active, final List<String> roles) {
         this.username = username;
         this.password = password;
+        this.active = active;
+        this.roles = roles;
+    }
+
+    public void updateUser(final String username, final boolean active, final List<String> roles) {
+        this.username = username;
         this.active = active;
         this.roles = roles;
     }

@@ -51,15 +51,8 @@ public class UserAppService {
     @Autowired
     private UserLinkProvider linkProvider;
 
-    //TODO remove
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @Autowired
     private EventPublisher eventPublisher;
-
-    @Autowired
-    private MailService mailService;
 
     public UserResource createTemplate() {
 
@@ -89,14 +82,12 @@ public class UserAppService {
      * @param userResourceCreate the user resource create
      * @return the user resource
      */
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public UserResource create(@Valid final UserResource userResourceCreate) {
         final User user = assembler.convertToEntity(userResourceCreate);
-
         this.userRepository.save(user);
 
         this.publishUserCreatedEventWithPersonDetails(user.getId(), userResourceCreate);
-        this.sendEmailVerification(user.getId(), user.getUsername());
 
         return this.transpose(user);
     }
@@ -130,7 +121,7 @@ public class UserAppService {
         final User user = this.userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("could not find user for given id"));
 
-        user.updateUser(userResourcePayload.getUsername(), this.passwordEncoder.encode(userResourcePayload.getPassword()),
+        user.updateUser(userResourcePayload.getUsername(),
                 userResourcePayload.getActive(), userResourcePayload.getRoleIds());
         this.userRepository.save(user);
 
@@ -188,14 +179,6 @@ public class UserAppService {
                         .build());
     }
 
-    private void sendEmailVerification(final Long userId, final String username) {
-
-        this.mailService.sendEmail(new NotificationEmail("Please active your account", username,
-                "Please click on the link below to activate your account "
-                        + "http://localhost:5001/api/auth/accountverification/"
-                        + userId));
-    }
-
     private UserResource convertToDTO(final UserDetailsView userDetailsView) {
 
         UserResource userResource = this.assembler.convertToDTO(userDetailsView, this.resolveUserRoles(userDetailsView));
@@ -205,7 +188,6 @@ public class UserAppService {
 
         return userResource;
     }
-
 
     private UserResource transpose(final User user) {
         final UserResource userResource = UserResource.builder()

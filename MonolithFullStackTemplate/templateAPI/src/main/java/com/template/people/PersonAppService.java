@@ -105,6 +105,7 @@ public class PersonAppService {
      * Delete by id.
      * @param id the id
      */
+    // TODO remove this method as
     @Transactional(propagation = Propagation.REQUIRED)
     public void deleteById(final Long id) {
         final Person person = repository.findById(id)

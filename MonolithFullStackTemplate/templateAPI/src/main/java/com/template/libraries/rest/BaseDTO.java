@@ -3,6 +3,7 @@ package com.template.libraries.rest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.hateoas.Link;
 
@@ -30,6 +31,7 @@ public abstract class BaseDTO implements Transferable {
     public void addLinks(final List<Link> linksToAdd) {
 
         linksToAdd.stream()
+                .filter(Objects::nonNull)
                 .forEach(this::addLink);
     }
 
