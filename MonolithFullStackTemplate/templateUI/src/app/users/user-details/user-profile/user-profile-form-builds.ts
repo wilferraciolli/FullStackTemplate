@@ -49,7 +49,7 @@ export class UserProfileFormBuilder {
 
   populateForm(person: Person): void {
 
-    this.form.setValue(
+    this.form.patchValue(
       {
         $key: person.id,
         userId: person.userId,

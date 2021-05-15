@@ -1,16 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {UserProfile} from '../../profile/user.profile';
-import {UserDetailsProfileService} from './user-details-profile.service';
-import {PersonAdapter} from '../../../people/person.adapter';
-import {Person} from '../../../people/person';
-import {ValueViewValue} from '../../../shared/response/value-viewValue';
-import {NotificationService} from '../../../shared/notification.service';
-import {ProfileService} from '../../../_services/profile.service';
-import {UserProfileFormBuilder} from './user-profile-form-builds';
-import {UserProfileResponse} from './user-profile-response';
-import {MetadataService} from '../../../_services/metadata.service';
-import {TranslateService} from '@ngx-translate/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UserProfile } from '../../profile/user.profile';
+import { UserDetailsProfileService } from './user-details-profile.service';
+import { PersonAdapter } from '../../../people/person.adapter';
+import { Person } from '../../../people/person';
+import { ValueViewValue } from '../../../shared/response/value-viewValue';
+import { NotificationService } from '../../../shared/notification.service';
+import { ProfileService } from '../../../_services/profile.service';
+import { UserProfileFormBuilder } from './user-profile-form-builds';
+import { UserProfileResponse } from './user-profile-response';
+import { MetadataService } from '../../../_services/metadata.service';
 
 @Component({
   selector: 'app-user-profile',
