@@ -22,6 +22,8 @@ public class UserCreatedEventHandler {
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void handleUserCreatedEvent(final UserCreatedEvent event) {
 
+        log.info("handling user created");
+
         repository.save(Person.builder()
                 .userId(event.getUserId())
                 .firstName(event.getFirstName())

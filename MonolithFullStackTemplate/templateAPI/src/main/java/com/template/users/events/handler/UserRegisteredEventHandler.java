@@ -4,8 +4,13 @@ import com.template.security.authentication.events.UserRegisteredEvent;
 import com.template.users.UserAppService;
 import com.template.users.UserResource;
 import com.template.users.UserRoleType;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
@@ -15,6 +20,7 @@ import static java.util.Arrays.asList;
  * The type User registered event handler.
  */
 @Service
+@Slf4j
 public class UserRegisteredEventHandler {
 
     @Autowired
@@ -23,6 +29,7 @@ public class UserRegisteredEventHandler {
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void handleUserRegisteredEvent(final UserRegisteredEvent event) {
 
+        log.error("Handle user registered event");
         this.createUser(event);
     }
 

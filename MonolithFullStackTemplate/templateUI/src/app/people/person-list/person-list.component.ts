@@ -169,6 +169,7 @@ export class PersonListComponent implements OnInit {
   }
 
   delete(url: string): void {
+    // TODO replace this inner subscriptions
     this.dialogService.openConfirmDialog('Are you sure you want to delete this person?')
       .afterClosed().subscribe(res => {
       if (res) {

@@ -23,6 +23,7 @@ public class PersonDeletedEventHandler {
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void handlePersonCreatedEvent(final PersonDeletedEvent personDeletedEvent) {
 
+        // TODO remove this and replace with user delete action, people deletion should not exists
         userAppService.deleteById(personDeletedEvent.getUserId());
     }
 }

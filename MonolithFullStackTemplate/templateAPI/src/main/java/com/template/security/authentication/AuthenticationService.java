@@ -19,6 +19,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 
@@ -27,6 +29,7 @@ import javax.validation.Valid;
  * The type Authentication service.
  */
 @Service
+@Transactional
 public class AuthenticationService extends BaseApplicationService {
 
     private static final String TOKEN_TYPE = "bearer";
@@ -74,6 +77,7 @@ public class AuthenticationService extends BaseApplicationService {
      * Register.
      * @param data the data
      */
+    @Transactional(propagation = Propagation.REQUIRED)
     public void register(@Valid final RegistrationRequest data) {
 
         this.eventPublisher.publishEvent(UserRegisteredEvent.builder()
