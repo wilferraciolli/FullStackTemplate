@@ -66,3 +66,17 @@ For domain events within spring see the following url
 https://reflectoring.io/spring-boot-application-events-explained/
  and this
 https://panlw.github.io/15459049161482.html
+
+
+#Docker
+Tu build the image use the following command - This will build the image and tag it
+```docker build -t wiltech/template-api .```
+
+The docker image will use the commands from the docker file to run it
+
+To run the image locally type in
+```docker run -p 5001:5001 -d wiltech/template-api
+```
+
+#Fly io docker deployment
+simply run the ```fly launch``` command (this requires the fly.io cli is already installed and logged in)
