@@ -68,7 +68,7 @@ https://reflectoring.io/spring-boot-application-events-explained/
 https://panlw.github.io/15459049161482.html
 
 
-#Docker
+# Docker
 Tu build the image use the following command - This will build the image and tag it
 ```docker build -t wiltech/template-api .```
 
@@ -78,5 +78,10 @@ To run the image locally type in
 ```docker run -p 5001:5001 -d wiltech/template-api
 ```
 
-#Fly io docker deployment
-simply run the ```fly launch``` command (this requires the fly.io cli is already installed and logged in)
+# Railway deployment
+The API is deployed within https://railway.app/dashboard
+The url for the app is
+https://gas-number-production.up.railway.app/
+
+PS for it to work, the JAR file need to be on the target folder within the GIT, otherwise the Docker image will fail to build
+
