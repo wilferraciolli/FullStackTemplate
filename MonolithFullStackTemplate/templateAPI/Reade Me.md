@@ -23,7 +23,7 @@ That will allow to enter on to the container, now it is possible to enter onto t
        
        `mysql -uWilFerraciolli -pPerugia2006`
 
-#H2 console database
+# H2 console database
 To see the database on the browser
     disable authentication
 then add the folowing properties on the properties file

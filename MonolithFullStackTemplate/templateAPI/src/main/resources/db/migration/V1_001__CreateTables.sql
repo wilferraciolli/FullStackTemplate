@@ -14,6 +14,7 @@ create TABLE user
     active   BIT,
     PRIMARY KEY (id)
 );
+CREATE UNIQUE INDEX unique_username_on_user ON user (username);
 
 drop table IF EXISTS person;
 create TABLE person
