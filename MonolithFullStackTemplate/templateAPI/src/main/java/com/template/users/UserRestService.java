@@ -43,6 +43,7 @@ public class UserRestService extends BaseRestService {
      * @return the response entity
      */
     @GetMapping("/template")
+    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
     public ResponseEntity<UserResource> template() {
         final UserResource resource = appService.createTemplate();
 
@@ -55,6 +56,7 @@ public class UserRestService extends BaseRestService {
      * @return the response entity
      */
     @PostMapping("")
+    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
     public ResponseEntity<UserResource> create(@RequestBody @Valid final UserResource payload) {
         final UserResource createdResource = this.appService.create(payload);
 

@@ -35,7 +35,7 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode
 @ToString
-@ValidateUniqueEmail(message = "{Users.username.NonUnique}")
+@ValidateUniqueEmail(message = "{Users.username.NonUnique}") //TODO this fails to update current user with same email
 public class UserResource extends BaseDTO {
 
     @JsonProperty("id")
