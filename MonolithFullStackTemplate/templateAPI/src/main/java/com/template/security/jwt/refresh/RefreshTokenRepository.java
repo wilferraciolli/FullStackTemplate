@@ -9,14 +9,14 @@ import org.springframework.stereotype.Repository;
  * The interface Refresh token repository.
  */
 @Repository
-public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
+public interface RefreshTokenRepository extends JpaRepository<RefreshTokenDeprecated, Long> {
 
     /**
      * Find by refresh token optional.
      * @param refreshToken the refresh token
      * @return the optional
      */
-    Optional<RefreshToken> findByRefreshToken(String refreshToken);
+    Optional<RefreshTokenDeprecated> findByRefreshToken(String refreshToken);
 
     /**
      * Find by username optional.
@@ -24,14 +24,14 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long
      * @return the optional
      */
     @Deprecated
-    Optional<RefreshToken> findByUsername(String username);
+    Optional<RefreshTokenDeprecated> findByUsername(String username);
 
     /**
      * Find by user id optional.
      * @param userId the user id
      * @return the optional
      */
-    Optional<RefreshToken> findByUserId(Long userId);
+    Optional<RefreshTokenDeprecated> findByUserId(Long userId);
 
     /**
      * Delete by refresh token.

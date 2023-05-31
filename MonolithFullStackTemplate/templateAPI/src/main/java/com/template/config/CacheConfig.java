@@ -1,9 +1,3 @@
-/*
- * (c) Midland Software Limited 2020
- * Name     : CacheConfig.java
- * Author   : ferraciolliw
- * Date     : 02 May 2020
- */
 package com.template.config;
 
 import org.springframework.cache.annotation.EnableCaching;

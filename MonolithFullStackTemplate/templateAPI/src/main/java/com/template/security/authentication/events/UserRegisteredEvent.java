@@ -1,9 +1,3 @@
-/*
- * (c) Midland Software Limited 2019
- * Name     : UserRegisteredEvent.java
- * Author   : ferraciolliw
- * Date     : 12 Nov 2019
- */
 package com.template.security.authentication.events;
 
 import com.template.libraries.core.Event;
@@ -16,9 +10,9 @@ import com.template.security.authentication.RegistrationRequest;
 
 import lombok.Getter;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
 /**

@@ -1,10 +1,8 @@
 package com.template.security.jwt.refresh.events.handler;
 
 import com.template.people.events.PersonDeletedEvent;
-import com.template.people.events.PersonUpdatedEvent;
-import com.template.security.jwt.refresh.RefreshTokenService;
+import com.template.security.jwt.refresh.RefreshTokenServiceDeprecated;
 import com.template.users.events.UserDeletedEvent;
-import com.template.users.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,7 +17,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 public class UserPersonDeletedEventHandler {
 
     @Autowired
-    private RefreshTokenService refreshTokenService;
+    private RefreshTokenServiceDeprecated refreshTokenServiceDeprecated;
 
     /**
      * Handle user deleted event.
@@ -28,12 +26,12 @@ public class UserPersonDeletedEventHandler {
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void handleUserDeletedEvent(final UserDeletedEvent userDeletedEvent) {
 
-       refreshTokenService.deleteRefreshTokenByUserId(userDeletedEvent.getUserId());
+       refreshTokenServiceDeprecated.deleteRefreshTokenByUserId(userDeletedEvent.getUserId());
     }
 
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void handlePersonDeletedEvent(final PersonDeletedEvent personDeletedEvent) {
 
-        refreshTokenService.deleteRefreshTokenByUserId(personDeletedEvent.getUserId());
+        refreshTokenServiceDeprecated.deleteRefreshTokenByUserId(personDeletedEvent.getUserId());
     }
 }

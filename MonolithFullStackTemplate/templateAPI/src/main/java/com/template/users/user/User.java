@@ -1,39 +1,27 @@
 package com.template.users.user;
 
-import static java.util.stream.Collectors.toList;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedNativeQuery;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
-
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import static java.util.stream.Collectors.toList;
 
 /**
  * The type User.
  * Tis entity is used by Spring security framework to validate users.
  */
 @Entity
-@Table(name = "user")
+@Table(name = "tp_user")
 @Data
 @Builder
 @NoArgsConstructor
@@ -58,7 +46,7 @@ public class User implements UserDetails {
     private Boolean active;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    //    @CollectionTable(name = "userRoles", joinColumns = @JoinColumn(name = "userId", referencedColumnName = "id"))
+    @CollectionTable(name = "tp_user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     @Column(name = "role")
     @Builder.Default
     private List<String> roles = new ArrayList<>();

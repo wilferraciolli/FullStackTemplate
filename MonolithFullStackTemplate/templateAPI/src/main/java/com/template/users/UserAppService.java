@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import com.template.users.events.UserDeletedEvent;
 import org.springframework.beans.factory.annotation.Autowired;

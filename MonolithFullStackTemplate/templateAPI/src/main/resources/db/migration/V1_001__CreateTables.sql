@@ -1,12 +1,12 @@
-drop table IF EXISTS user_roles;
-create TABLE user_roles
+DROP TABLE IF EXISTS tp_user_role;
+CREATE TABLE tp_user_role
 (
     user_id BIGINT NOT NULL,
     role    VARCHAR(80)
 );
 
-drop table IF EXISTS user;
-create TABLE user
+DROP TABLE IF EXISTS tp_user;
+CREATE TABLE tp_user
 (
     id       BIGINT NOT NULL auto_increment,
     username VARCHAR(255),
@@ -14,10 +14,10 @@ create TABLE user
     active   BIT,
     PRIMARY KEY (id)
 );
-CREATE UNIQUE INDEX unique_username_on_user ON user (username);
+CREATE UNIQUE INDEX unique_username_on_user ON tp_user (username);
 
-drop table IF EXISTS person;
-create TABLE person
+DROP TABLE IF EXISTS tp_person;
+CREATE TABLE tp_person
 (
     id                   BIGINT       NOT NULL auto_increment,
     user_id              BIGINT       NOT NULL,
@@ -32,8 +32,8 @@ create TABLE person
     PRIMARY KEY (id)
 );
 
-drop view IF EXISTS user_details_view;
-create VIEW user_details_view AS
+DROP VIEW IF EXISTS tp_user_details_view;
+CREATE VIEW tp_user_details_view AS
 SELECT u.id,
        p.id as person_id,
        p.first_name,
@@ -42,12 +42,24 @@ SELECT u.id,
        u.password,
        p.date_of_birth,
        u.active
-FROM user u,
-     person p
+FROM tp_user u,
+     tp_person p
 WHERE u.id = p.user_id;
 
-drop table IF EXISTS refresh_token;
-create TABLE refresh_token
+DROP TABLE IF EXISTS tp_token;
+CREATE TABLE tp_token
+(
+    id                   BIGINT       NOT NULL auto_increment,
+    user_id              BIGINT       NOT NULL,
+    token                VARCHAR(20000)  NOT NULL,
+    token_type           VARCHAR(25)  NOT NULL,
+    revoked              BIT,
+    expired              BIT,
+    PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS tp_refresh_token;
+CREATE TABLE tp_refresh_token
 (
     id            BIGINT        NOT NULL AUTO_INCREMENT PRIMARY KEY,
     user_id       BIGINT        NOT NULL,

@@ -1,9 +1,3 @@
-/*
- * (c) Midland Software Limited 2019
- * Name     : PersonAppService.java
- * Author   : ferraciolliw
- * Date     : 09 Sep 2019
- */
 package com.template.people;
 
 import java.util.ArrayList;
@@ -12,8 +6,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityNotFoundException;
-import javax.validation.Valid;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

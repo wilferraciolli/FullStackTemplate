@@ -1,34 +1,21 @@
 package com.template.people;
 
-import static org.springframework.http.ResponseEntity.noContent;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.validation.Valid;
-
+import com.template.libraries.rest.BaseRestService;
+import com.template.libraries.rest.Metadata;
+import com.template.users.UserResource;
+import jakarta.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.template.libraries.rest.BaseRestService;
-import com.template.libraries.rest.Metadata;
-import com.template.users.UserResource;
+import java.util.List;
+import java.util.Map;
+
+import static org.springframework.http.ResponseEntity.noContent;
 
 /**
  * The type Person rest controller.
@@ -45,6 +32,7 @@ public class PersonRestService extends BaseRestService {
 
     /**
      * Find all response entity.
+     *
      * @return the response entity
      */
     @GetMapping("")
@@ -76,6 +64,7 @@ public class PersonRestService extends BaseRestService {
 
     /**
      * Find by id response entity.
+     *
      * @param id the id
      * @return the response entity
      */
@@ -92,13 +81,14 @@ public class PersonRestService extends BaseRestService {
 
     /**
      * Update response entity.
-     * @param id the id
+     *
+     * @param id                the id
      * @param personFromRequest the person from request
      * @return the response entity
      */
     @PutMapping("/{id}")
     public ResponseEntity<PersonResource> update(@PathVariable("id") final Long id,
-            @RequestBody @Valid final PersonResource personFromRequest) {
+                                                 @RequestBody @Valid final PersonResource personFromRequest) {
         final PersonResource updatedResource = appService.update(id, personFromRequest);
 
         Map<String, Metadata> metadata = metaFabricator.createMetaForSingleResource();
@@ -108,6 +98,7 @@ public class PersonRestService extends BaseRestService {
 
     /**
      * Delete response entity.
+     *
      * @param id the id
      * @return the response entity
      */

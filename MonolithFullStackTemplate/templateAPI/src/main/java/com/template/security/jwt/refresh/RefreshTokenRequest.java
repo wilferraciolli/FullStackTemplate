@@ -2,7 +2,7 @@ package com.template.security.jwt.refresh;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 

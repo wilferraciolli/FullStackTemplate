@@ -1,16 +1,10 @@
-/*
- * (c) Midland Software Limited 2019
- * Name     : EnumValidatorImpl.java
- * Author   : ferraciolliw
- * Date     : 18 Sep 2019
- */
 package com.template.validation;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 /**
  * The type Valid enum validator.

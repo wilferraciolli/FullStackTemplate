@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.LinkRelation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -35,7 +36,7 @@ public class BaseRestService {
     private Link buildSelfLink() {
         final String uriString = ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString();
 
-        return new Link(uriString, "self");
+        return Link.of(uriString, "self");
     }
 
     /**

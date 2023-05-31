@@ -3,9 +3,9 @@ package com.template.users.details;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import org.hibernate.annotations.Immutable;
 
@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
  * Tis entity is used by Spring security framework to validate users.
  */
 @Entity
-@Table(name = "user_details_view")
+@Table(name = "tp_user_details_view")
 @Immutable
 @Data
 @Builder

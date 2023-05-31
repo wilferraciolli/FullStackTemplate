@@ -50,19 +50,19 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, error, new HttpHeaders(), status, request);
     }
 
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers,
-            HttpStatus status, WebRequest request) {
-
-        var error = Error.builder()
-                .statusCode(status.value())
-                .title("Error")
-                .dateTime(LocalDateTime.now())
-                .fields(getFailedValidationFields(ex))
-                .build();
-
-        return super.handleExceptionInternal(ex, error, headers, status, request);
-    }
+//    @Override
+//    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers,
+//            HttpStatus status, WebRequest request) {
+//
+//        var error = Error.builder()
+//                .statusCode(status.value())
+//                .title("Error")
+//                .dateTime(LocalDateTime.now())
+//                .fields(getFailedValidationFields(ex))
+//                .build();
+//
+//        return super.handleExceptionInternal(ex, error, headers, status, request);
+//    }
 
     private List<PropertyField> getFailedValidationFields(MethodArgumentNotValidException ex) {
         return ex.getBindingResult().getAllErrors()

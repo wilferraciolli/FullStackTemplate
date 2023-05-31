@@ -3,7 +3,7 @@ package com.template.users.events;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import com.template.libraries.core.Event;
 import lombok.Builder;

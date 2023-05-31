@@ -2,7 +2,9 @@ package com.template.security.authentication;
 
 import static org.springframework.http.HttpStatus.OK;
 
-import javax.validation.Valid;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,37 +32,37 @@ public class AuthenticationRestService extends BaseRestService {
     @Autowired
     private AuthenticationService authenticateService;
 
+    @PostMapping("/register")
+    public ResponseEntity<Void> register(@RequestBody @Valid final RegistrationRequest data) {
+        this.authenticateService.register(data);
+
+        return ResponseEntity.ok().build();
+    }
+
     /**
      * Signin response entity.
      * @param data the data
      * @return the response entity
      */
     @PostMapping("/signin")
-    public ResponseEntity signIn(@RequestBody @Valid final AuthenticationRequest data) {
-        final AuthenticationResourceResponse authenticationDetails = this.authenticateService.authenticate(data);
-
-        return ResponseEntity.status(OK).body(authenticationDetails);
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid final RegistrationRequest data) {
-        this.authenticateService.register(data);
-
-        return ResponseEntity.ok().build();
+    public ResponseEntity<AuthenticationResourceResponse> signIn(@RequestBody @Valid final AuthenticationRequest data) {
+        return ResponseEntity.status(OK)
+                .body(this.authenticateService.authenticate(data));
     }
 
     @GetMapping("/accountverification/{userId}")
-    public ResponseEntity verifyAccount(@PathVariable("userId") final Long userId) {
+    public ResponseEntity<Void> verifyAccount(@PathVariable("userId") final Long userId) {
         this.authenticateService.verifyAccount(userId);
 
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/refresh/token")
-    public ResponseEntity register(@RequestBody @Valid final RefreshTokenRequest data) throws RefreshTokenException {
-        final AuthenticationResourceResponse authenticationDetails = this.authenticateService.refreshToken(data);
+    public ResponseEntity<AuthenticationResourceResponse> register(  HttpServletRequest request,
+                                                                     HttpServletResponse response) throws RefreshTokenException {
 
-        return ResponseEntity.status(OK).body(authenticationDetails);
+        return ResponseEntity.status(OK)
+                .body(this.authenticateService.refreshToken(request, response));
     }
 
 }

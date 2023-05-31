@@ -1,9 +1,3 @@
-/*
- * (c) Midland Software Limited 2019
- * Name     : PersonResourceAssembler.java
- * Author   : ferraciolliw
- * Date     : 09 Sep 2019
- */
 package com.template.people;
 
 import java.util.Arrays;

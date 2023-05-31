@@ -1,17 +1,16 @@
 package com.template.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-
-import com.template.security.jwt.JwtConfigurer;
-import com.template.security.jwt.JwtTokenProvider;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 /**
  * The type Security config.
@@ -19,61 +18,92 @@ import com.template.security.jwt.JwtTokenProvider;
  */
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@RequiredArgsConstructor
+public class SecurityConfig {
+    private final JwtAuthenticationFilter jwtAuthFilter;
+    private final AuthenticationProvider authenticationProvider;
+    private final LogoutHandler logoutHandler;
 
-    /**
-     * The Jwt token providers.
-     */
-    @Autowired
-    JwtTokenProvider jwtTokenProvider;
-
-    /**
-     * Authentication manager bean authentication manager.
-     * @return the authentication manager
-     * @throws Exception the exception
-     */
     @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
-    /**
-     * Configure. The path for access based on roles.
-     * @param http the http
-     * @throws Exception the exception
-     */
-    @Override
-    protected void configure(final HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         //set frame options to self to allow h2 console server
         http.headers().frameOptions().sameOrigin();
 
         http
-                .httpBasic().disable()
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .csrf()
+                .disable()
+                .authorizeHttpRequests()
+//                .requestMatchers("/**").permitAll()
+                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/actuator/**").permitAll()
+                .requestMatchers("/h2-console/**").permitAll()
+                .requestMatchers("/api/h2-console/**").permitAll()
+                .anyRequest()
+                .authenticated()
                 .and()
-                .authorizeRequests()
-                .antMatchers("api/test/test").permitAll()
-                .antMatchers("*/auth/signin/*").permitAll()
-                .antMatchers("/api/auth/signin").permitAll()
-                .antMatchers("/auth/register").permitAll()
-                .antMatchers("/h2-console/**").permitAll()
-                //TODO fix this shit .antMatchers("/userprofile/**").authenticated()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .logout()
+                .logoutUrl("/auth/logout")
+                .addLogoutHandler(logoutHandler)
+                .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
+        ;
 
-                //                .antMatchers("/eureka/**").permitAll()
-                //                .antMatchers(HttpMethod.GET, "api/providers/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/providers/**").hasAnyRole("ADMIN", "USER")
-                //                .antMatchers(HttpMethod.POST, "/providers/**").hasRole("ADMIN")
-                //                .antMatchers(HttpMethod.PUT, "/providers/**").hasRole("ADMIN")
-                //                .antMatchers(HttpMethod.DELETE, "/providers/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/users/**").hasAnyRole("ADMIN", "USER")
-                //                .antMatchers("/*").hasAnyRole("ADMIN", "USER")
-                //                .anyRequest().authenticated()
-                .and()
-                .apply(new JwtConfigurer(jwtTokenProvider));
-        //@formatter:on
+        return http.build();
     }
+
+//    @Autowired
+//    JwtTokenProviderDeprecated jwtTokenProviderDeprecated;
+
+
+    // Moved to applicatiton configuration under authenticationProvider
+//    /**
+//     * Authentication manager bean authentication manager.
+//     * @return the authentication manager
+//     * @throws Exception the exception
+//     */
+//
+//    @Bean
+//    @Override
+//    public AuthenticationManager authenticationManagerBean() throws Exception {
+//        return super.authenticationManagerBean();
+//    }
+
+
+//    @Override
+//    protected void configure(final HttpSecurity http) throws Exception {
+//        //set frame options to self to allow h2 console server
+//        http.headers().frameOptions().sameOrigin();
+//
+//        http
+//                .httpBasic().disable()
+//                .csrf().disable()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .authorizeRequests()
+//                .antMatchers("api/test/test").permitAll()
+//                .antMatchers("*/auth/signin/*").permitAll()
+//                .antMatchers("/api/auth/signin").permitAll()
+//                .antMatchers("/auth/register").permitAll()
+//                .antMatchers("/h2-console/**").permitAll()
+//                //TODO fix this shit .antMatchers("/userprofile/**").authenticated()
+//
+//                //                .antMatchers("/eureka/**").permitAll()
+//                //                .antMatchers(HttpMethod.GET, "api/providers/**").permitAll()
+//                .antMatchers(HttpMethod.GET, "/providers/**").hasAnyRole("ADMIN", "USER")
+//                //                .antMatchers(HttpMethod.POST, "/providers/**").hasRole("ADMIN")
+//                //                .antMatchers(HttpMethod.PUT, "/providers/**").hasRole("ADMIN")
+//                //                .antMatchers(HttpMethod.DELETE, "/providers/**").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.GET, "/users/**").hasAnyRole("ADMIN", "USER")
+//                //                .antMatchers("/*").hasAnyRole("ADMIN", "USER")
+//                //                .anyRequest().authenticated()
+//                .and()
+//                .apply(new JwtConfigurer(jwtTokenProvider));
+//        //@formatter:on
+//    }
 
     //    //Add in memory authentication for tests
     //    @Override

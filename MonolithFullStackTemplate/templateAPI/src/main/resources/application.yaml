@@ -34,13 +34,21 @@ spring:
     password: 380b8b971bb6ea
     protocol: smtp
 
-security:
-  oauth2:
-    resource:
-      jwt:
-        key-value: j3H5Ld5nYmGWyULy6xwpOgfSH++NgKXnJMq20vpfd+8=t
-        token:
-          expire-length: 3600000
+#security:
+#  oauth2:
+#    resource:
+#      jwt:
+#        key-value: j3H5Ld5nYmGWyULy6xwpOgfSH++NgKXnJMq20vpfd+8=t
+#        token:
+#          expire-length: 3600000
+
+application:
+  security:
+    jwt:
+      secret-key: 3273357638792F423F4528482B4B6250655368566D597133743677397A244326
+      expiration: 600000 # 86400000 # a day
+      refresh-token:
+        expiration: 604800000 # 7 days
 
 # Prevent DDos by IP, restrict up to 50 calls per second
 bucket4j:
