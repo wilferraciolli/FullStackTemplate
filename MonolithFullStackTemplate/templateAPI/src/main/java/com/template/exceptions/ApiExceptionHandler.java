@@ -4,11 +4,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -19,6 +21,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
+@Slf4j
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Autowired
@@ -27,6 +30,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(DomainException.class)
     public ResponseEntity<Object> handleDomainException(DomainException ex, WebRequest request) {
         var status = HttpStatus.BAD_REQUEST;
+
+        log.error("handling 400 bad request", ex.getMessage());
 
         var error = Error.builder()
                 .statusCode(status.value())
@@ -50,19 +55,24 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, error, new HttpHeaders(), status, request);
     }
 
-//    @Override
-//    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers,
-//            HttpStatus status, WebRequest request) {
-//
-//        var error = Error.builder()
-//                .statusCode(status.value())
-//                .title("Error")
-//                .dateTime(LocalDateTime.now())
-//                .fields(getFailedValidationFields(ex))
-//                .build();
-//
-//        return super.handleExceptionInternal(ex, error, headers, status, request);
-//    }
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+                                                                  HttpHeaders headers,
+                                                                  HttpStatusCode status,
+                                                                  WebRequest request) {
+
+        // handle validation exception
+
+        var error = Error.builder()
+                .statusCode(status.value())
+                .title("Error")
+                .dateTime(LocalDateTime.now())
+                .fields(getFailedValidationFields(ex))
+                .build();
+
+        return super.handleExceptionInternal(ex, error, headers, status, request);
+    }
 
     private List<PropertyField> getFailedValidationFields(MethodArgumentNotValidException ex) {
         return ex.getBindingResult().getAllErrors()

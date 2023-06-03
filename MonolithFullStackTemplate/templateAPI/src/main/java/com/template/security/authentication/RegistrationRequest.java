@@ -3,7 +3,7 @@ package com.template.security.authentication;
 import java.time.LocalDate;
 
 import jakarta.validation.constraints.Email;
-//import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.NotNull;
 
@@ -30,21 +30,21 @@ import lombok.Value;
 @ToString
 public class RegistrationRequest {
 
-    @NotNull
-    @Size(max = 80, message = "First name cannot have more than {max} characters")
+    @NotEmpty(message = "{registration.firstName.blank}")
+    @Size(max = 80, message = "{registration.firstName.tooLong}")
     private String firstName;
 
-    @NotNull
-    @Size(max = 80, message = "Last name cannot have more than {max} characters")
+    @NotEmpty(message = "{registration.lastName.blank}")
+    @Size(max = 80, message = "{registration.lastName.tooLong}")
     private String lastName;
 
-    @NotNull(message = "Email cannot be null")
-    @Email
+    @NotEmpty(message = "{registration.email.blank}")
+    @Email(message = "{user.email.invalidFormat}")
     @ValidateUniqueUsername(message = "{Users.username.NonUnique}")
     private String email;
 
-    @NotNull
-    @Size(min = 5, max = 20, message = "Password must be between {min} and {max} characters long. Length found : ${validatedValue.length()}")
+    @NotNull(message = "{registration.password.null}")
+    @Size(min = 5, max = 36, message = "Password must be between {min} and {max} characters long. Length found : ${validatedValue.length()}")
     private String password;
 
     private LocalDate dateOfBirth;

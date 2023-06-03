@@ -2,6 +2,7 @@ package com.template.people;
 
 import java.time.LocalDate;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -47,6 +48,7 @@ public class PersonResource extends BaseDTO {
     private String lastName;
 
     @NotNull(message = "Email name cannot be null.")
+    @Email(message = "{user.email.invalidFormat}")
     private String email;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
