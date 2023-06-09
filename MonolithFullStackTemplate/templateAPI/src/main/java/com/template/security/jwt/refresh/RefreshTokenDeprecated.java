@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Deprecated
 public class RefreshTokenDeprecated {
 
     @Id

@@ -14,7 +14,6 @@ import com.template.users.UserRestService;
 public class PersonLinkProvider {
 
     public Link generateGetAllPeopleLink() {
-
         return linkTo(methodOn(PersonRestService.class).findAll()).withRel("people");
     }
 
@@ -28,7 +27,6 @@ public class PersonLinkProvider {
     }
 
     public Link generateUpdateLink(final Long id) {
-
         if (Objects.nonNull(id)){
 
             return linkTo(methodOn(PersonRestService.class).findById(id)).withRel("updatePerson");
@@ -38,7 +36,6 @@ public class PersonLinkProvider {
     }
 
     public Link generateDeleteLink(final Long id) {
-
         if (Objects.nonNull(id)){
 
             return linkTo(methodOn(PersonRestService.class).deleteById(id)).withRel("deletePerson");

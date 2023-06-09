@@ -63,7 +63,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                                                                   WebRequest request) {
 
         // handle validation exception
-
         var error = Error.builder()
                 .statusCode(status.value())
                 .title("Error")

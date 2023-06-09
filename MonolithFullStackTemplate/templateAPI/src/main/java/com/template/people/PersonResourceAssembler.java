@@ -41,7 +41,6 @@ public class PersonResourceAssembler {
      * @return the person resource
      */
     public PersonResource convertToDTO(final Person entity) {
-
         PersonResource personResource = PersonResource.builder()
                 .id(entity.getId())
                 .userId(entity.getUserId())

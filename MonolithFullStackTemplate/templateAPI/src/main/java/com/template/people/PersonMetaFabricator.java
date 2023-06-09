@@ -19,12 +19,10 @@ import com.template.users.UserRoleType;
 public class PersonMetaFabricator {
 
     public Map<String, Metadata> createMetaForSingleResource() {
-
         return buildBasicMeta();
     }
 
     private Map<String, Metadata> buildBasicMeta() {
-
         Map<String, Metadata> metadata = new HashMap<>();
 
         metadata.put("id", Metadata.builder()
@@ -58,7 +56,6 @@ public class PersonMetaFabricator {
      * @return the list
      */
     private List<MetadataEmnbedded> generatePersonGenderEmbedded() {
-
         return PersonGenderType.stream()
                 .map(value -> new MetadataEmnbedded(value.name(), value.getDescription()))
                 .collect(Collectors.toList());
@@ -69,19 +66,16 @@ public class PersonMetaFabricator {
      * @return the list
      */
     private List<MetadataEmnbedded> generatePersonMaritalStatusEmbedded() {
-
         return PersonMaritalStatusType.stream()
                 .map(value -> new MetadataEmnbedded(value.name(), value.getDescription()))
                 .collect(Collectors.toList());
     }
 
     public Map<String, Metadata> createMetaForCollectionResource(Set<String> maritalStatusesIds, Set<String> genderIds) {
-
         return buildCollectionMeta(maritalStatusesIds, genderIds);
     }
 
     private Map<String, Metadata> buildCollectionMeta(Set<String> maritalStatusesIds, Set<String> genderIds) {
-
         Map<String, Metadata> metadata = new HashMap<>();
 
         metadata.put("id", Metadata.builder()
@@ -110,7 +104,6 @@ public class PersonMetaFabricator {
     }
 
     private List<MetadataEmnbedded> generateFilteredPersonMaritalStatusEmbedded(Set<String> maritalStatusesIds) {
-
         return maritalStatusesIds.stream()
                 .map(statusId -> new MetadataEmnbedded(PersonMaritalStatusType.valueOf(statusId).name(),
                         PersonMaritalStatusType.valueOf(statusId).getDescription()))
@@ -118,7 +111,6 @@ public class PersonMetaFabricator {
     }
 
     private List<MetadataEmnbedded> generateFilteredPersonGenderEmbedded(Set<String> genderIds) {
-
         return genderIds.stream()
                 .map(genderId -> new MetadataEmnbedded(PersonGenderType.valueOf(genderId).name(),
                         PersonGenderType.valueOf(genderId).getDescription()))

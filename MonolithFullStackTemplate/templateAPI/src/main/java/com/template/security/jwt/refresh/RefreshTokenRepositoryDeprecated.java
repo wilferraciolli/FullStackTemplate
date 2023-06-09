@@ -9,7 +9,8 @@ import org.springframework.stereotype.Repository;
  * The interface Refresh token repository.
  */
 @Repository
-public interface RefreshTokenRepository extends JpaRepository<RefreshTokenDeprecated, Long> {
+@Deprecated
+public interface RefreshTokenRepositoryDeprecated extends JpaRepository<RefreshTokenDeprecated, Long> {
 
     /**
      * Find by refresh token optional.

@@ -27,7 +27,7 @@ public class AuthenticationRestService extends BaseRestService {
     private AuthenticationService authenticateService;
 
     @PostMapping("/register")
-    public ResponseEntity<Void> refreshToken(@RequestBody @Valid final RegistrationRequest data) {
+    public ResponseEntity<Void> register(@RequestBody @Valid final RegistrationRequest data) {
         this.authenticateService.register(data);
 
         return ResponseEntity.ok().build();

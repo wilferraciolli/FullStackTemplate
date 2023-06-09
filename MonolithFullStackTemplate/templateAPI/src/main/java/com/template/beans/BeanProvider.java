@@ -16,12 +16,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @Component
 public class BeanProvider {
 
-    // Moved this to the Application Configuration
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-//    }
-
     // This bean is used to configure jackson serializer
     @Bean
     public Jackson2ObjectMapperBuilder jacksonBuilder() {

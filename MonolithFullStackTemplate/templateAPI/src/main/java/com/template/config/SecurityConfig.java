@@ -33,7 +33,7 @@ public class SecurityConfig {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/**").permitAll()
+//                .requestMatchers("/**").permitAll()
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/actuator/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
@@ -54,60 +54,4 @@ public class SecurityConfig {
 
         return http.build();
     }
-
-//    @Autowired
-//    JwtTokenProviderDeprecated jwtTokenProviderDeprecated;
-
-
-    // Moved to applicatiton configuration under authenticationProvider
-//    /**
-//     * Authentication manager bean authentication manager.
-//     * @return the authentication manager
-//     * @throws Exception the exception
-//     */
-//
-//    @Bean
-//    @Override
-//    public AuthenticationManager authenticationManagerBean() throws Exception {
-//        return super.authenticationManagerBean();
-//    }
-
-
-//    @Override
-//    protected void configure(final HttpSecurity http) throws Exception {
-//        //set frame options to self to allow h2 console server
-//        http.headers().frameOptions().sameOrigin();
-//
-//        http
-//                .httpBasic().disable()
-//                .csrf().disable()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers("api/test/test").permitAll()
-//                .antMatchers("*/auth/signin/*").permitAll()
-//                .antMatchers("/api/auth/signin").permitAll()
-//                .antMatchers("/auth/register").permitAll()
-//                .antMatchers("/h2-console/**").permitAll()
-//                //TODO fix this shit .antMatchers("/userprofile/**").authenticated()
-//
-//                //                .antMatchers("/eureka/**").permitAll()
-//                //                .antMatchers(HttpMethod.GET, "api/providers/**").permitAll()
-//                .antMatchers(HttpMethod.GET, "/providers/**").hasAnyRole("ADMIN", "USER")
-//                //                .antMatchers(HttpMethod.POST, "/providers/**").hasRole("ADMIN")
-//                //                .antMatchers(HttpMethod.PUT, "/providers/**").hasRole("ADMIN")
-//                //                .antMatchers(HttpMethod.DELETE, "/providers/**").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.GET, "/users/**").hasAnyRole("ADMIN", "USER")
-//                //                .antMatchers("/*").hasAnyRole("ADMIN", "USER")
-//                //                .anyRequest().authenticated()
-//                .and()
-//                .apply(new JwtConfigurer(jwtTokenProvider));
-//        //@formatter:on
-//    }
-
-    //    //Add in memory authentication for tests
-    //    @Override
-    //    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-    //        auth.inMemoryAuthentication().withUser("admin").password("password").roles("ADMIN");
-    //    }
 }
