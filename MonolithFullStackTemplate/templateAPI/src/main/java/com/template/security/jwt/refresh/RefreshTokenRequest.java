@@ -25,5 +25,6 @@ public class RefreshTokenRequest implements Serializable {
 
     @NotNull
     private String refreshToken;
+
     private String userId;
 }

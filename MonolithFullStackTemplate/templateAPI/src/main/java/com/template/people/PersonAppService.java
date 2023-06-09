@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import jakarta.persistence.EntityNotFoundException;
+import com.template.exceptions.EntityNotFoundException;
 import jakarta.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
@@ -69,7 +69,7 @@ public class PersonAppService {
      */
     public PersonResource findById(final Long id) {
         final Person person = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException());
+                .orElseThrow(() -> new com.template.exceptions.EntityNotFoundException("could not find person for given id"));
 
         return assembler.convertToDTO(person);
     }
@@ -84,8 +84,7 @@ public class PersonAppService {
     @Transactional(propagation = Propagation.REQUIRED)
     public PersonResource update(final Long id, @Valid final PersonResource PersonResource) {
         final Person person = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException());
-
+                .orElseThrow(() -> new com.template.exceptions.EntityNotFoundException("could not find person for given id"));
         person.updatePerson(PersonResource);
         repository.save(person);
         publishPersonUpdatedEvent(person);
@@ -99,12 +98,11 @@ public class PersonAppService {
      * Delete by id.
      * @param id the id
      */
-    // TODO remove this method as
+    // TODO remove this method as you cant delete a person and leave the user associated with it
     @Transactional(propagation = Propagation.REQUIRED)
     public void deleteById(final Long id) {
         final Person person = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException());
-
+                .orElseThrow(() -> new EntityNotFoundException("could not find person for given id"));
         repository.delete(person);
         publisher.publishEvent(PersonDeletedEvent.builder()
                 .id(id)

@@ -26,12 +26,12 @@ public class UserPersonDeletedEventHandler {
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void handleUserDeletedEvent(final UserDeletedEvent userDeletedEvent) {
 
-       refreshTokenServiceDeprecated.deleteRefreshTokenByUserId(userDeletedEvent.getUserId());
+//       refreshTokenServiceDeprecated.deleteRefreshTokenByUserId(userDeletedEvent.getUserId());
     }
 
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void handlePersonDeletedEvent(final PersonDeletedEvent personDeletedEvent) {
 
-        refreshTokenServiceDeprecated.deleteRefreshTokenByUserId(personDeletedEvent.getUserId());
+//        refreshTokenServiceDeprecated.deleteRefreshTokenByUserId(personDeletedEvent.getUserId());
     }
 }

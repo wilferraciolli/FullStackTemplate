@@ -1,16 +1,13 @@
 package com.template.security.authentication;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.template.config.JwtService;
 import com.template.exceptions.EntityNotFoundException;
 import com.template.libraries.core.BaseApplicationService;
 import com.template.libraries.core.EventPublisher;
 import com.template.security.authentication.events.UserRegisteredEvent;
-import com.template.security.jwt.JwtTokenProviderDeprecated;
 import com.template.security.jwt.Token;
 import com.template.security.jwt.TokenRepository;
 import com.template.security.jwt.TokenType;
-import com.template.security.jwt.refresh.RefreshTokenDeprecated;
 import com.template.security.jwt.refresh.RefreshTokenException;
 import com.template.security.jwt.refresh.RefreshTokenRequest;
 import com.template.security.jwt.refresh.RefreshTokenServiceDeprecated;
@@ -19,6 +16,7 @@ import com.template.users.user.UserRepository;
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,8 +27,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import jakarta.validation.Valid;
 
 import java.util.Objects;
 
@@ -59,10 +55,6 @@ public class AuthenticationService extends BaseApplicationService {
 
     @Autowired
     private TokenRepository tokenRepository;
-
-    @Autowired
-    private JwtTokenProviderDeprecated jwtTokenProviderDeprecated;
-
 
     @Autowired
     private EventPublisher eventPublisher;
@@ -117,19 +109,19 @@ public class AuthenticationService extends BaseApplicationService {
         //TODO publish event of user activated
     }
 
-    public AuthenticationResourceResponse refreshToken(HttpServletRequest request, HttpServletResponse response) throws RefreshTokenException {
+    public AuthenticationResourceResponse refreshToken(RefreshTokenRequest refreshTokenRequest) throws RefreshTokenException {
 
-        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        final String refreshToken;
-        final String username;
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-                            throw new RefreshTokenException("Cannot refresh Token, invalid authorization Header");
-        }
+//        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+//        final String refreshToken;
+//        final String username;
+//        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+//            throw new RefreshTokenException("Cannot refresh Token, invalid authorization Header");
+//        }
 
-        refreshToken = authHeader.substring(7);
-        username = jwtService.extractUsername(refreshToken);
+       String refreshToken = refreshTokenRequest.getRefreshToken();
+        String  username = jwtService.extractUsername(refreshToken);
 
-        if (StringUtils.isNotBlank(username )) {
+        if (StringUtils.isNotBlank(username)) {
             User user = this.useRepository.findByUsername(username)
                     .orElseThrow(() -> new UsernameNotFoundException("Username " + username + "not found"));
             if (jwtService.isTokenValid(refreshToken, user)) {
@@ -152,10 +144,6 @@ public class AuthenticationService extends BaseApplicationService {
                 .refreshToken(refreshToken)
                 .scope(DEFAULT_SCOPE) //TODO this need to be dynamic
                 .build();
-    }
-
-    private String createAccessToken(final User user) {
-        return this.jwtTokenProviderDeprecated.createToken(user.getUsername(), user.getId(), user.getRoles());
     }
 
     private User resolveUser(final String username) {

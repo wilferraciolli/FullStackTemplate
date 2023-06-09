@@ -3,6 +3,7 @@ package com.template.people;
 import java.time.LocalDate;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -39,15 +40,15 @@ public class PersonResource extends BaseDTO {
     private Long userId;
 
     @JsonProperty("firstName")
-    @NotNull
-    @Size(max = 80, message = "First name cannot have more than {max} characters")
+    @NotEmpty(message = "{user.firstName.blank}")
+    @Size(max = 80, message = "{user.firstName.tooLong}")
     private String firstName;
 
-    @NotNull
-    @Size(max = 80, message = "Last name cannot have more than {max} characters")
+    @NotEmpty(message = "{user.lastName.blank}")
+    @Size(max = 80, message = "{user.lastName.tooLong}")
     private String lastName;
 
-    @NotNull(message = "Email name cannot be null.")
+    @NotEmpty(message = "{user.email.blank}")
     @Email(message = "{user.email.invalidFormat}")
     private String email;
 

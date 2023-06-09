@@ -30,20 +30,20 @@ import lombok.Value;
 @ToString
 public class RegistrationRequest {
 
-    @NotEmpty(message = "{registration.firstName.blank}")
-    @Size(max = 80, message = "{registration.firstName.tooLong}")
+    @NotEmpty(message = "{user.firstName.blank}")
+    @Size(max = 80, message = "{user.firstName.tooLong}")
     private String firstName;
 
-    @NotEmpty(message = "{registration.lastName.blank}")
-    @Size(max = 80, message = "{registration.lastName.tooLong}")
+    @NotEmpty(message = "{user.lastName.blank}")
+    @Size(max = 80, message = "{user.lastName.tooLong}")
     private String lastName;
 
-    @NotEmpty(message = "{registration.email.blank}")
+    @NotEmpty(message = "{user.email.blank}")
     @Email(message = "{user.email.invalidFormat}")
     @ValidateUniqueUsername(message = "{Users.username.NonUnique}")
     private String email;
 
-    @NotNull(message = "{registration.password.null}")
+    @NotNull(message = "{user.password.null}")
     @Size(min = 5, max = 36, message = "Password must be between {min} and {max} characters long. Length found : ${validatedValue.length()}")
     private String password;
 

@@ -2,23 +2,17 @@ package com.template.security.authentication;
 
 import static org.springframework.http.HttpStatus.OK;
 
+import com.template.security.jwt.refresh.RefreshTokenRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.template.libraries.rest.BaseRestService;
 import com.template.security.jwt.refresh.RefreshTokenException;
-import com.template.security.jwt.refresh.RefreshTokenRequest;
 
 
 /**
@@ -33,7 +27,7 @@ public class AuthenticationRestService extends BaseRestService {
     private AuthenticationService authenticateService;
 
     @PostMapping("/register")
-    public ResponseEntity<Void> register(@RequestBody @Valid final RegistrationRequest data) {
+    public ResponseEntity<Void> refreshToken(@RequestBody @Valid final RegistrationRequest data) {
         this.authenticateService.register(data);
 
         return ResponseEntity.ok().build();
@@ -50,19 +44,17 @@ public class AuthenticationRestService extends BaseRestService {
                 .body(this.authenticateService.authenticate(data));
     }
 
-    @GetMapping("/accountverification/{userId}")
+    @PutMapping("/accountverification/{userId}")
     public ResponseEntity<Void> verifyAccount(@PathVariable("userId") final Long userId) {
         this.authenticateService.verifyAccount(userId);
 
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/refresh/token")
-    public ResponseEntity<AuthenticationResourceResponse> register(  HttpServletRequest request,
-                                                                     HttpServletResponse response) throws RefreshTokenException {
-
+    @PostMapping("/refreshtoken")
+    public ResponseEntity<AuthenticationResourceResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) throws RefreshTokenException {
         return ResponseEntity.status(OK)
-                .body(this.authenticateService.refreshToken(request, response));
+                .body(this.authenticateService.refreshToken(refreshTokenRequest));
     }
 
 }

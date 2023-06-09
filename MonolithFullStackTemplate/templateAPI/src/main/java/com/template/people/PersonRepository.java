@@ -15,6 +15,7 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
 
     Optional<Person> findByUserId(@NotNull Long userId);
 
+    //TODO this query is not working
     @Query("SELECT p FROM Person p WHERE p.firstName LIKE %:query%"
             + " ORDER BY p.firstName ASC")
     List<Person> searchByNameAndSurname(String query);
