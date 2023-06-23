@@ -5,7 +5,6 @@ import {MetadataService} from '../_services/metadata.service';
 import {DateTimeService} from '../_services/date-time.service';
 import {PersonService} from './person.service';
 import {Person} from './person';
-import {ValueViewValue} from '../shared/response/value-viewValue';
 
 @Injectable({
   providedIn: 'root'
@@ -36,19 +35,32 @@ export class PersonFormBuilder {
   }
 
   getFormValue(): Person {
+    // @ts-ignore
 
-    const person = new Person(
+    const person: Person = new Person(
+      // @ts-ignore
       this.form.controls.$key.value,
+      // @ts-ignore
       this.form.controls.userId.value,
+      // @ts-ignore
       this.form.controls.firstName.value,
+      // @ts-ignore
       this.form.controls.lastName.value,
+      // @ts-ignore
       this.form.controls.email.value,
+      // @ts-ignore
       this.dateTimeService.parseDate(this.form.controls.dateOfBirth.value),
+      // @ts-ignore
       this.form.controls.genderId.value,
+      // @ts-ignore
       this.form.controls.maritalStatusId.value,
+      // @ts-ignore
       this.form.controls.numberOfDependants.value,
+      // @ts-ignore
       this.form.controls.phoneNumber.value,
+      // @ts-ignore
       this.form.controls.links.value,
+      // @ts-ignore
       this.form.controls.meta.value
     );
 

@@ -22,19 +22,19 @@ export class NotificationService {
   constructor(public snackBar: MatSnackBar) {
   }
 
-  success(message) {
+  success(message: string): void {
     // set success message
     this.config['panelClass'] = ['notification', 'success'];
     this.snackBar.open(message, '', this.config);
   }
 
-  warn(message) {
+  warn(message: string): void {
     // set warn message
     this.config['panelClass'] = ['notification', 'warn'];
     this.snackBar.open(message, '', this.config);
   }
 
-  error(message) {
+  error(message: string): void {
     // set error message
     this.config['panelClass'] = ['notification', 'error'];
     this.snackBar.open(message, '', this.errorConfig);

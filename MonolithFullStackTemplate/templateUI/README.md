@@ -6,27 +6,27 @@ This is the ui for the market engine application
 ## Imports
 
 ######Angular Material
-    ng add @angular/material
-    
+ng add @angular/material
+
 ######Gesture Hammer JS
-    npm install --save hammerjs 
-Followed by adding it to the main.ts file   
-    
+npm install --save hammerjs
+Followed by adding it to the main.ts file
+
 ######Angular Material icons
-    added 
-    `<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">` 
-    to the index.htm head section
-   
+added
+`<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">`
+to the index.htm head section
+
 ######Lodash
-    npm install lodash --save
-    npm install @types/lodash --save-dev   
-    
+npm install lodash --save
+npm install @types/lodash --save-dev
+
 ###### Moment
     npm install --save moment 
     usage 
         import * as moment from 'moment';
         let myMoment: moment.Moment = moment("someDate");
-                
+
 ###### JWT decoder
     npm i jwt-decode
     usage 
@@ -46,9 +46,9 @@ https://www.codeandweb.com/babeledit/tutorials/how-to-translate-your-angular8-ap
 it uses the ngxTranslation service
 
 Run the following command
-    ```
-        npm install @ngx-translate/core @ngx-translate/http-loader rxjs --save
-    ```
+```
+npm install @ngx-translate/core @ngx-translate/http-loader rxjs --save
+```
 ## Creating lazily loading modules
     ```
     ng generate module moduleName --route routeName --module app.module
@@ -83,9 +83,9 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 Each component will have the following
 
 -package with feature name in plural
-    -folder for each component
-    -files for the feature
-    
+-folder for each component
+-files for the feature
+
     Eg
     
     -users
@@ -96,12 +96,12 @@ Each component will have the following
         -user component
         -user-service.ts
         -user-response
-        
+
 ## Folder structure
 
 ├── src
 │   ├── app
-│   │   ├── admin 
+│   │   ├── admin
 │   │   │   ├── directives
 │   │   │   ├── pages
 │   │   │   │   ├── dashboard

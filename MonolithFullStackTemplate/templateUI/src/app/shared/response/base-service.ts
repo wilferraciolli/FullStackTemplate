@@ -8,7 +8,7 @@ import { FormBuilder } from '@angular/forms';
 @Injectable()
 export class HttpBaseService {
 
-  private headers = new HttpHeaders();
+  private headers: HttpHeaders = new HttpHeaders();
 
   constructor(
     private router: Router,
@@ -22,6 +22,13 @@ export class HttpBaseService {
     return this.httpClient.get<T>(url)
       .pipe(retry(1),
         catchError(this.handleError));
+  }
+
+  public async getAllPromise<T>(url: string): Promise<any> {
+    const response =  await this.httpClient.get<T>(url)
+      .toPromise();
+
+    return response;
   }
 
   getSingle<T>(url: string) {

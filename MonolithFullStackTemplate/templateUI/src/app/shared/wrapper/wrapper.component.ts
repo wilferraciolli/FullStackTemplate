@@ -12,13 +12,13 @@ import {ProfileService} from '../../_services/profile.service';
 })
 export class WrapperComponent implements OnInit {
 
-  isLoggedOn: boolean;
-  usersAccess: boolean;
-  peopleAccess: boolean;
+  isLoggedOn: boolean = false;
+  usersAccess: boolean = false;
+  peopleAccess: boolean = false;
 
-  isNavBarOpen: boolean;
+  isNavBarOpen: boolean = false;
 
-  userProfile: UserProfile;
+  userProfile!: UserProfile;
 
   /**
    * Subscribe to see whether there is a user currently logged on.
@@ -31,13 +31,15 @@ export class WrapperComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('wrapper init ')
     this.authenticationService.isUserLoggedOn.subscribe(x => {
       this.isLoggedOn = x;
     });
 
     this.profileService.currentUserProfile
-      .subscribe(user => {
+      .subscribe((user: UserProfile) => {
         this.userProfile = user;
+        console.log('wrapper user logged on  ', this.userProfile);
         this.getAreasAccess();
       });
   }

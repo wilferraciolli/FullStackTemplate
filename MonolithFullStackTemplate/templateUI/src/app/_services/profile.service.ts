@@ -1,19 +1,14 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../environments/environment';
-import {map} from 'rxjs/operators';
 import {UserProfileResponse} from '../users/profile/user.profile.response';
 import {UserProfile} from '../users/profile/user.profile';
-import {UserRegistration} from '../registration/user-registration';
-
-import * as _ from 'lodash';
-import * as jwt_decode from 'jwt-decode';
 
 @Injectable({providedIn: 'root'})
 export class ProfileService {
 
-  private readonly _USER_PROFILE_URL = environment.baseUrl + '/api/iam/userprofile';
+  private readonly _USER_PROFILE_URL: string = environment.baseUrl + '/api/iam/userprofile';
 
   public currentUserProfile: Observable<UserProfile>;
   private currentUserProfileSubject: BehaviorSubject<UserProfile>;
@@ -23,6 +18,7 @@ export class ProfileService {
    */
   constructor(private httpClient: HttpClient) {
     // get the user profile from storage
+    // @ts-ignore
     this.currentUserProfileSubject = new BehaviorSubject<UserProfile>(JSON.parse(localStorage.getItem('templateUI-userProfile')));
     this.currentUserProfile = this.currentUserProfileSubject.asObservable();
   }
@@ -51,12 +47,21 @@ export class ProfileService {
     localStorage.removeItem('templateUI-userProfile');
 
     // TODO tell all of the subscribers that this can be completed
-    this.currentUserProfileSubject.next(null);
+    this.currentUserProfileSubject.complete();
   }
 
- private async loadUserProfile<T>(): Promise<UserProfileResponse> {
-    const data = await this.httpClient
-      .get<UserProfileResponse>(this._USER_PROFILE_URL)
+  private async loadUserProfile<T>(): Promise<UserProfileResponse> {
+
+    let headers: HttpHeaders = new HttpHeaders();
+    headers.append('content-type','application/json');
+    // headers.append('Access-Control-Allow-Origin', '*');
+    // headers.append('Access-Control-Allow-Methods', 'OPTIONS, POST, GET');
+    // headers.append('Origin', 'http://localhost:4200');
+    // headers.append('Access-Control-Allow-Headers', 'Content-Type');
+
+    // @ts-ignore
+    const data: UserProfileResponse = await this.httpClient
+      .get<UserProfileResponse>(this._USER_PROFILE_URL, { headers})
       .toPromise();
     // console.log(data);
 
@@ -66,7 +71,7 @@ export class ProfileService {
   private populateUserProfile(userProfileResponse: UserProfileResponse): void {
     console.log('populating userProfile in Profile Service', userProfileResponse);
 
-    const userProfile = new UserProfile(userProfileResponse);
+    const userProfile: UserProfile = new UserProfile(userProfileResponse);
     localStorage.setItem('templateUI-userProfile', JSON.stringify(userProfile));
     this.currentUserProfileSubject.next(userProfile);
   }

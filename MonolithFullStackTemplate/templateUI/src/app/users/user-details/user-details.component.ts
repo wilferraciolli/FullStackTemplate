@@ -10,8 +10,7 @@ import {ProfileService} from '../../_services/profile.service';
   styleUrls: ['./user-details.component.scss']
 })
 export class UserDetailsComponent implements OnInit {
-
-  userProfile: UserProfile;
+  userProfile!: UserProfile;
 
   activeLinkIndex = -1;
   routeLinks: any[];

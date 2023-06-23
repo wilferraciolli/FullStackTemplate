@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Person} from '../../../people/person';
-import {DatePipe, formatDate} from '@angular/common';
 import {DateTimeService} from '../../../_services/date-time.service';
 
 @Injectable({
@@ -28,19 +27,30 @@ export class UserProfileFormBuilder {
   });
 
   getFormValue(): Person {
-
     const person = new Person(
+      // @ts-ignore
       this.form.controls.$key.value,
+      // @ts-ignore
       this.form.controls.userId.value,
+      // @ts-ignore
       this.form.controls.firstName.value,
+      // @ts-ignore
       this.form.controls.lastName.value,
+      // @ts-ignore
       this.form.controls.email.value,
+      // @ts-ignore
       this.dateTimeService.parseDate(this.form.controls.dateOfBirth.value),
+      // @ts-ignore
       this.form.controls.genderId.value,
+      // @ts-ignore
       this.form.controls.maritalStatusId.value,
+      // @ts-ignore
       this.form.controls.numberOfDependants.value,
+      // @ts-ignore
       this.form.controls.phoneNumber.value,
+      // @ts-ignore
       this.form.controls.links.value,
+      // @ts-ignore
       this.form.controls.meta.value
     );
 

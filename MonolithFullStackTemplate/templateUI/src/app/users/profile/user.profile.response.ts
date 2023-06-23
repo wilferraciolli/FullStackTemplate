@@ -1,5 +1,4 @@
 export interface UserProfileResponse {
-
   _data: {
     userProfile: {
       id: string;

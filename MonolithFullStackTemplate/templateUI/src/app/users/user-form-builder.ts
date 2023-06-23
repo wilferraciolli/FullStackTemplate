@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { User } from './user';
-import { ValueViewValue } from '../shared/response/value-viewValue';
-import { UserServiceService } from './user-service.service';
+import {Injectable} from '@angular/core';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {User} from './user';
+import {ValueViewValue} from '../shared/response/value-viewValue';
+import {UserServiceService} from './user-service.service';
 import * as _ from 'lodash';
 import {MetadataService} from '../_services/metadata.service';
 import {DateTimeService} from '../_services/date-time.service';
@@ -47,17 +47,26 @@ export class UserFormBuilder {
   }
 
   getFormValue(): User {
-
-    const user = new User(
+    const user: User = new User(
+      // @ts-ignore
       this.form.controls.$key.value,
+          // @ts-ignore
       this.form.controls.firstName.value,
+          // @ts-ignore
       this.form.controls.lastName.value,
+          // @ts-ignore
       this.form.controls.username.value,
+          // @ts-ignore
       this.form.controls.password.value,
+          // @ts-ignore
       this.dateTimeService.parseDate(this.form.controls.dateOfBirth.value),
+          // @ts-ignore
       this.form.controls.active.value,
+          // @ts-ignore
       this.getRoleIds(this.form.controls.roles.value),
+          // @ts-ignore
       this.form.controls.links.value,
+          // @ts-ignore
       this.form.controls.meta.value
     );
 
@@ -137,8 +146,8 @@ export class UserFormBuilder {
   }
 
   private getRoleIds(roles: Array<ValueViewValue>): Array<string> {
-    const roleIds = new Array();
-    roles.forEach(role => {
+    const roleIds: Array<string> = [];
+    roles.forEach((role:ValueViewValue): void => {
       roleIds.push(role.value);
     });
 
@@ -148,7 +157,7 @@ export class UserFormBuilder {
   private resetArrayFormValues(): void {
 
     // reset the array form values
-    const rolesArrayLength = this.rolesFormArray.length;
+    const rolesArrayLength: number = this.rolesFormArray.length;
     if (rolesArrayLength > 1) {
       for (let i = rolesArrayLength; i > 1; i--) {
         this.rolesFormArray.removeAt(i - 1);
@@ -158,8 +167,8 @@ export class UserFormBuilder {
 
   private transformUserRolesToRolesViewValue(user: User): Array<ValueViewValue> {
 
-    const userRolesViewValues = this.metadataService.resolveMetadataIdValues(user.meta.roleIds.values)
-      .filter(role => user.roleIds.includes(role.value));
+    const userRolesViewValues: ValueViewValue[] = this.metadataService.resolveMetadataIdValues(user.meta.roleIds.values)
+      .filter((role: ValueViewValue) => user.roleIds.includes(role.value));
 
     this.addRolesFormGroupTRoEachUserRole(userRolesViewValues.length);
 

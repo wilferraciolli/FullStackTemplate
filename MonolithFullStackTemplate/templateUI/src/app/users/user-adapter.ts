@@ -9,10 +9,6 @@ import { UserLinks } from './user-links';
 export class UserAdapter implements Adapter<User> {
 
   adapt(user: User, links: UserLinks , meta?: any): User {
-
-    // console.log('adapting user ', user);
-    // console.log('adapting user ',  links);
-    // console.log('adapting user ',  meta);
     return new User(user.id,
       user.firstName,
       user.lastName,

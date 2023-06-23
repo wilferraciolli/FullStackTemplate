@@ -17,7 +17,6 @@ export class MetadataService {
    * @param values The metadata.
    */
   resolveMetadataIdValues(values: Array<IdValue>): Array<ValueViewValue> {
-
     return values
       .map(meta => (new ValueViewValue(meta.id, meta.value)));
   }

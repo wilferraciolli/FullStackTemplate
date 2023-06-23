@@ -1,5 +1,5 @@
-import { PersonLinks } from './person-links';
-import { PersonMeta } from './person-meta';
+import {PersonLinks} from './person-links';
+import {PersonMeta} from './person-meta';
 
 export class Person {
 
@@ -21,11 +21,11 @@ export class Person {
               firstName: string,
               lastName: string,
               email: string,
-              dateOfBirth: string,
-              genderId: string,
-              maritalStatusId: string,
-              numberOfDependants: number,
-              phoneNumber: string,
+              dateOfBirth: string | undefined,
+              genderId: string | undefined,
+              maritalStatusId: string | undefined,
+              numberOfDependants: number | undefined,
+              phoneNumber: string | undefined,
               links: PersonLinks,
               meta: PersonMeta) {
 

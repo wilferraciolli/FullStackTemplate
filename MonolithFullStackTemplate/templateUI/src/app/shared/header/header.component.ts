@@ -1,12 +1,12 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { UserProfile } from '../../users/profile/user.profile';
-import { Router } from '@angular/router';
-import { LinksService } from '../../_services/links-service';
-import { AuthService } from '../../_services/auth-service';
-import { ProfileService } from '../../_services/profile.service';
-import { TranslateService } from '@ngx-translate/core';
-import { ValueViewValue } from '../response/value-viewValue';
-import { LocaleType } from '../locale.enum';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {UserProfile} from '../../users/profile/user.profile';
+import {Router} from '@angular/router';
+import {LinksService} from '../../_services/links-service';
+import {AuthService} from '../../_services/auth-service';
+import {ProfileService} from '../../_services/profile.service';
+import {TranslateService} from '@ngx-translate/core';
+import {ValueViewValue} from '../response/value-viewValue';
+import {LocaleType} from '../locale.enum';
 
 @Component({
   selector: 'app-header',
@@ -15,13 +15,13 @@ import { LocaleType } from '../locale.enum';
 })
 export class HeaderComponent implements OnInit {
 
-  isLoggedOn: boolean;
-  usersAccess: boolean;
-  peopleAccess: boolean;
+  isLoggedOn: boolean = false;
+  usersAccess: boolean = false;
+  peopleAccess: boolean = false;
 
-  availableLanguages: Array<ValueViewValue>;
+  availableLanguages: Array<ValueViewValue> = [];
 
-  userProfile: UserProfile;
+  userProfile!: UserProfile;
   @Output()
   toggleSidenav = new EventEmitter<void>(); // event used to toggle sidenav
 
@@ -70,12 +70,12 @@ export class HeaderComponent implements OnInit {
   }
 
   getUsers(): void {
-    const dataObject = { state: { usersLink: this.userProfile.links.users } };
+    const dataObject = {state: {usersLink: this.userProfile.links.users}};
     this.router.navigate(['users'], dataObject);
   }
 
   getPeople(): void {
-    const dataObject = { state: { peopleLink: this.userProfile.links.people } };
+    const dataObject = {state: {peopleLink: this.userProfile.links.people}};
     this.router.navigate(['people'], dataObject);
   }
 

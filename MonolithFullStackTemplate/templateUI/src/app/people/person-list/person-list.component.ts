@@ -1,24 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { Person } from '../person';
-import { Observable } from 'rxjs';
-import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
-import { ActivatedRoute, Router } from '@angular/router';
-import { LinksService } from '../../_services/links-service';
-import { NotificationService } from '../../shared/notification.service';
-import { MatDialog } from '@angular/material/dialog';
-import { DialogService } from '../../shared/dialog.service';
-import { LoadingService } from '../../shared/components/loading/loading.service';
-import { MetadataService } from '../../_services/metadata.service';
-import { Link } from '../../shared/response/link';
-import { PersonMeta } from '../person-meta';
-import { PersonLinksCollection } from '../person-links-collection';
-import { finalize } from 'rxjs/operators';
-import { PersonService } from '../person.service';
-import { PeopleResponse } from './people-response';
-import { ValueViewValue } from '../../shared/response/value-viewValue';
-import { PersonAdapter } from '../person.adapter';
-import { PersonComponent } from '../person/person.component';
-import { UserComponent } from '../../users/user/user.component';
+import {Component, Input, OnInit} from '@angular/core';
+import {Person} from '../person';
+import {Observable} from 'rxjs';
+import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
+import {ActivatedRoute, Router} from '@angular/router';
+import {LinksService} from '../../_services/links-service';
+import {NotificationService} from '../../shared/notification.service';
+import {MatDialog} from '@angular/material/dialog';
+import {DialogService} from '../../shared/dialog.service';
+import {LoadingService} from '../../shared/components/loading/loading.service';
+import {MetadataService} from '../../_services/metadata.service';
+import {Link} from '../../shared/response/link';
+import {PersonMeta} from '../person-meta';
+import {PersonLinksCollection} from '../person-links-collection';
+import {finalize} from 'rxjs/operators';
+import {PersonService} from '../person.service';
+import {PeopleResponse} from './people-response';
+import {ValueViewValue} from '../../shared/response/value-viewValue';
+import {PersonAdapter} from '../person.adapter';
+import {PersonComponent} from '../person/person.component';
+import {UserComponent} from '../../users/user/user.component';
 
 @Component({
   selector: 'app-person-list',
@@ -27,19 +27,22 @@ import { UserComponent } from '../../users/user/user.component';
 })
 export class PersonListComponent implements OnInit {
 
-  searchKey: string;
-  people: Array<Person>;
-  person: Person;
+  @Input()
+  public personListLink: Link | null = null;
 
-  personTemplateLink: Link;
-  personCollectionLinks: PersonLinksCollection;
-  personCollectionMeta: PersonMeta;
+  searchKey!: string;
+  people: Array<Person> = [];
+  person!: Person;
 
-  personCollectionGenderIds: Array<ValueViewValue>;
-  personCollectionMaritalStatusesIds: Array<ValueViewValue>;
+  personTemplateLink!: Link;
+  personCollectionLinks!: PersonLinksCollection;
+  personCollectionMeta!: PersonMeta;
+
+  personCollectionGenderIds: Array<ValueViewValue> = [];
+  personCollectionMaritalStatusesIds: Array<ValueViewValue> = [];
 
   isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(Breakpoints.XSmall);
-  userCreateAccess: boolean;
+  userCreateAccess: boolean = false;
 
   constructor(
     private personService: PersonService,
@@ -57,9 +60,11 @@ export class PersonListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    this.activatedRoute.data.subscribe((data: { peopleResponse: PeopleResponse }) =>
-      this.loadAll(data.peopleResponse));
+    if (this.personListLink) {
+      this.loadAll(this.personListLink.href);
+    } else {
+      this.router.navigate(['/home']);
+    }
   }
 
   onSearchClear(): void {
@@ -79,7 +84,7 @@ export class PersonListComponent implements OnInit {
       maxHeight: '100vh',
       autoFocus: true,
       disableClose: true,
-      data: { link: this.personCollectionLinks.createUser }
+      data: {link: this.personCollectionLinks.createUser}
     });
 
     // subscribe to screen size
@@ -99,7 +104,7 @@ export class PersonListComponent implements OnInit {
     });
   }
 
-  private loadAllDeleteMe(url: string): void {
+  private loadAll(url: string): void {
 
     this.loadingService.loadingOn();
 
@@ -109,6 +114,8 @@ export class PersonListComponent implements OnInit {
         const collectionData = response._data;
         const collectionMeta: any = response._metadata;
         const metaLinks: any = response._metaLinks;
+
+        console.log('After resolver people ', response);
 
         this.personTemplateLink = metaLinks.creratePerson;
 
@@ -123,26 +130,6 @@ export class PersonListComponent implements OnInit {
       });
   }
 
-  private loadAll(response: PeopleResponse): void {
-
-    const collectionData = response._data;
-    const collectionMeta: any = response._metadata;
-    const metaLinks: any = response._metaLinks;
-
-    console.log('After resolver people ', response);
-
-    this.personTemplateLink = metaLinks.creratePerson;
-
-    this.personCollectionMeta = this.resolveCollectionMeta(collectionMeta);
-    this.personCollectionLinks = this.resolveCollectionLinks(metaLinks);
-    this.userCreateAccess = this.linksService.hasLink(this.personCollectionLinks.createUser);
-
-    this.personCollectionGenderIds = this.metadataService.resolveMetadataIdValues(this.personCollectionMeta.genderId.values);
-    this.personCollectionMaritalStatusesIds = this.metadataService.resolveMetadataIdValues(this.personCollectionMeta.maritalStatusId.values);
-
-    this.assignPeople(collectionData.person);
-  }
-
   onEdit(row: Person): void {
     const signInDialogRef = this.dialog.open(PersonComponent, {
       width: '50%',
@@ -151,7 +138,7 @@ export class PersonListComponent implements OnInit {
       maxHeight: '100vh',
       autoFocus: true,
       disableClose: true,
-      data: { link: row.links.self }
+      data: {link: row.links.self}
     });
 
     // subscribe to screen size

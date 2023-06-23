@@ -18,11 +18,11 @@ import { MetadataService } from '../../../_services/metadata.service';
 })
 export class UserProfileComponent implements OnInit {
 
-  userProfile: UserProfile;
+  userProfile!: UserProfile;
 
-  person: Person;
-  genders: Array<ValueViewValue>;
-  maritalStatuses: Array<ValueViewValue>;
+  person!: Person;
+  genders: Array<ValueViewValue> = [];
+  maritalStatuses: Array<ValueViewValue> = [];
 
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute,

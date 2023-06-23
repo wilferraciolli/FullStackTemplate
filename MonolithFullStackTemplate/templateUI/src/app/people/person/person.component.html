@@ -24,21 +24,21 @@
           <mat-form-field color="primary">
             <input formControlName="firstName" required matInput placeholder="{{'person.firstName' | translate}}">
             <!-- adding validation message based on error type -->
-            <mat-error *ngIf="personFormBuilder.form.controls['firstName'].errors?.required">Mandatory</mat-error>
-            <mat-error *ngIf="personFormBuilder.form.controls['firstName'].errors?.minLength">Minimum 2 characters
+            <mat-error *ngIf="personFormBuilder.form.controls['firstName'].errors?.['required']">Mandatory</mat-error>
+            <mat-error *ngIf="personFormBuilder.form.controls['firstName'].errors?.['minLength']">Minimum 2 characters
             </mat-error>
           </mat-form-field>
 
           <mat-form-field color="primary">
             <input formControlName="lastName" required matInput placeholder="{{'person.lastName' | translate}}">
             <!-- adding validation message based on error type -->
-            <mat-error *ngIf="personFormBuilder.form.controls['lastName'].errors?.required">Mandatory</mat-error>
-            <mat-error *ngIf="personFormBuilder.form.controls['lastName'].errors?.minLength">Minimum 2 characters
+            <mat-error *ngIf="personFormBuilder.form.controls['lastName'].errors?.['required']">Mandatory</mat-error>
+            <mat-error *ngIf="personFormBuilder.form.controls['lastName'].errors?.['minLength']">Minimum 2 characters
             </mat-error>
           </mat-form-field>
 
           <mat-form-field color="primary">
-            <input formControlName="email" matInput placeholder="{{'person.email' | translate}}" disabled="true">
+            <input formControlName="email" matInput placeholder="{{'person.email' | translate}}">
           </mat-form-field>
 
           <mat-form-field color="primary">

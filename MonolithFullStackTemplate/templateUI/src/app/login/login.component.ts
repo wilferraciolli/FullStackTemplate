@@ -13,12 +13,12 @@ import {LoadingService} from '../shared/components/loading/loading.service';
 })
 export class LoginComponent implements OnInit {
 
-  loginForm: FormGroup;
-  loading = false;
-  submitted = false;
-  hide = true;
-  returnUrl: string;
-  error: string;
+  loginForm!: FormGroup;
+  loading: boolean = false;
+  submitted: boolean = false;
+  hide: boolean = true;
+  returnUrl!: string;
+  error!: string;
 
   /**
    * Specifies the dependencies that are required by the component as parameters, these are automatically injected by
@@ -30,20 +30,16 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthService,
-    // private userProfileService: UserProfileService,
     private loadingService: LoadingService
   ) {
 
     // redirect to home if already logged in
     this.authenticationService.isUserLoggedOn
       .subscribe(x => {
-        if (x === true) {
+        if (x) {
           this.router.navigate(['/']);
         }
       });
-    // if (this.authenticationService.isUserLoggedOn) {
-    //   this.router.navigate(['/']);
-    // }
   }
 
   // convenience getter for easy access to form fields
@@ -92,7 +88,7 @@ export class LoginComponent implements OnInit {
         first(),
         finalize(() => this.loadingService.loadingOff()))
       .subscribe(
-        data => {
+        (data: any) => {
           // populate user profile service after login
           // this.userProfileService.loadUserProfile()
           //   .then((userProfileResponse) => {
@@ -102,14 +98,13 @@ export class LoginComponent implements OnInit {
           // redirect
           this.router.navigate([this.returnUrl]);
         },
-        error => {
+        (error: any): void => {
           this.error = error;
           this.loading = false;
         });
   }
 
   getFormValue(): Authentication {
-
-    return new Authentication(this.f.username.value, this.f.password.value);
+    return new Authentication(this.f["username"].value, this.f["password"].value);
   }
 }

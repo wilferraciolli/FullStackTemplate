@@ -13,9 +13,9 @@
             <mat-form-field color="primary">
               <input formControlName="firstName" matInput placeholder="{{'userProfile.firstName' | translate}}">
               <!-- adding validation message based on error type -->
-              <mat-error *ngIf="userProfileFormBuilder.form.controls['firstName'].errors?.required">Mandatory
+              <mat-error *ngIf="userProfileFormBuilder.form.controls['firstName'].errors?.['required']">Mandatory
               </mat-error>
-              <mat-error *ngIf="userProfileFormBuilder.form.controls['firstName'].errors?.minLength">Minimum 2
+              <mat-error *ngIf="userProfileFormBuilder.form.controls['firstName'].errors?.['minLength']">Minimum 2
                 characters
               </mat-error>
             </mat-form-field>
@@ -23,9 +23,9 @@
             <mat-form-field color="primary">
               <input formControlName="lastName" matInput placeholder="{{'userProfile.lastName' | translate}}">
               <!-- adding validation message based on error type -->
-              <mat-error *ngIf="userProfileFormBuilder.form.controls['lastName'].errors?.required">Mandatory
+              <mat-error *ngIf="userProfileFormBuilder.form.controls['lastName'].errors?.['required']">Mandatory
               </mat-error>
-              <mat-error *ngIf="userProfileFormBuilder.form.controls['lastName'].errors?.minLength">Minimum 2
+              <mat-error *ngIf="userProfileFormBuilder.form.controls['lastName'].errors?.['minLength']">Minimum 2
                 characters
               </mat-error>
             </mat-form-field>
@@ -33,7 +33,7 @@
             <mat-form-field color="primary">
               <input formControlName="email" matInput placeholder="{{'userProfile.email' | translate}}">
               <!-- adding validation message based on error type -->
-              <mat-error *ngIf="userProfileFormBuilder.form.controls['email'].errors?.required">Mandatory
+              <mat-error *ngIf="userProfileFormBuilder.form.controls['email'].errors?.['required']">Mandatory
               </mat-error>
             </mat-form-field>
 

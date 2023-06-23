@@ -10,11 +10,6 @@ import {PersonLinks} from './person-links';
 export class PersonAdapter implements Adapter<Person> {
 
   adapt(person: Person, links: PersonLinks, meta?: any): Person {
-
-    // console.log('adapting person ', person);
-    // console.log('adapting person ',  links);
-    // console.log('adapting person ',  meta);
-
     return new Person(person.id,
       person.userId,
       person.firstName,

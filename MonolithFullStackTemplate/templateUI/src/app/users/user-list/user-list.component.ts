@@ -1,10 +1,10 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatSort} from '@angular/material/sort';
 import {MatPaginator} from '@angular/material/paginator';
 import {User} from '../user';
 import {UserServiceService} from '../user-service.service';
-import {UsersResponse} from './users-response';
+import {UserListResponse} from './user-list-response';
 import {UserAdapter} from '../user-adapter';
 import {ValueViewValue} from '../../shared/response/value-viewValue';
 import {UserLinksCollection} from '../user-links-collection';
@@ -15,7 +15,6 @@ import {NotificationService} from '../../shared/notification.service';
 import {DialogService} from '../../shared/dialog.service';
 import {UserComponent} from '../user/user.component';
 import {UserFormBuilder} from '../user-form-builder';
-import * as _ from 'lodash';
 import {Link} from '../../shared/response/link';
 import {Observable} from 'rxjs';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
@@ -29,20 +28,22 @@ import {MetadataService} from '../../_services/metadata.service';
   styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent implements OnInit {
+  @Input()
+  public userListLink: Link | null = null;
 
-  searchKey: string;
-  users: Array<User>;
-  user: User;
+  searchKey!: string;
+  users: Array<User> = [];
+  user!: User;
 
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort!: MatSort;
+  @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
 
-  userTemplateLink: Link;
-  userCollectionLinks: UserLinksCollection;
-  userCollectionMeta: UserMeta;
+  userTemplateLink!: Link;
+  userCollectionLinks!: UserLinksCollection;
+  userCollectionMeta!: UserMeta;
 
-  userCreateAccess: boolean;
-  userCollectionRoleIds: Array<ValueViewValue>;
+  userCreateAccess: boolean = false;
+  userCollectionRoleIds: Array<ValueViewValue> = [];
 
   isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(Breakpoints.XSmall);
 
@@ -62,9 +63,11 @@ export class UserListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    this.activatedRoute.data.subscribe((data: { link: Link }) =>
-      this.loadAll(data.link.href));
+    if (this.userListLink) {
+      this.loadAll(this.userListLink.href);
+    }else {
+      this.router.navigate(['/home']);
+    }
   }
 
   onSearchClear(): void {
@@ -158,13 +161,32 @@ export class UserListComponent implements OnInit {
     });
   }
 
+  private _buildUsers(response: UserListResponse): void {
+    this.loadingService.loadingOn();
+
+    const collectionData = response._data;
+    const collectionMeta: any = response._metadata;
+    const metaLinks: any = response._metaLinks;
+
+    this.userTemplateLink = metaLinks.createUser;
+
+    this.userCollectionMeta = this.resolveCollectionMeta(collectionMeta);
+    this.userCollectionLinks = this.resolveCollectionLinks(metaLinks);
+    this.userCreateAccess = this.linksService.hasLink(this.userCollectionLinks.createUser);
+    this.userCollectionRoleIds = this.metadataService.resolveMetadataIdValues(this.userCollectionMeta.roleIds.values);
+
+    this.assignUsers(collectionData.user);
+
+    this.loadingService.loadingOff();
+  }
+
   private loadAll(url: string): void {
 
     this.loadingService.loadingOn();
 
-    this.userService.getAll<UsersResponse>(url)
+    this.userService.getAll<UserListResponse>(url)
       .pipe(finalize(() => this.loadingService.loadingOff()))
-      .subscribe((response: UsersResponse) => {
+      .subscribe((response: UserListResponse) => {
         const collectionData = response._data;
         const collectionMeta: any = response._metadata;
         const metaLinks: any = response._metaLinks;
@@ -198,5 +220,4 @@ export class UserListComponent implements OnInit {
 
     return collectionMeta;
   }
-
 }

@@ -8,10 +8,10 @@ import {Injectable} from '@angular/core';
   providedIn: 'root'
 })
 export class UserProfileAdapter implements Adapter<UserProfile> {
-
   adapt(data: any, links: any, meta?: any): UserProfile {
 
     // TODO
+    // @ts-ignore
     return null;
   }
 

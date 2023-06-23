@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
 import {ProfileService} from '../../_services/profile.service';
 import {UserProfile} from '../../users/profile/user.profile';
@@ -6,38 +6,21 @@ import {PeopleResponse} from './people-response';
 import {PersonService} from '../person.service';
 import {LoadingService} from '../../shared/components/loading/loading.service';
 import {finalize} from 'rxjs/operators';
-import {Observable} from 'rxjs';
-import {flatMap} from 'rxjs/internal/operators';
+import {firstValueFrom, Observable} from 'rxjs';
+import {Link} from "../../shared/response/link";
 
 @Injectable({providedIn: 'root'})
-export class PersonListResolver implements Resolve<Observable<PeopleResponse>> {
+export class PersonListResolver {
 
-  userProfile: UserProfile;
+  private readonly profileService: ProfileService = inject(ProfileService);
 
-  constructor(private profileService: ProfileService,
-              private personService: PersonService,
-              public loadingService: LoadingService) {
-  }
+  public async resolvePersonListLink(): Promise<Link | null> {
+    const userProfile: UserProfile | null = await firstValueFrom(this.profileService.currentUserProfile);
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<PeopleResponse> {
+    if (!userProfile) {
+      return null;
+    }
 
-    this.loadingService.loadingOn();
-
-
-    this.profileService.currentUserProfile
-      .subscribe(user => {
-        this.userProfile = user;
-      });
-
-    const url = this.userProfile.links.people.href;
-    return this.personService.getAll<PeopleResponse>(url)
-      .pipe(finalize(() => this.loadingService.loadingOff()));
-
-    // TODO not working
-    // return this.profileService.currentUserProfile
-    //   .pipe(flatMap((user: UserProfile) =>
-    //     this.personService.getAll<PeopleResponse>(user.links.people.href)
-    //       .pipe(finalize(() => this.loadingService.loadingOff()))
-    //   ));
+    return userProfile.links?.people;
   }
 }

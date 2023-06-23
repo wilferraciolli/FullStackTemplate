@@ -5,7 +5,7 @@
 
   <div class="user-list">
     <div class="user-list-search">
-      <mat-form-field floatLabel="never" class="full-width">
+      <mat-form-field floatLabel="auto" class="full-width">
         <input matInput type="text" [(ngModel)]="searchKey" placeholder="Search" autocomplete="off"
                (keyup)="applyFilter()">
         <button (click)="onSearchClear()" mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchKey">

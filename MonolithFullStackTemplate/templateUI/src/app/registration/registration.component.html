@@ -14,39 +14,39 @@
           <mat-form-field class="full-width">
             <mat-label>{{'registration.firstName' | translate}}</mat-label>
             <input matInput placeholder="{{'registration.firstName' | translate}}" name="firstName"
-                   formControlName="firstName" required [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }">
-            <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
-              <div *ngIf="f.username.errors.required">First name is required</div>
+                   formControlName="firstName" required [ngClass]="{ 'is-invalid': submitted && f['firstName'].errors }">
+            <div *ngIf="submitted && f['firstName'].errors" class="invalid-feedback">
+              <div *ngIf="f['username'].errors?.['required']">First name is required</div>
             </div>
           </mat-form-field>
           <mat-form-field class="full-width">
             <mat-label>{{'registration.lastName' | translate}}</mat-label>
             <input matInput placeholder="{{'registration.lastName' | translate}}" name="lastName"
-                   formControlName="lastName" required [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }">
-            <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
-              <div *ngIf="f.lastName.errors.required">Last name is required</div>
+                   formControlName="lastName" required [ngClass]="{ 'is-invalid': submitted && f['lastName'].errors }">
+            <div *ngIf="submitted && f['firstName'].errors" class="invalid-feedback">
+              <div *ngIf="f['lastName'].errors?.['required']">Last name is required</div>
             </div>
           </mat-form-field>
           <mat-form-field class="full-width">
             <mat-label>{{'registration.email' | translate}}</mat-label>
             <input matInput placeholder="{{'registration.email' | translate}}" name="email"
-                   formControlName="email" required [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+                   formControlName="email" required [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">
             <!--            <mat-error *ngIf="isUsernameAvailable('WilFerraciolli@wiltech.com')">Name taken biatch</mat-error>-->
-            <mat-error *ngIf="this.registerForm['controls'].email.hasError('alreadyExists')">Name taken
+            <mat-error *ngIf="this.registerForm.controls['email'].hasError('alreadyExists')">Name taken
             </mat-error>
-            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-              <div *ngIf="f.email.errors.required">Email is required</div>
+            <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+              <div *ngIf="f['email'].errors?.['required']">Email is required</div>
             </div>
           </mat-form-field>
           <mat-form-field class="full-width">
             <mat-label>{{'registration.password' | translate}}</mat-label>
             <input matInput placeholder="{{'registration.password' | translate}}" name="password"
-                   formControlName="password" required [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
+                   formControlName="password" required [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
                    [type]="hide? 'password' : 'text'">
             <mat-icon color="primary" matSuffix
                       (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-              <div *ngIf="f.password.errors.required">Password is required</div>
+            <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+              <div *ngIf="f['password'].errors?.['required']">Password is required</div>
             </div>
           </mat-form-field>
 

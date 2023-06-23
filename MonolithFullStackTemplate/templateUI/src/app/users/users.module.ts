@@ -15,7 +15,7 @@ import { UsersRoutingModule } from './users-routing.module';
     SharedModule
   ],
   // add components used in pop ups
-  entryComponents: [UserComponent, MatConfirmDialogComponent]
+  // TODO - migration entryComponents: [UserComponent, MatConfirmDialogComponent]
 })
 export class UsersModule {
 }

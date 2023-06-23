@@ -12,7 +12,7 @@ import {ValueViewValue} from '../shared/response/value-viewValue';
 @Pipe({name: 'convertIdToValues'})
 export class ConvertIdToStringValuePipe implements PipeTransform {
 
-  transform(id: string, idValues: Array<ValueViewValue>): string {
+  transform(id: string | undefined, idValues: Array<ValueViewValue>): string {
     // console.log('the value to convert is ', id);
     // console.log('the values available are ', idValues);
 

@@ -1,24 +1,26 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
 import {Link} from '../../shared/response/link';
 import {ProfileService} from '../../_services/profile.service';
-import {UserProfile} from '../../users/profile/user.profile';
+import {UserProfile} from '../profile/user.profile';
+import {UserListResponse} from "./user-list-response";
+import {finalize, first, map} from "rxjs/operators";
+import {LoadingService} from "../../shared/components/loading/loading.service";
+import {UserServiceService} from "../user-service.service";
+import {firstValueFrom, lastValueFrom, Observable, observable} from "rxjs";
 
 @Injectable({providedIn: 'root'})
-export class UserListResolver implements Resolve<Link> {
+export class UserListResolver {
 
-  userProfile: UserProfile;
+  private readonly profileService: ProfileService = inject(ProfileService);
 
-  constructor(private profileService: ProfileService) {
-  }
+  public async resolveUserListLink(): Promise<Link | null> {
+    const userProfile: UserProfile | null = await firstValueFrom(this.profileService.currentUserProfile);
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Link {
+    if (!userProfile) {
+      return null;
+    }
 
-    this.profileService.currentUserProfile
-      .subscribe(user => {
-        this.userProfile = user;
-      });
-
-    return this.userProfile.links.users;
+    return userProfile.links?.users;
   }
 }

@@ -1,6 +1,6 @@
-import {Component} from '@angular/core';
-import {TranslateService} from '@ngx-translate/core';
-import {LocaleType} from './shared/locale.enum';
+import { Component } from '@angular/core';
+import {TranslateService} from "@ngx-translate/core";
+import {LocaleType} from "./shared/locale.enum";
 
 @Component({
   selector: 'app-root',
@@ -8,19 +8,19 @@ import {LocaleType} from './shared/locale.enum';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'templateUI';
+  title: string = 'templateUI';
 
   constructor(private translate: TranslateService) {
-    const usersChosenLanguage = this.resolveUsersLanguage();
+    const usersChosenLanguage: string | null = this.resolveUsersLanguage();
 
-    if (this.resolveUsersLanguage()) {
+    if (usersChosenLanguage) {
       translate.setDefaultLang(usersChosenLanguage);
     } else {
       translate.setDefaultLang(LocaleType.ENGLISH);
     }
   }
 
-  private resolveUsersLanguage(): string {
+  private resolveUsersLanguage(): string | null {
     // TODO load default language from user preferences
     return localStorage.getItem('templateUI-chosenLanguage');
   }

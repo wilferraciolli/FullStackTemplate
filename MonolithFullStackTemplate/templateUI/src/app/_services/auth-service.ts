@@ -8,7 +8,8 @@ import {UserProfile} from '../users/profile/user.profile';
 import {UserRegistration} from '../registration/user-registration';
 
 import * as _ from 'lodash';
-import * as jwt_decode from 'jwt-decode';
+// import * as jwt_decode from 'jwt-decode';
+import jwt_decode from 'jwt-decode';
 import {ProfileService} from './profile.service';
 import {LoadingService} from '../shared/components/loading/loading.service';
 
@@ -18,7 +19,7 @@ export class AuthService {
   private readonly _AUTHENTICATION_URL = '/api/auth';
   private readonly _REFRESH_TOKEN_URL = '/api/auth/refresh/token';
 
-  private refreshTokenTimeout;
+  private refreshTokenTimeout!: any;
 
   public isUserLoggedOn: Observable<boolean>;
   private isUserLoggedOnSubject: BehaviorSubject<boolean>;
@@ -43,8 +44,7 @@ export class AuthService {
     return this.isUserLoggedOnSubject.value;
   }
 
-  login(authentication): any {
-
+  login(authentication: any): any {
     this.loadingService.loadingOn();
 
     return this.httpClient
@@ -89,15 +89,14 @@ export class AuthService {
    * Get the current user from the local storage.
    */
   getToken(): string {
-
+    // @ts-ignore
     const authDetails = JSON.parse(localStorage.getItem('templateUI-authDetails'));
 
     if (authDetails) {
-
       return authDetails.access_token;
     } else {
 
-      return null;
+      return '';
     }
   }
 
@@ -109,16 +108,18 @@ export class AuthService {
       return true;
     }
 
-    const date = this.getTokenExpirationDate(token);
+    const date: Date | null = this.getTokenExpirationDate(token);
     if (date === undefined) {
       return false;
     }
 
+    // @ts-ignore
     return !(date.valueOf() > new Date().valueOf());
   }
 
   private getRefreshToken(): string {
 
+    // @ts-ignore
     const authDetails = JSON.parse(localStorage.getItem('templateUI-authDetails'));
 
     if (authDetails) {
@@ -126,18 +127,18 @@ export class AuthService {
       return authDetails.refresh_token;
     } else {
 
-      return null;
+      return '';
     }
   }
 
-  private getTokenExpirationDate(token: string): Date {
-    const decoded = jwt_decode(token);
+  private getTokenExpirationDate(token: string): Date | null {
+    const decoded: any = jwt_decode(token);
 
     if (decoded.exp === undefined) {
       return null;
     }
 
-    const date = new Date(0);
+    const date: Date = new Date(0);
     date.setUTCSeconds(decoded.exp);
 
     return date;
@@ -145,7 +146,7 @@ export class AuthService {
 
   private startRefreshTokenTimer(): void {
     // parse json object from base64 encoded jwt token
-    const jwtToken = jwt_decode(this.getToken());
+    const jwtToken: any = jwt_decode(this.getToken());
 
     // set a timeout to refresh the token a minute before it expires
     const expires = new Date(jwtToken.exp * 1000);
@@ -175,7 +176,7 @@ export class AuthService {
     this.isUserLoggedOnSubject.next(false);
   }
 
-  private saveAuthDetails(authDetails): void {
+  private saveAuthDetails(authDetails: any): void {
     // store user details and jwt token in local storage to keep user logged in between page refreshes
     localStorage.setItem('templateUI-authDetails', JSON.stringify(authDetails));
     this.isUserLoggedOnSubject.next(true);

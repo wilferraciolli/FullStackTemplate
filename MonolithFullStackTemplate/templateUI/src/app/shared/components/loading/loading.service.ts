@@ -1,6 +1,4 @@
 import {Injectable} from '@angular/core';
-import {Link} from '../../response/link';
-import * as _ from 'lodash';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {concatMap, finalize, tap} from 'rxjs/operators';
 
@@ -8,7 +6,6 @@ import {concatMap, finalize, tap} from 'rxjs/operators';
   providedIn: 'root'
 })
 export class LoadingService {
-
   // create a loading subject and make it private so no external classes can change its value
   private loadingSubject = new BehaviorSubject(false);
   loading$: Observable<boolean> = this.loadingSubject.asObservable();

@@ -20,6 +20,7 @@ export class UserProfileService {
 
   constructor(private httpClient: HttpClient) {
     // get the user profile from storage
+    // @ts-ignore
     this.currentUserProfileSubject = new BehaviorSubject<UserProfile>(JSON.parse(localStorage.getItem('userProfile')));
     this.currentUserProfile = this.currentUserProfileSubject.asObservable();
   }
@@ -78,6 +79,6 @@ export class UserProfileService {
     console.log('removing userProfile in UserProfileService');
 
     // tell all of the subscribers that the user profile is null
-    this.currentUserProfileSubject.next(null);
+    this.currentUserProfileSubject.complete();
   }
 }

@@ -15,7 +15,7 @@ import { SharedModule } from '../shared/shared.module';
     SharedModule
   ],
   // add components used in pop ups
-  entryComponents: [PersonComponent, MatConfirmDialogComponent]
+ // TODO migration entryComponents: [PersonComponent, MatConfirmDialogComponent]
 })
 export class PeopleModule {
 }

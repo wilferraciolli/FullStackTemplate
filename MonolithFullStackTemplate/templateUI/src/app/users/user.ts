@@ -20,7 +20,7 @@ export class User {
               lastName: string,
               username: string,
               password: string,
-              dateOfBirth: string,
+              dateOfBirth: string | undefined,
               active: boolean,
               roleIds: Array<string>,
               links: UserLinks,
@@ -40,10 +40,9 @@ export class User {
 
   /**
    * Resolves the roleIds. If roleIds are null, instantiate, otherwise return its original value.
-   * @param roles The roleIds
+   * @param roleIds The roleIds
    */
   private resolveUserRoleIds(roleIds: Array<string>): Array<string> {
-
     return _.isNull(roleIds) ? [] : roleIds;
   }
 }

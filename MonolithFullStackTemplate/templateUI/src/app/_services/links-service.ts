@@ -14,7 +14,7 @@ export class LinksService {
    * Determines if a ling is present.
    * @param link true if the link is defined.
    */
-  public hasLink(link: Link): boolean {
+  public hasLink(link: Link | undefined): boolean {
     // console.log(link);
 
     return !_.isUndefined(link);
@@ -33,15 +33,15 @@ export class LinksService {
    * Removes the template suffix from the link
    * @param link The link to get the create url from
    */
-  public getCreateUrlFromTemplateUrl(link: Link): string {
+  public getCreateUrlFromTemplateUrl(link: Link): string | null {
 
     if (this.isTemplateLink(link)) {
-      const re = /template/gi;
+      const re: RegExp = /template/gi;
 
       return link.href.replace(re, '');
     } else {
 
-      return undefined;
+      return null;
     }
   }
 }

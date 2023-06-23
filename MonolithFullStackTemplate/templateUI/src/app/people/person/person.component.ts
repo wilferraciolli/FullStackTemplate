@@ -18,10 +18,10 @@ import {ValueViewValue} from '../../shared/response/value-viewValue';
 })
 export class PersonComponent implements OnInit {
 
-  link: Link;
-  person: Person;
-  availableGenders: Array<ValueViewValue>;
-  availableMaritalStatuses: Array<ValueViewValue>;
+  link!: Link;
+  person!: Person;
+  availableGenders: Array<ValueViewValue> = [];
+  availableMaritalStatuses: Array<ValueViewValue> = [];
 
   constructor(private personService: PersonService,
               public personFormBuilder: PersonFormBuilder,
@@ -102,6 +102,7 @@ export class PersonComponent implements OnInit {
   create(): void {
     console.log('Adding');
 
+    // @ts-ignore
     this.personService.add(this.linkService.getCreateUrlFromTemplateUrl(this.link), this.personFormBuilder.getFormValue())
       .subscribe(data => {
           console.log('Success', data);

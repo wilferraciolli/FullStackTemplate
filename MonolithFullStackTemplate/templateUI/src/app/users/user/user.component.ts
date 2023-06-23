@@ -3,7 +3,6 @@ import {UserServiceService} from '../user-service.service';
 import {NotificationService} from '../../shared/notification.service';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {UserAdapter} from '../user-adapter';
-import {UserPayload} from '../user-payload';
 import {UserFormBuilder} from '../user-form-builder';
 import {ValueViewValue} from '../../shared/response/value-viewValue';
 import {User} from '../user';
@@ -11,7 +10,6 @@ import {Link} from '../../shared/response/link';
 import {UserResponse} from './user-response';
 import {LinksService} from '../../_services/links-service';
 import {MetadataService} from '../../_services/metadata.service';
-import {DateTimeService} from '../../_services/date-time.service';
 
 @Component({
   selector: 'app-user',
@@ -20,10 +18,10 @@ import {DateTimeService} from '../../_services/date-time.service';
 })
 export class UserComponent implements OnInit {
 
-  hide = true;
-  link: Link;
-  user: User;
-  availableRoles: Array<ValueViewValue>;
+  hide: boolean = true;
+  link!: Link;
+  user!: User;
+  availableRoles: Array<ValueViewValue> = [];
 
   constructor(private userService: UserServiceService,
               public userFormBuilder: UserFormBuilder,
@@ -84,6 +82,7 @@ export class UserComponent implements OnInit {
   }
 
   create(): void {
+    // @ts-ignore
     this.userService.add(this.linkService.getCreateUrlFromTemplateUrl(this.link), this.userFormBuilder.getFormValue())
       .subscribe((data: User) => {
           console.log('Success', data);

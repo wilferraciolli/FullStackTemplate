@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ValueViewValue} from '../../../shared/response/value-viewValue';
-import {newArray} from '@angular/compiler/src/util';
 
 @Component({
   selector: 'app-user-settings',
@@ -8,12 +7,11 @@ import {newArray} from '@angular/compiler/src/util';
   styleUrls: ['./user-settings.component.scss']
 })
 export class UserSettingsComponent implements OnInit {
-
-
   availableLocale: Array<ValueViewValue> = [];
   availableLanguages: Array<ValueViewValue> = [];
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
     this.availableLocale.push(new ValueViewValue('UTC', 'Utc'));

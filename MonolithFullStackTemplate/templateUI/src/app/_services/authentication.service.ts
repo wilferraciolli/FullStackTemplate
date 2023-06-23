@@ -15,6 +15,7 @@ export class AuthenticationService {
   private readonly _AUTHENTICATION_URL = '/api/auth';
   private readonly _REFRESH_TOKEN_URL = '/api/auth/refresh/token';
 
+  // @ts-ignore
   private refreshTokenTimeout;
 
   public currentUser: Observable<any>;
@@ -30,6 +31,7 @@ export class AuthenticationService {
     //   this.currentUser = this.currentUserSubject.asObservable();
     //   this.isUserLoggedOn = false;
     // } else {
+    // @ts-ignore
     this.currentUserSubject = new BehaviorSubject<any>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
     this.isUserLoggedOn = !_.isNull(localStorage.getItem('currentUser'));
@@ -45,7 +47,6 @@ export class AuthenticationService {
    * Get the current user from the local storage.
    */
   getToken(): string {
-
     const currentUser = this.currentUserValue;
 
     if (currentUser && currentUser.access_token) {
@@ -53,12 +54,11 @@ export class AuthenticationService {
       return this.currentUserSubject.value.access_token;
     } else {
 
-      return null;
+      return '';
     }
   }
 
   getRefreshToken(): string {
-
     const currentUser = this.currentUserValue;
 
     if (currentUser && currentUser.refresh_token) {
@@ -66,11 +66,12 @@ export class AuthenticationService {
       return this.currentUserSubject.value.refresh_token;
     } else {
 
-      return null;
+      return '';
     }
   }
 
-  getTokenExpirationDate(token: string): Date {
+  getTokenExpirationDate(token: string): Date | null {
+    // @ts-ignore
     const decoded = jwt_decode(token);
 
     if (decoded.exp === undefined) {
@@ -94,11 +95,12 @@ export class AuthenticationService {
     if (date === undefined) {
       return false;
     }
+    // @ts-ignore
     return !(date.valueOf() > new Date().valueOf());
   }
 
   //TODO remove
-  login(username, password) {
+  login(username: string , password: string ): Observable<any> {
 
     return this.http.post<any>(environment.baseUrl + this._AUTHENTICATION_URL + '/signin', {username, password})
       .pipe(map(user => {
@@ -112,21 +114,21 @@ export class AuthenticationService {
       }));
   }
 
-  login1(authentication) {
+  // login1(authentication) {
+  //
+  //   return this.http.post<any>(environment.baseUrl + this._AUTHENTICATION_URL + '/signin', authentication)
+  //     .pipe(map(user => {
+  //
+  //       // store user details and jwt token in local storage to keep user logged in between page refreshes
+  //       localStorage.setItem('currentUser', JSON.stringify(user));
+  //       this.currentUserSubject.next(user);
+  //       this.startRefreshTokenTimer();
+  //
+  //       return user;
+  //     }));
+  // }
 
-    return this.http.post<any>(environment.baseUrl + this._AUTHENTICATION_URL + '/signin', authentication)
-      .pipe(map(user => {
-
-        // store user details and jwt token in local storage to keep user logged in between page refreshes
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        this.currentUserSubject.next(user);
-        this.startRefreshTokenTimer();
-
-        return user;
-      }));
-  }
-
-  refreshToken() {
+  refreshToken(): Observable<any> {
     return this.http.post<any>(environment.baseUrl + this._REFRESH_TOKEN_URL, {'refreshToken': this.getRefreshToken()})
       .pipe(map((user) => {
         this.currentUserSubject.next(user);
@@ -138,6 +140,7 @@ export class AuthenticationService {
 
   private startRefreshTokenTimer() {
     // parse json object from base64 encoded jwt token
+    // @ts-ignore
     const jwtToken = jwt_decode(this.getToken());
 
     // set a timeout to refresh the token a minute before it expires
@@ -151,17 +154,17 @@ export class AuthenticationService {
   }
 
   //TODO not working
-  async refreshTokenV1(refreshToken) {
-
-    localStorage.removeItem('currentUser');
-
-    let user = await this.http.post(environment.baseUrl + this._REFRESH_TOKEN_URL, {refreshToken})
-      .toPromise();
-
-    // store user details and jwt token in local storage to keep user logged in between page refreshes
-    localStorage.setItem('currentUser', JSON.stringify(user));
-    this.currentUserSubject.next(user);
-  }
+  // async refreshTokenV1(refreshToken) {
+  //
+  //   localStorage.removeItem('currentUser');
+  //
+  //   let user = await this.http.post(environment.baseUrl + this._REFRESH_TOKEN_URL, {refreshToken})
+  //     .toPromise();
+  //
+  //   // store user details and jwt token in local storage to keep user logged in between page refreshes
+  //   localStorage.setItem('currentUser', JSON.stringify(user));
+  //   this.currentUserSubject.next(user);
+  // }
 
   logout(): void {
     // remove user from local storage and set current user to null
