@@ -18,7 +18,7 @@ import com.template.security.jwt.refresh.RefreshTokenException;
 /**
  * The type Auth controller.
  */
-@CrossOrigin
+//@CrossOrigin
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationRestService extends BaseRestService {

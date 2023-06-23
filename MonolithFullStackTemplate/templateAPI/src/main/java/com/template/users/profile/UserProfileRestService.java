@@ -18,7 +18,7 @@ import com.template.users.UserResource;
 /**
  * The type User profile rest service.
  */
-@CrossOrigin
+//@CrossOrigin()
 @RestController
 @RequestMapping(value = "/iam/userprofile", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserProfileRestService extends BaseRestService {
