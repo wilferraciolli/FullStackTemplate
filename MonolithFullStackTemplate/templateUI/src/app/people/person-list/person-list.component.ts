@@ -28,7 +28,7 @@ import {UserComponent} from '../../users/user/user.component';
 export class PersonListComponent implements OnInit {
 
   @Input()
-  public personListLink: Link | null = null;
+  public personListLink!: Link | null;
 
   searchKey!: string;
   people: Array<Person> = [];
@@ -60,6 +60,7 @@ export class PersonListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('Received person link ', this.personListLink); //TODO if removed the value is never there
     if (this.personListLink) {
       this.loadAll(this.personListLink.href);
     } else {

@@ -1,13 +1,8 @@
 import {inject, Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
 import {Link} from '../../shared/response/link';
 import {ProfileService} from '../../_services/profile.service';
 import {UserProfile} from '../profile/user.profile';
-import {UserListResponse} from "./user-list-response";
-import {finalize, first, map} from "rxjs/operators";
-import {LoadingService} from "../../shared/components/loading/loading.service";
-import {UserServiceService} from "../user-service.service";
-import {firstValueFrom, lastValueFrom, Observable, observable} from "rxjs";
+import {firstValueFrom} from "rxjs";
 
 @Injectable({providedIn: 'root'})
 export class UserListResolver {
@@ -15,7 +10,15 @@ export class UserListResolver {
   private readonly profileService: ProfileService = inject(ProfileService);
 
   public async resolveUserListLink(): Promise<Link | null> {
-    const userProfile: UserProfile | null = await firstValueFrom(this.profileService.currentUserProfile);
+    console.log('Geting user link ');
+
+    const userProfile: UserProfile | null = await firstValueFrom(this.profileService.currentUserProfile)
+      .then((userProfile: UserProfile) => userProfile);
+    //
+    // const userProfile: UserProfile | undefined = await this.profileService.currentUserProfile
+    //   .pipe(first()).toPromise()
+
+    console.log('After user link ');
 
     if (!userProfile) {
       return null;

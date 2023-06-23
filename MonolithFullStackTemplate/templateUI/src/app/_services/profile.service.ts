@@ -47,7 +47,7 @@ export class ProfileService {
     localStorage.removeItem('templateUI-userProfile');
 
     // TODO tell all of the subscribers that this can be completed
-    this.currentUserProfileSubject.complete();
+    // this.currentUserProfileSubject.complete();
   }
 
   private async loadUserProfile<T>(): Promise<UserProfileResponse> {

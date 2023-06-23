@@ -63,6 +63,7 @@ export class UserListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('REceived users link ', this.userListLink);
     if (this.userListLink) {
       this.loadAll(this.userListLink.href);
     }else {

@@ -21,7 +21,7 @@ export class JwtInterceptor implements HttpInterceptor {
         setHeaders: {
           Authorization: `Bearer ${this.authenticationService.getToken()}`,
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
+          // 'Access-Control-Allow-Origin': '*',
           Accept: 'application/json'
         }
       });

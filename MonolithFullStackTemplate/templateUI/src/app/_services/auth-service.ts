@@ -62,10 +62,10 @@ export class AuthService {
   logout(): void {
 
     //TODO need to test this
-    this.loadingService.loadingOn();
-    this.httpClient
-      .post<any>(environment.baseUrl + this._AUTHENTICATION_URL + '/logout', {});
-    this.loadingService.loadingOff();
+    // this.loadingService.loadingOn();
+    // this.httpClient
+    //   .post<any>(environment.baseUrl + this._AUTHENTICATION_URL + '/logout', {});
+    // this.loadingService.loadingOff();
 
 
     this.removeUser();

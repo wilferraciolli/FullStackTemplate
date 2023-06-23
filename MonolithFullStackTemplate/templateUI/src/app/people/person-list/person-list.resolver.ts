@@ -10,6 +10,7 @@ export class PersonListResolver {
   private readonly profileService: ProfileService = inject(ProfileService);
 
   public async resolvePersonListLink(): Promise<Link | null> {
+    console.log('Getin person link ');
     const userProfile: UserProfile | null = await firstValueFrom(this.profileService.currentUserProfile);
 
     if (!userProfile) {
