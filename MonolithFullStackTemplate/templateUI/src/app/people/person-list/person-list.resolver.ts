@@ -1,12 +1,7 @@
 import {inject, Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
 import {ProfileService} from '../../_services/profile.service';
 import {UserProfile} from '../../users/profile/user.profile';
-import {PeopleResponse} from './people-response';
-import {PersonService} from '../person.service';
-import {LoadingService} from '../../shared/components/loading/loading.service';
-import {finalize} from 'rxjs/operators';
-import {firstValueFrom, Observable} from 'rxjs';
+import {firstValueFrom} from 'rxjs';
 import {Link} from "../../shared/response/link";
 
 @Injectable({providedIn: 'root'})

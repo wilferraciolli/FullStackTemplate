@@ -13,14 +13,11 @@ import {ValueViewValue} from '../shared/response/value-viewValue';
 export class ConvertIdToStringValuePipe implements PipeTransform {
 
   transform(id: string | undefined, idValues: Array<ValueViewValue>): string {
-    // console.log('the value to convert is ', id);
-    // console.log('the values available are ', idValues);
+    let convertedValue: string = '';
+    idValues.forEach((viewValue: ValueViewValue) => {
+      if (viewValue.value === id) {
 
-    let convertedValue = '';
-    idValues.forEach(i => {
-      if (i.value === id) {
-
-        convertedValue = i.viewValue;
+        convertedValue = viewValue.viewValue;
       }
     });
 

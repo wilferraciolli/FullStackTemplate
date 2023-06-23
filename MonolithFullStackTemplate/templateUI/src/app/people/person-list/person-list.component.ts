@@ -14,7 +14,7 @@ import {PersonMeta} from '../person-meta';
 import {PersonLinksCollection} from '../person-links-collection';
 import {finalize} from 'rxjs/operators';
 import {PersonService} from '../person.service';
-import {PeopleResponse} from './people-response';
+import {PersonListResponse} from './person-list-response';
 import {ValueViewValue} from '../../shared/response/value-viewValue';
 import {PersonAdapter} from '../person.adapter';
 import {PersonComponent} from '../person/person.component';
@@ -108,9 +108,9 @@ export class PersonListComponent implements OnInit {
 
     this.loadingService.loadingOn();
 
-    this.personService.getAll<PeopleResponse>(url)
+    this.personService.getAll<PersonListResponse>(url)
       .pipe(finalize(() => this.loadingService.loadingOff()))
-      .subscribe((response: PeopleResponse) => {
+      .subscribe((response: PersonListResponse) => {
         const collectionData = response._data;
         const collectionMeta: any = response._metadata;
         const metaLinks: any = response._metaLinks;

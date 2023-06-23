@@ -13,7 +13,7 @@ import {ValueViewValue} from '../shared/response/value-viewValue';
 export class ConvertIdsToStringValuePipe implements PipeTransform {
 
   transform(ids: Array<string>, idValues: Array<ValueViewValue>): string {
-    const values = new Array();
+    const values: string[] = [];
 
     idValues.forEach((id: ValueViewValue) => {
       if (ids.includes(id.value)) {

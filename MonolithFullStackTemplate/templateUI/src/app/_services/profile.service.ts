@@ -36,7 +36,7 @@ export class ProfileService {
     console.log('Adding userProfile in Profile Service');
 
     this.loadUserProfile()
-      .then((userProfileResponse) => {
+      .then((userProfileResponse: UserProfileResponse) => {
         this.populateUserProfile(userProfileResponse);
       });
   }
@@ -51,19 +51,13 @@ export class ProfileService {
   }
 
   private async loadUserProfile<T>(): Promise<UserProfileResponse> {
-
     let headers: HttpHeaders = new HttpHeaders();
     headers.append('content-type','application/json');
-    // headers.append('Access-Control-Allow-Origin', '*');
-    // headers.append('Access-Control-Allow-Methods', 'OPTIONS, POST, GET');
-    // headers.append('Origin', 'http://localhost:4200');
-    // headers.append('Access-Control-Allow-Headers', 'Content-Type');
 
     // @ts-ignore
     const data: UserProfileResponse = await this.httpClient
       .get<UserProfileResponse>(this._USER_PROFILE_URL, { headers})
       .toPromise();
-    // console.log(data);
 
     return data;
   }

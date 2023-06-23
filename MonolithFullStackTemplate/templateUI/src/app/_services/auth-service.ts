@@ -16,8 +16,8 @@ import {LoadingService} from '../shared/components/loading/loading.service';
 @Injectable({providedIn: 'root'})
 export class AuthService {
 
-  private readonly _AUTHENTICATION_URL = '/api/auth';
-  private readonly _REFRESH_TOKEN_URL = '/api/auth/refresh/token';
+  private readonly _AUTHENTICATION_URL: string = '/api/auth';
+  private readonly _REFRESH_TOKEN_URL: string = '/api/auth/refresh/token';
 
   private refreshTokenTimeout!: any;
 
@@ -60,6 +60,14 @@ export class AuthService {
   }
 
   logout(): void {
+
+    //TODO need to test this
+    this.loadingService.loadingOn();
+    this.httpClient
+      .post<any>(environment.baseUrl + this._AUTHENTICATION_URL + '/logout', {});
+    this.loadingService.loadingOff();
+
+
     this.removeUser();
     this.profileService.removeUserProfile();
     this.stopRefreshTokenTimer();
@@ -80,7 +88,7 @@ export class AuthService {
 
   private hasValidTokenAndCredentials(): boolean {
 
-    console.log('is logged on ' , this.isTokenExpired());
+    console.log('is logged on ', this.isTokenExpired());
     // get value from storage and check the date
     return !this.isTokenExpired();
   }
