@@ -27,19 +27,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         //set frame options to self to allow h2 console server
-        http.headers().frameOptions().sameOrigin().disable();
-        http.cors().disable();
+//        http.headers().frameOptions().sameOrigin().disable();
 
-        http
+        http.cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests()
-//                .requestMatchers("/**").permitAll()
+                .requestMatchers("/**").permitAll()
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/actuator/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers("/api/h2-console/**").permitAll()
-                .anyRequest()
-                .authenticated()
+                .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

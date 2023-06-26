@@ -82,6 +82,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     private PropertyField buildPropertyFieldError(ObjectError error) {
 
+        // TODO this is failing to cast complex validation exceptions like duplicated username
         return new PropertyField(((FieldError) error).getField(),((FieldError) error).getRejectedValue(),  messageSource.getMessage(error, LocaleContextHolder
                 .getLocale()));
     }
