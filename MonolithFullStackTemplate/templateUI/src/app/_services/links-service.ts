@@ -36,7 +36,7 @@ export class LinksService {
   public getCreateUrlFromTemplateUrl(link: Link): string | null {
 
     if (this.isTemplateLink(link)) {
-      const re: RegExp = /template/gi;
+      const re: RegExp = /\/template/gi;
 
       return link.href.replace(re, '');
     } else {
