@@ -29,10 +29,11 @@ public class SecurityConfig {
         //set frame options to self to allow h2 console server
 //        http.headers().frameOptions().sameOrigin().disable();
 
-        http.cors().and()
+        http.cors()
+                .and()
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/**").permitAll()
+//                .requestMatchers("/**").permitAll()
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/actuator/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
