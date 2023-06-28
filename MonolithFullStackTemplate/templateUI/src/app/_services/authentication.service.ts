@@ -6,17 +6,15 @@ import {environment} from '../../environments/environment';
 
 import * as _ from 'lodash';
 import {UserRegistration} from '../registration/user-registration';
-import * as jwt_decode from 'jwt-decode';
-import {Authentication} from '../login/authentication';
+import jwt_decode from "jwt-decode";
 
 @Injectable({providedIn: 'root'})
 export class AuthenticationService {
 
-  private readonly _AUTHENTICATION_URL = '/api/auth';
-  private readonly _REFRESH_TOKEN_URL = '/api/auth/refresh/token';
+  private readonly _AUTHENTICATION_URL: string = '/api/auth';
+  private readonly _REFRESH_TOKEN_URL: string = '/api/auth/refresh/token';
 
-  // @ts-ignore
-  private refreshTokenTimeout;
+  private refreshTokenTimeout: any;
 
   public currentUser: Observable<any>;
   public isUserLoggedOn: boolean;
@@ -31,7 +29,7 @@ export class AuthenticationService {
     //   this.currentUser = this.currentUserSubject.asObservable();
     //   this.isUserLoggedOn = false;
     // } else {
-    // @ts-ignore
+
     this.currentUserSubject = new BehaviorSubject<any>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
     this.isUserLoggedOn = !_.isNull(localStorage.getItem('currentUser'));
@@ -39,7 +37,6 @@ export class AuthenticationService {
   }
 
   public get currentUserValue() {
-
     return this.currentUserSubject.value;
   }
 
@@ -50,10 +47,8 @@ export class AuthenticationService {
     const currentUser = this.currentUserValue;
 
     if (currentUser && currentUser.access_token) {
-
       return this.currentUserSubject.value.access_token;
     } else {
-
       return '';
     }
   }
@@ -62,7 +57,6 @@ export class AuthenticationService {
     const currentUser = this.currentUserValue;
 
     if (currentUser && currentUser.refresh_token) {
-
       return this.currentUserSubject.value.refresh_token;
     } else {
 
@@ -71,19 +65,19 @@ export class AuthenticationService {
   }
 
   getTokenExpirationDate(token: string): Date | null {
-    // @ts-ignore
-    const decoded = jwt_decode(token);
+    const decoded: { exp: number } = jwt_decode(token) as { exp: number };
 
     if (decoded.exp === undefined) {
       return null;
     }
 
-    const date = new Date(0);
+    const date: Date = new Date(0);
     date.setUTCSeconds(decoded.exp);
+
     return date;
   }
 
-  isTokenExpired(token?: string): boolean {
+  private isTokenExpired(token?: string): boolean {
     if (!token) {
       token = this.getToken();
     }
@@ -91,28 +85,26 @@ export class AuthenticationService {
       return true;
     }
 
-    const date = this.getTokenExpirationDate(token);
-    if (date === undefined) {
-      return false;
-    }
-    // @ts-ignore
-    return !(date.valueOf() > new Date().valueOf());
+    const date: Date | null = this.getTokenExpirationDate(token);
+
+    return !_.isNull(date)
+      && (date.valueOf() > new Date().valueOf());
   }
 
   //TODO remove
-  login(username: string , password: string ): Observable<any> {
-
-    return this.http.post<any>(environment.baseUrl + this._AUTHENTICATION_URL + '/signin', {username, password})
-      .pipe(map(user => {
-
-        // store user details and jwt token in local storage to keep user logged in between page refreshes
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        this.currentUserSubject.next(user);
-        this.startRefreshTokenTimer();
-
-        return user;
-      }));
-  }
+  // login(username: string, password: string): Observable<any> {
+  //
+  //   return this.http.post<any>(environment.baseUrl + this._AUTHENTICATION_URL + '/signin', {username, password})
+  //     .pipe(map(user => {
+  //
+  //       // store user details and jwt token in local storage to keep user logged in between page refreshes
+  //       localStorage.setItem('currentUser', JSON.stringify(user));
+  //       this.currentUserSubject.next(user);
+  //       this.startRefreshTokenTimer();
+  //
+  //       return user;
+  //     }));
+  // }
 
   // login1(authentication) {
   //
@@ -137,19 +129,17 @@ export class AuthenticationService {
       }));
   }
 
-
-  private startRefreshTokenTimer() {
+  private startRefreshTokenTimer(): void {
     // parse json object from base64 encoded jwt token
-    // @ts-ignore
-    const jwtToken = jwt_decode(this.getToken());
+    const jwtToken: { exp: number } = jwt_decode(this.getToken()) as { exp: number };
 
     // set a timeout to refresh the token a minute before it expires
-    const expires = new Date(jwtToken.exp * 1000);
-    const timeout = expires.getTime() - Date.now() - (60 * 1000);
+    const expires: Date = new Date(jwtToken.exp * 1000);
+    const timeout: number = expires.getTime() - Date.now() - (60 * 1000);
     this.refreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout);
   }
 
-  private stopRefreshTokenTimer() {
+  private stopRefreshTokenTimer(): void {
     clearTimeout(this.refreshTokenTimeout);
   }
 
@@ -174,8 +164,6 @@ export class AuthenticationService {
   }
 
   register(userDetails: UserRegistration) {
-    console.log(userDetails);
-
     return this.http.post<any>(environment.baseUrl + this._AUTHENTICATION_URL + '/register', userDetails)
       .pipe(map(user => {
         console.log(user);
@@ -187,5 +175,4 @@ export class AuthenticationService {
     localStorage.removeItem('currentUser');
     localStorage.removeItem('userProfile');
   }
-
 }

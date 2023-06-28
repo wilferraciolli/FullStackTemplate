@@ -65,9 +65,7 @@ import {TranslateHttpLoader} from "@ngx-translate/http-loader";
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     DatePipe
   ],
-  bootstrap: [AppComponent],
-  // add components used in pop ups
-  // TODO migration - entryComponents: [UserComponent, MatConfirmDialogComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
 

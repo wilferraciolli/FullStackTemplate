@@ -3,15 +3,13 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {finalize, map} from 'rxjs/operators';
-import {UserProfileResponse} from '../users/profile/user.profile.response';
-import {UserProfile} from '../users/profile/user.profile';
 import {UserRegistration} from '../registration/user-registration';
 
-import * as _ from 'lodash';
-// import * as jwt_decode from 'jwt-decode';
 import jwt_decode from 'jwt-decode';
 import {ProfileService} from './profile.service';
 import {LoadingService} from '../shared/components/loading/loading.service';
+import {IAuthDetails} from "./interfaces/IAuthDetails";
+import * as _ from "lodash";
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
@@ -24,9 +22,6 @@ export class AuthService {
   public isUserLoggedOn: Observable<boolean>;
   private isUserLoggedOnSubject: BehaviorSubject<boolean>;
 
-  /**
-   * Constructor.
-   */
   constructor(
     private httpClient: HttpClient,
     private profileService: ProfileService,
@@ -40,11 +35,10 @@ export class AuthService {
    * Public method to check whether a user is logged on.
    */
   public get isLoggedOn(): boolean {
-
     return this.isUserLoggedOnSubject.value;
   }
 
-  login(authentication: any): any {
+  public login(authentication: any): any {
     this.loadingService.loadingOn();
 
     return this.httpClient
@@ -59,7 +53,7 @@ export class AuthService {
         finalize(() => this.loadingService.loadingOff()));
   }
 
-  logout(): void {
+  public logout(): void {
 
     //TODO need to test this
     // this.loadingService.loadingOn();
@@ -73,7 +67,7 @@ export class AuthService {
     this.stopRefreshTokenTimer();
   }
 
-  register(userDetails: UserRegistration): any {
+  public register(userDetails: UserRegistration): any {
     console.log(userDetails);
 
     this.loadingService.loadingOn();
@@ -87,30 +81,25 @@ export class AuthService {
   }
 
   private hasValidTokenAndCredentials(): boolean {
-
     console.log('is logged on ', this.isTokenExpired());
-    // get value from storage and check the date
     return !this.isTokenExpired();
   }
 
-  /**
-   * Get the current user from the local storage.
-   */
-  getToken(): string {
-    // @ts-ignore
-    const authDetails = JSON.parse(localStorage.getItem('templateUI-authDetails'));
+  public getTokenFromLocalStorage(): string {
+    const authDetailsFromStorage: string | null = localStorage.getItem('templateUI-authDetails');
 
-    if (authDetails) {
+    if (authDetailsFromStorage) {
+      const authDetails: IAuthDetails = JSON.parse(authDetailsFromStorage);
+
       return authDetails.access_token;
-    } else {
-
-      return '';
     }
+
+    return '';
   }
 
-  isTokenExpired(token?: string): boolean {
+  isTokenExpired(token?: string | null): boolean {
     if (!token) {
-      token = this.getToken();
+      token = this.getTokenFromLocalStorage();
     }
     if (!token) {
       return true;
@@ -121,8 +110,8 @@ export class AuthService {
       return false;
     }
 
-    // @ts-ignore
-    return !(date.valueOf() > new Date().valueOf());
+    return !_.isNull(date)
+      && (date.valueOf() > new Date().valueOf());
   }
 
   private getRefreshToken(): string {
@@ -154,7 +143,7 @@ export class AuthService {
 
   private startRefreshTokenTimer(): void {
     // parse json object from base64 encoded jwt token
-    const jwtToken: any = jwt_decode(this.getToken());
+    const jwtToken: { exp: number } = jwt_decode(this.getTokenFromLocalStorage()) as { exp: number };
 
     // set a timeout to refresh the token a minute before it expires
     const expires = new Date(jwtToken.exp * 1000);

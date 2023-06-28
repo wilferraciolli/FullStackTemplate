@@ -19,7 +19,7 @@ export class JwtInterceptor implements HttpInterceptor {
     if (this.authenticationService.isLoggedOn && !this.authenticationService.isTokenExpired()) {
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${this.authenticationService.getToken()}`,
+          Authorization: `Bearer ${this.authenticationService.getTokenFromLocalStorage()}`,
           'Content-Type': 'application/json',
           // 'Access-Control-Allow-Origin': '*',
           Accept: 'application/json'

@@ -1,14 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {UserRegistration} from './user-registration';
-import {debounceTime, distinctUntilChanged, first, switchMapTo, take, tap} from 'rxjs/operators';
-import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
+import {first} from 'rxjs/operators';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AuthenticationService} from '../_services/authentication.service';
 import {NotificationService} from '../shared/notification.service';
 import {AuthService} from '../_services/auth-service';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
-import {Observable, of} from 'rxjs';
 
 @Component({
   selector: 'app-registration',

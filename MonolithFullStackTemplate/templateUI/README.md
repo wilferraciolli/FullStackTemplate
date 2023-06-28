@@ -28,7 +28,8 @@ npm install @types/lodash --save-dev
         let myMoment: moment.Moment = moment("someDate");
 
 ###### JWT decoder
-    npm i jwt-decode
+    npm i --save @types/jwt-decode
+    npm i jwt_decode
     usage 
         var token = 'eyJ0eXAiO.../// jwt token';
          

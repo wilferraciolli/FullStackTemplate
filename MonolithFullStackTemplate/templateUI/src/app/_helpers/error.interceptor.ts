@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { AuthenticationService } from '../_services/authentication.service';
-import { NotificationService } from '../shared/notification.service';
+import {Injectable} from '@angular/core';
+import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {Observable, throwError} from 'rxjs';
+import {catchError} from 'rxjs/operators';
+import {NotificationService} from '../shared/notification.service';
 import {AuthService} from '../_services/auth-service';
 
 
@@ -24,18 +23,18 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     return next.handle(request)
       .pipe(catchError(err => {
-      if (err.status === 401) {
-        // auto logout if 401 response returned from api
-        this.authenticationService.logout();
-        location.reload();
-      } else if (err.status === 403) {
-        console.log('Error', err);
-        this.notificationService.error('Invalid Credentials');
-      }
+        if (err.status === 401) {
+          // auto logout if 401 response returned from api
+          this.authenticationService.logout();
+          location.reload();
+        } else if (err.status === 403) {
+          console.log('Error', err);
+          this.notificationService.error('Invalid Credentials');
+        }
 
-      const error = err.error.message || err.statusText;
+        const error = err.error.message || err.statusText;
 
-      return throwError(error);
-    }));
+        return throwError(error);
+      }));
   }
 }

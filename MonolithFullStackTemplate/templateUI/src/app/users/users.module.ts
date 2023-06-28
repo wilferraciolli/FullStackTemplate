@@ -13,9 +13,7 @@ import { UsersRoutingModule } from './users-routing.module';
   imports: [
     UsersRoutingModule,
     SharedModule
-  ],
-  // add components used in pop ups
-  // TODO - migration entryComponents: [UserComponent, MatConfirmDialogComponent]
+  ]
 })
 export class UsersModule {
 }
