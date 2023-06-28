@@ -10,13 +10,27 @@ export class ProfileService {
 
   private readonly _USER_PROFILE_URL: string = environment.baseUrl + '/api/iam/userprofile';
 
-  public currentUserProfile: Observable<UserProfile>;
-  private currentUserProfileSubject: BehaviorSubject<UserProfile>;
+  public currentUserProfile!: Observable<UserProfile>;
+  private currentUserProfileSubject!: BehaviorSubject<UserProfile>;
 
   /**
    * Constructor.
    */
   constructor(private httpClient: HttpClient) {
+    // let userFromLocalStorage: string | null = localStorage.getItem('templateUI-userProfile');
+    // if (userFromLocalStorage) {
+    //   this.currentUserProfileSubject = new BehaviorSubject<UserProfile>(JSON.parse(userFromLocalStorage));
+    // }
+    //
+    // else {
+    //   this._getUserProfile()
+    //     .then((response: UserProfile) => {
+    //       this.currentUserProfileSubject = new BehaviorSubject<UserProfile>(response);
+    //       this.currentUserProfile = this.currentUserProfileSubject.asObservable();
+    //     });
+    // }
+
+
     // get the user profile from storage
     // @ts-ignore
     this.currentUserProfileSubject = new BehaviorSubject<UserProfile>(JSON.parse(localStorage.getItem('templateUI-userProfile')));
@@ -24,7 +38,6 @@ export class ProfileService {
   }
 
   public get currentUserProfileValue(): UserProfile | null {
-
     if (this.currentUserProfileSubject) {
       return this.currentUserProfileSubject.value;
     }
@@ -34,7 +47,6 @@ export class ProfileService {
 
   public fetchUserProfile(): void {
     console.log('Adding userProfile in Profile Service');
-
     this.loadUserProfile()
       .then((userProfileResponse: UserProfileResponse) => {
         this.populateUserProfile(userProfileResponse);
@@ -43,7 +55,6 @@ export class ProfileService {
 
   public removeUserProfile(): void {
     console.log('removing userProfile in Profile Service');
-
     localStorage.removeItem('templateUI-userProfile');
 
     // TODO tell all of the subscribers that this can be completed
@@ -52,11 +63,11 @@ export class ProfileService {
 
   private async loadUserProfile<T>(): Promise<UserProfileResponse> {
     let headers: HttpHeaders = new HttpHeaders();
-    headers.append('content-type','application/json');
+    headers.append('content-type', 'application/json');
 
     // @ts-ignore
     const data: UserProfileResponse = await this.httpClient
-      .get<UserProfileResponse>(this._USER_PROFILE_URL, { headers})
+      .get<UserProfileResponse>(this._USER_PROFILE_URL, {headers})
       .toPromise();
 
     return data;
@@ -69,4 +80,10 @@ export class ProfileService {
     localStorage.setItem('templateUI-userProfile', JSON.stringify(userProfile));
     this.currentUserProfileSubject.next(userProfile);
   }
+
+  // private async _getUserProfile(): Promise<UserProfile> {
+  //   let response: UserProfileResponse = await this.loadUserProfile();
+  //
+  //   return new UserProfile(response);
+  // }
 }

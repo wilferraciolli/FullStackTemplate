@@ -10,6 +10,7 @@ import {ProfileService} from './profile.service';
 import {LoadingService} from '../shared/components/loading/loading.service';
 import {IAuthDetails} from "./interfaces/IAuthDetails";
 import * as _ from "lodash";
+import {ITokenDetails} from "./interfaces/ITokenDetails";
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
@@ -62,7 +63,7 @@ export class AuthService {
     // this.loadingService.loadingOff();
 
 
-    this.removeUser();
+    this._removeUser();
     this.profileService.removeUserProfile();
     this.stopRefreshTokenTimer();
   }
@@ -97,7 +98,7 @@ export class AuthService {
     return '';
   }
 
-  isTokenExpired(token?: string | null): boolean {
+  public isTokenExpired(token?: string | null): boolean {
     if (!token) {
       token = this.getTokenFromLocalStorage();
     }
@@ -105,13 +106,15 @@ export class AuthService {
       return true;
     }
 
-    const date: Date | null = this.getTokenExpirationDate(token);
-    if (date === undefined) {
+    const tokenExpireDateTime: Date | null = this.getTokenExpirationDate(token);
+    if (tokenExpireDateTime === undefined) {
       return false;
     }
 
-    return !_.isNull(date)
-      && (date.valueOf() > new Date().valueOf());
+    const tokenExpired: boolean = !_.isNull(tokenExpireDateTime)
+      && (tokenExpireDateTime.valueOf() < new Date().valueOf());
+
+    return tokenExpired;
   }
 
   private getRefreshToken(): string {
@@ -129,7 +132,7 @@ export class AuthService {
   }
 
   private getTokenExpirationDate(token: string): Date | null {
-    const decoded: any = jwt_decode(token);
+    const decoded: ITokenDetails = jwt_decode(token);
 
     if (decoded.exp === undefined) {
       return null;
@@ -143,20 +146,19 @@ export class AuthService {
 
   private startRefreshTokenTimer(): void {
     // parse json object from base64 encoded jwt token
-    const jwtToken: { exp: number } = jwt_decode(this.getTokenFromLocalStorage()) as { exp: number };
+    const jwtToken: ITokenDetails = jwt_decode(this.getTokenFromLocalStorage());
 
     // set a timeout to refresh the token a minute before it expires
-    const expires = new Date(jwtToken.exp * 1000);
-    const timeout = expires.getTime() - Date.now() - (60 * 1000);
-    this.refreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout);
+    const expires: Date = new Date(jwtToken.exp * 1000);
+    const timeout: number = expires.getTime() - Date.now() - (60 * 1000);
+    this.refreshTokenTimeout = setTimeout(() => this._refreshToken().subscribe(), timeout);
   }
 
   private stopRefreshTokenTimer(): void {
     clearTimeout(this.refreshTokenTimeout);
   }
 
-  refreshToken(): any {
-
+  private _refreshToken(): any {
     return this.httpClient
       .post<any>(environment.baseUrl + this._REFRESH_TOKEN_URL, {'refreshToken': this.getRefreshToken()})
       .pipe(map((authDetails) => {
@@ -166,7 +168,7 @@ export class AuthService {
       }));
   }
 
-  private removeUser(): void {
+  private _removeUser(): void {
     localStorage.removeItem('templateUI-authDetails');
 
     // tell all of the subscribers
