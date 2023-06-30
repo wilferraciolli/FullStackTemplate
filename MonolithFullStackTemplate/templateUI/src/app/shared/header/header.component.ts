@@ -61,6 +61,7 @@ export class HeaderComponent implements OnInit {
    */
   logout(): void {
     this.authenticationService.logout();
+    this.profileService.removeUserProfile();
     this.getAreasAccess();
     this.router.navigate(['/home']);
   }
@@ -98,7 +99,6 @@ export class HeaderComponent implements OnInit {
    * @param language the language id to be used
    */
   useLanguage(language: string): void {
-
     localStorage.setItem('templateUI-chosenLanguage', language);
     this.translate.use(language);
   }

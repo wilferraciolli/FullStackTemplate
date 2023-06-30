@@ -25,7 +25,6 @@ export class AuthService {
 
   constructor(
     private httpClient: HttpClient,
-    private profileService: ProfileService,
     private loadingService: LoadingService) {
 
     this.isUserLoggedOnSubject = new BehaviorSubject<boolean>(this.hasValidTokenAndCredentials());
@@ -47,7 +46,6 @@ export class AuthService {
       .pipe(
         map(authDetails => {
           this.saveAuthDetails(authDetails);
-          this.profileService.fetchUserProfile();
 
           return authDetails;
         }),
@@ -55,16 +53,7 @@ export class AuthService {
   }
 
   public logout(): void {
-
-    //TODO need to test this
-    // this.loadingService.loadingOn();
-    // this.httpClient
-    //   .post<any>(environment.baseUrl + this._AUTHENTICATION_URL + '/logout', {});
-    // this.loadingService.loadingOff();
-
-
     this._removeUser();
-    this.profileService.removeUserProfile();
     this.stopRefreshTokenTimer();
   }
 

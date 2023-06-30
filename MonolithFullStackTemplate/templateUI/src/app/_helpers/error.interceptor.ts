@@ -4,12 +4,14 @@ import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {NotificationService} from '../shared/notification.service';
 import {AuthService} from '../_services/auth-service';
+import {ProfileService} from "../_services/profile.service";
 
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
   constructor(private authenticationService: AuthService,
+              private profileService: ProfileService,
               private notificationService: NotificationService) {
   }
 
@@ -26,6 +28,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         if (err.status === 401) {
           // auto logout if 401 response returned from api
           this.authenticationService.logout();
+          this.profileService.removeUserProfile();
           location.reload();
         } else if (err.status === 403) {
           console.log('Error', err);

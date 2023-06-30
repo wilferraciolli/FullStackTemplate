@@ -13,15 +13,12 @@ export class ProfileService {
   public currentUserProfile!: Observable<UserProfile>;
   private currentUserProfileSubject!: BehaviorSubject<UserProfile>;
 
-  /**
-   * Constructor.
-   */
   constructor(private httpClient: HttpClient) {
     // let userFromLocalStorage: string | null = localStorage.getItem('templateUI-userProfile');
     // if (userFromLocalStorage) {
     //   this.currentUserProfileSubject = new BehaviorSubject<UserProfile>(JSON.parse(userFromLocalStorage));
     // }
-    //
+
     // else {
     //   this._getUserProfile()
     //     .then((response: UserProfile) => {

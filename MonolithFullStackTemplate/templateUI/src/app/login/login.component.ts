@@ -5,6 +5,7 @@ import {finalize, first} from 'rxjs/operators';
 import {Authentication} from './authentication';
 import {AuthService} from '../_services/auth-service';
 import {LoadingService} from '../shared/components/loading/loading.service';
+import {ProfileService} from "../_services/profile.service";
 
 @Component({
   selector: 'app-login',
@@ -30,6 +31,7 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthService,
+    private profileService: ProfileService,
     private loadingService: LoadingService
   ) {
 
@@ -94,7 +96,7 @@ export class LoginComponent implements OnInit {
           //   .then((userProfileResponse) => {
           //     this.userProfileService.populateUserProfile(userProfileResponse);
           //   });
-
+         this.profileService.fetchUserProfile();
           // redirect
           this.router.navigate([this.returnUrl]);
         },
