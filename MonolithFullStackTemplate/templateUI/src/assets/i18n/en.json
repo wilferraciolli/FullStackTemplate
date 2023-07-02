@@ -29,7 +29,17 @@
     "password": "Password",
     "dateOfBirth": "Date of birth",
     "login": "Login",
-    "register": "REGISTER"
+    "register": "REGISTER",
+    "validation": {
+      "firstNameNull": "First name is required",
+      "firstNameMinLength": "First name must be at least 2 letters",
+      "lastNameNull": "Last name is required",
+      "lastNameMinLength": "Last name must be at least 2 letters",
+      "emailNull": " Email is required",
+      "emailFormat": "Invalid format, correct is name@domain",
+      "passwordNull": "Password is required",
+      "passwordPattern": "Must be 6 digits and include Capital letters and Special Symbols"
+    }
   },
   "login": {
     "title": "Login",

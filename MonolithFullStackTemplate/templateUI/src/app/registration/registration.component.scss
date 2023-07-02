@@ -28,6 +28,13 @@ $tabletSize: 800px;
       padding: 20px;
     }
   }
+
+  &-form-actions {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
 }
 
 .full-width {

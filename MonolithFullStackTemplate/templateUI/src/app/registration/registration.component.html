@@ -14,62 +14,67 @@
           <mat-form-field class="full-width">
             <mat-label>{{'registration.firstName' | translate}}</mat-label>
             <input matInput placeholder="{{'registration.firstName' | translate}}" name="firstName"
-                   formControlName="firstName" required [ngClass]="{ 'is-invalid': submitted && formBuilder.firstName.errors }">
-            <div *ngIf="submitted && formBuilder.firstName.errors" class="invalid-feedback">
-<!--              <div *ngIf="form.firstName.errors?.required">First name is required</div>-->
-            </div>
+                   formControlName="firstName" required>
 
+            <mat-error *ngIf="formBuilder.firstName.hasError('required')">
+              {{'registration.validation.firstNameNull' | translate}} </mat-error>
+            <mat-error *ngIf="formBuilder.firstName.hasError('minlength')">
+              {{'registration.validation.firstNameMinLength' | translate}}</mat-error>
           </mat-form-field>
+
           <mat-form-field class="full-width">
             <mat-label>{{'registration.lastName' | translate}}</mat-label>
             <input matInput placeholder="{{'registration.lastName' | translate}}" name="lastName"
-                   formControlName="lastName" required [ngClass]="{ 'is-invalid': submitted && formBuilder.lastName.errors }">
-            <div *ngIf="submitted && formBuilder.lastName.errors" class="invalid-feedback">
-<!--              <div *ngIf="form.lastName.errors?.required">Last name is required</div>-->
-            </div>
+                   formControlName="lastName" required>
+
+            <mat-error *ngIf="formBuilder.lastName.hasError('required')">
+              {{'registration.validation.lastNameNull' | translate}}</mat-error>
+            <mat-error *ngIf="formBuilder.lastName.hasError('minlength')">
+              {{'registration.validation.lastNameMinLength' | translate}}</mat-error>
           </mat-form-field>
 
           <mat-form-field class="full-width">
             <mat-label>{{'registration.email' | translate}}</mat-label>
             <input matInput placeholder="{{'registration.email' | translate}}" name="email"
-                   formControlName="email" required [ngClass]="{ 'is-invalid': submitted && formBuilder.email.errors }">
+                   formControlName="email" required>
             <!--            <mat-error *ngIf="isUsernameAvailable('WilFerraciolli@wiltech.com')">Name taken biatch</mat-error>-->
-            <mat-error *ngIf="formBuilder.email.hasError('alreadyExists')">Name taken
-            </mat-error>
-            <div *ngIf="submitted && formBuilder.email.errors" class="invalid-feedback">
-<!--              <div *ngIf="form.email.errors?.required">Email is required</div>-->
-<!--              <div *ngIf="form.email.errors?.email">Email is not valid</div>-->
-            </div>
+            <!--            <mat-error *ngIf="formBuilder.email.hasError('alreadyExists')">Name taken  </mat-error>-->
+            <mat-error *ngIf="formBuilder.email.hasError('required')">
+              {{'registration.validation.emailNull' | translate}}</mat-error>
+            <mat-error *ngIf="formBuilder.email.hasError('email')">
+              {{'registration.validation.emailFormat' | translate}}</mat-error>
           </mat-form-field>
 
           <mat-form-field class="full-width">
             <mat-label>{{'registration.password' | translate}}</mat-label>
             <input matInput placeholder="{{'registration.password' | translate}}" name="password"
-                   formControlName="password" required [ngClass]="{ 'is-invalid': submitted && formBuilder.password.errors }"
+                   formControlName="password" required
+                   [ngClass]="{ 'is-invalid': submitted && formBuilder.password.errors }"
                    [type]="hide? 'password' : 'text'">
             <mat-icon color="primary" matSuffix
                       (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-            <div *ngIf="submitted && formBuilder.email.errors" class="invalid-feedback">
-<!--              <div *ngIf="form.email.errors?.required">Password is required</div>-->
-            </div>
+
+            <mat-error *ngIf="formBuilder.password.hasError('required')">
+              {{'registration.validation.passwordNull' | translate}}</mat-error>
+            <mat-error *ngIf="formBuilder.password.hasError('pattern')">
+              {{'registration.validation.passwordPattern' | translate}}</mat-error>
           </mat-form-field>
 
           <mat-form-field>
             <mat-label>{{'registration.dateOfBirth' | translate}}</mat-label>
-            <input matInput [matDatepicker]="picker" placeholder="{{'form.chooseADate' | translate}}" formControlName="dateOfBirth">
+            <input matInput [matDatepicker]="picker" placeholder="{{'form.chooseADate' | translate}}"
+                   formControlName="dateOfBirth">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
 
           <!-- buttons -->
           <mat-card-actions>
-            <div align="end">
+            <div class="registration-form-actions">
               <a routerLink="/login" class="btn btn-link">{{'registration.login' | translate}}</a>
-              <span class="spacer"></span>
               <button [disabled]="loading || !formBuilder.form.valid" mat-raised-button type="submit" color="primary">
                 {{'registration.register' | translate}}
               </button>
-              <span *ngIf="loading">Loading</span>
             </div>
           </mat-card-actions>
         </form>

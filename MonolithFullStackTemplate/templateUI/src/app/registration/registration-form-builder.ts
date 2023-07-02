@@ -20,18 +20,21 @@ export class RegistrationFormBuilder {
 
     this.form = this.formBuilder.group<RegistrationForm>({
         firstName: this.formBuilder.nonNullable.control('', {
-          validators: [Validators.required]
+          validators: [Validators.required, Validators.minLength(2)]
         }),
         lastName: this.formBuilder.nonNullable.control('', {
-          validators: [Validators.required]
+          validators: [Validators.required, Validators.minLength(2)]
         }),
         email: this.formBuilder.nonNullable.control('', {
           validators: [Validators.required, Validators.email]
         }),
         password: this.formBuilder.nonNullable.control('', {
-          validators: [Validators.required, Validators.minLength(6)]
+          validators: [
+            Validators.required,
+            Validators.pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$'))
+          ]
         }),
-        dateOfBirth: this.formBuilder.nonNullable.control('')
+        dateOfBirth: this.formBuilder.control(null)
       }
     );
   }
