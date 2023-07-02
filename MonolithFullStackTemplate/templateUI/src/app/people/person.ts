@@ -2,32 +2,31 @@ import {PersonLinks} from './person-links';
 import {PersonMeta} from './person-meta';
 
 export class Person {
-
-  id: string;
-  userId: string;
+  id: string | null;
+  userId: string | null;
   firstName: string;
   lastName: string;
   email: string;
-  dateOfBirth?: string;
-  genderId?: string;
-  maritalStatusId?: string;
-  numberOfDependants?: number;
-  phoneNumber?: string;
-  links: PersonLinks;
-  meta: PersonMeta;
+  dateOfBirth: string | null;
+  genderId: string | null;
+  maritalStatusId: string | null;
+  numberOfDependants: number | null;
+  phoneNumber: string | null;
+  links: PersonLinks | null;
+  meta: PersonMeta | null;
 
-  constructor(id: string,
-              userId: string,
+  constructor(id: string | null,
+              userId: string | null,
               firstName: string,
               lastName: string,
               email: string,
-              dateOfBirth: string | undefined,
-              genderId: string | undefined,
-              maritalStatusId: string | undefined,
-              numberOfDependants: number | undefined,
-              phoneNumber: string | undefined,
-              links: PersonLinks,
-              meta: PersonMeta) {
+              dateOfBirth: string | null,
+              genderId: string | null,
+              maritalStatusId: string | null,
+              numberOfDependants: number | null,
+              phoneNumber: string | null,
+              links: PersonLinks | null,
+              meta: PersonMeta | null) {
 
     this.id = id;
     this.userId = userId;

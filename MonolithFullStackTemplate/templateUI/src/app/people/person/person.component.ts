@@ -18,10 +18,11 @@ import {ValueViewValue} from '../../shared/response/value-viewValue';
 })
 export class PersonComponent implements OnInit {
 
-  link!: Link;
-  person!: Person;
-  availableGenders: Array<ValueViewValue> = [];
-  availableMaritalStatuses: Array<ValueViewValue> = [];
+  public availableGenders: Array<ValueViewValue> = [];
+  public availableMaritalStatuses: Array<ValueViewValue> = [];
+
+  private link!: Link;
+  private person!: Person;
 
   constructor(private personService: PersonService,
               public personFormBuilder: PersonFormBuilder,
@@ -32,6 +33,7 @@ export class PersonComponent implements OnInit {
               private metadataService: MetadataService,
               @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
 
+
     // get the link passed on
     if (data) {
       this.link = data.link;
@@ -41,100 +43,56 @@ export class PersonComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.linkService.isTemplateLink(this.link)) {
-      this.getPersonTemplate(this.link.href).then((data: PersonResponse) => {
-        this.person = this.adapter.adapt(data._data.person, data._data.person.links, data._metadata);
+    this._getSinglePerson(this.link.href).then((person: PersonResponse): void => {
+      this.person = this.adapter.adapt(person._data.person, person._data.person.links, person._metadata);
+      if (this.person.meta) {
         this.availableGenders = this.metadataService.resolveMetadataIdValues(this.person.meta.genderId.values);
         this.availableMaritalStatuses = this.metadataService.resolveMetadataIdValues(this.person.meta.maritalStatusId.values);
+      }
 
-        this.personFormBuilder.initializeFormGroupWithTemplateValues(this.person);
-      });
-    } else {
-
-      this.getSinglePerson(this.link.href).then((data) => {
-        this.person = this.adapter.adapt(data._data.person, data._data.person.links, data._metadata);
-        this.availableGenders = this.metadataService.resolveMetadataIdValues(this.person.meta.genderId.values);
-        this.availableMaritalStatuses = this.metadataService.resolveMetadataIdValues(this.person.meta.maritalStatusId.values);
-
-        this.personFormBuilder.populateForm(this.person);
-      });
-    }
+      this.personFormBuilder.populateForm(this.person);
+    });
   }
 
   /**
    * Method to be called once the add dialog is closed.
    */
   onClose(): void {
-    //TODO need to make sure that form is not empty
-    // close the dialog and pass the form value to the requester
     this.dialogRef.close(this.personFormBuilder.getFormValue());
 
     this.personFormBuilder.form.reset();
     this.personFormBuilder.resetFormGroup();
   }
 
-  /**
-   * Clear out form and re initialize it
-   */
-  onClear(): void {
+  public onClear(): void {
     this.personFormBuilder.form.reset();
     this.personFormBuilder.resetFormGroup();
     this.notificationService.success('Form cleared successfully');
   }
 
-  onSubmit(): void {
+  public onSubmit(): void {
     if (this.personFormBuilder.form.valid) {
-
-      if (this.personFormBuilder.form.value.$key) {
-        this.update();
-      } else {
-        this.create();
-      }
+      this._update();
 
       this.personFormBuilder.form.reset();
       this.personFormBuilder.resetFormGroup();
 
-      //this.personService.reloadCurrentRoute(); //TODO this reloads the page and send back to home
       this.onClose();
     }
   }
 
-  create(): void {
-    console.log('Adding');
-
-    // @ts-ignore
-    this.personService.add(this.linkService.getCreateUrlFromTemplateUrl(this.link), this.personFormBuilder.getFormValue())
-      .subscribe(data => {
-          console.log('Success', data);
-          this.notificationService.success('Person created successfully');
-        },
-        error => {
-          console.log('Error', error);
-          this.notificationService.error('Person could not be created');
-        });
-  }
-
-  update(): void {
-    console.log('updating');
-
+  private _update(): void {
     this.personService.update(this.link.href, this.personFormBuilder.getFormValue())
-      .subscribe(data => {
-          console.log('Success', data);
+      .subscribe((personUpdated: Person): void => {
           this.notificationService.success('Person updated successfully');
         },
-        error => {
+        (error: string): void => {
           console.log('Error', error);
           this.notificationService.error('Person could not be updated');
         });
   }
 
-  private getPersonTemplate(url: string): Promise<PersonResponse> {
-
-    return this.personService.getTemplateAsync(url);
-  }
-
-  private getSinglePerson(url: string): Promise<any> {
-
+  private _getSinglePerson(url: string): Promise<PersonResponse> {
     return this.personService.getById(url);
   }
 }

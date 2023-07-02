@@ -19,6 +19,7 @@ import {ValueViewValue} from '../../shared/response/value-viewValue';
 import {PersonAdapter} from '../person.adapter';
 import {PersonComponent} from '../person/person.component';
 import {UserComponent} from '../../users/user/user.component';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-person-list',
@@ -132,6 +133,7 @@ export class PersonListComponent implements OnInit {
   }
 
   onEdit(row: Person): void {
+
     const signInDialogRef = this.dialog.open(PersonComponent, {
       width: '50%',
       height: '50%',
@@ -139,6 +141,7 @@ export class PersonListComponent implements OnInit {
       maxHeight: '100vh',
       autoFocus: true,
       disableClose: true,
+      // @ts-ignore
       data: {link: row.links.self}
     });
 
@@ -193,5 +196,10 @@ export class PersonListComponent implements OnInit {
   private resolveCollectionMeta(collectionMeta: any): PersonMeta {
 
     return collectionMeta;
+  }
+
+  public disableUpdatePerson(person: Person): boolean {
+    return _.isNull(person.links)
+      || _.isNull(person.links.updatePerson);
   }
 }

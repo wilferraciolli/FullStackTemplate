@@ -12,7 +12,7 @@ import {ValueViewValue} from '../shared/response/value-viewValue';
 @Pipe({name: 'convertIdToValues'})
 export class ConvertIdToStringValuePipe implements PipeTransform {
 
-  transform(id: string | undefined, idValues: Array<ValueViewValue>): string {
+  transform(id: string | undefined | null, idValues: Array<ValueViewValue>): string {
     let convertedValue: string = '';
     idValues.forEach((viewValue: ValueViewValue) => {
       if (viewValue.value === id) {

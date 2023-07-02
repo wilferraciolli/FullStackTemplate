@@ -9,7 +9,7 @@ import {PersonLinks} from './person-links';
 })
 export class PersonAdapter implements Adapter<Person> {
 
-  adapt(person: Person, links: PersonLinks, meta?: any): Person {
+  adapt(person: Person, links: PersonLinks | null, meta?: any): Person {
     return new Person(person.id,
       person.userId,
       person.firstName,
@@ -20,10 +20,7 @@ export class PersonAdapter implements Adapter<Person> {
       person.maritalStatusId,
       person.numberOfDependants,
       person.phoneNumber,
-      new PersonLinks(links.self,
-        links.updatePerson,
-        links.deletePerson,
-        links.people),
+      links,
       meta);
   }
 }

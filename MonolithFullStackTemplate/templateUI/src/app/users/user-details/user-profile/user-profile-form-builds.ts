@@ -71,12 +71,7 @@ export class UserProfileFormBuilder {
         maritalStatusId: person.maritalStatusId,
         numberOfDependants: person.numberOfDependants,
         phoneNumber: person.phoneNumber,
-        links: {
-          self: person.links.self,
-          updatePerson: person.links.updatePerson,
-          deletePerson: person.links.deletePerson,
-          people: person.links.people
-        },
+        links: person.links,
         meta: person.meta
       }
     );

@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { UserProfile } from '../../profile/user.profile';
-import { UserDetailsProfileService } from './user-details-profile.service';
-import { PersonAdapter } from '../../../people/person.adapter';
-import { Person } from '../../../people/person';
-import { ValueViewValue } from '../../../shared/response/value-viewValue';
-import { NotificationService } from '../../../shared/notification.service';
-import { ProfileService } from '../../../_services/profile.service';
-import { UserProfileFormBuilder } from './user-profile-form-builds';
-import { UserProfileResponse } from './user-profile-response';
-import { MetadataService } from '../../../_services/metadata.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {UserProfile} from '../../profile/user.profile';
+import {UserDetailsProfileService} from './user-details-profile.service';
+import {PersonAdapter} from '../../../people/person.adapter';
+import {Person} from '../../../people/person';
+import {ValueViewValue} from '../../../shared/response/value-viewValue';
+import {NotificationService} from '../../../shared/notification.service';
+import {ProfileService} from '../../../_services/profile.service';
+import {UserProfileFormBuilder} from './user-profile-form-builds';
+import {UserProfileResponse} from './user-profile-response';
+import {MetadataService} from '../../../_services/metadata.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -55,17 +55,19 @@ export class UserProfileComponent implements OnInit {
   }
 
   updatePerson(): void {
-    console.log('Updating person');
-
-    this.userDetailsProfileService.update(this.person.links.updatePerson.href, this.userProfileFormBuilder.getFormValue())
-      .subscribe(data => {
-          console.log('success ', data);
-          this.notificationService.success('Person updated successfully');
-        },
-        error => {
-          console.log('Error', error);
-          this.notificationService.error('Person could not be updated');
-        }
-      );
+    if (this.person.links && this.person.links.updatePerson) {
+      this.userDetailsProfileService.update(this.person.links.updatePerson.href, this.userProfileFormBuilder.getFormValue())
+        .subscribe(data => {
+            console.log('success ', data);
+            this.notificationService.success('Person updated successfully');
+          },
+          error => {
+            console.log('Error', error);
+            this.notificationService.error('Person could not be updated');
+          }
+        );
+    } else {
+      console.log('Could not Updating person');
+    }
   }
 }
