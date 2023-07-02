@@ -45,7 +45,6 @@ export class RegistrationComponent implements OnInit {
 
     // stop here if form is invalid
     if (this.formBuilder.form.invalid) {
-      console.log('Register form is invalid')
       return;
     }
 
@@ -54,10 +53,10 @@ export class RegistrationComponent implements OnInit {
       .pipe(first())
       .subscribe(
         (): void => {
-          this.notificationService.success('User Created successfully');
+          this.notificationService.success('Register successfully, please verify email');
           this.router.navigate(['/login']);
         },
-        (error: any): void => {
+        (error: string): void => {
           this.error = error;
           this.loading = false;
         });

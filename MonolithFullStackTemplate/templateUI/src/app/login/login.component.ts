@@ -1,11 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {finalize, first} from 'rxjs/operators';
-import {Authentication} from './authentication';
 import {AuthService} from '../_services/auth-service';
 import {LoadingService} from '../shared/components/loading/loading.service';
 import {ProfileService} from "../_services/profile.service";
+import {LoginFormBuilder} from "./login-form-builder";
 
 @Component({
   selector: 'app-login',
@@ -14,12 +13,12 @@ import {ProfileService} from "../_services/profile.service";
 })
 export class LoginComponent implements OnInit {
 
-  loginForm!: FormGroup;
-  loading: boolean = false;
-  submitted: boolean = false;
-  hide: boolean = true;
-  returnUrl!: string;
-  error!: string;
+  public loading: boolean = false;
+  public submitted: boolean = false;
+  public hide: boolean = true;
+
+  private returnUrl!: string;
+  private error!: string;
 
   /**
    * Specifies the dependencies that are required by the component as parameters, these are automatically injected by
@@ -27,7 +26,7 @@ export class LoginComponent implements OnInit {
    * Checks if the user is already logged in by checking authenticationService.currentUserValue and redirects to the home page if they are.
    */
   constructor(
-    private formBuilder: FormBuilder,
+    public formBuilder: LoginFormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthService,
@@ -37,16 +36,11 @@ export class LoginComponent implements OnInit {
 
     // redirect to home if already logged in
     this.authenticationService.isUserLoggedOn
-      .subscribe(x => {
-        if (x) {
+      .subscribe((loggedOn: boolean) => {
+        if (loggedOn) {
           this.router.navigate(['/']);
         }
       });
-  }
-
-  // convenience getter for easy access to form fields
-  get f() {
-    return this.loginForm.controls;
   }
 
   /**
@@ -58,12 +52,6 @@ export class LoginComponent implements OnInit {
    * allows you to redirect the user back to the original page they requested before logging in.
    */
   ngOnInit(): void {
-    // initialize form with default values
-    this.loginForm = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
-    });
-
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
@@ -79,34 +67,23 @@ export class LoginComponent implements OnInit {
     this.submitted = true;
 
     // stop here if form is invalid
-    if (this.loginForm.invalid) {
+    if (this.formBuilder.form.invalid) {
       return;
     }
 
     this.loading = true;
     this.loadingService.loadingOn();
-    this.authenticationService.login(this.getFormValue())
+    this.authenticationService.login(this.formBuilder.getFormValue())
       .pipe(
         first(),
         finalize(() => this.loadingService.loadingOff()))
-      .subscribe(
-        (data: any) => {
-          // populate user profile service after login
-          // this.userProfileService.loadUserProfile()
-          //   .then((userProfileResponse) => {
-          //     this.userProfileService.populateUserProfile(userProfileResponse);
-          //   });
-         this.profileService.fetchUserProfile();
-          // redirect
+      .subscribe(() => {
+          this.profileService.fetchUserProfile();
           this.router.navigate([this.returnUrl]);
         },
         (error: any): void => {
           this.error = error;
           this.loading = false;
         });
-  }
-
-  getFormValue(): Authentication {
-    return new Authentication(this.f["username"].value, this.f["password"].value);
   }
 }

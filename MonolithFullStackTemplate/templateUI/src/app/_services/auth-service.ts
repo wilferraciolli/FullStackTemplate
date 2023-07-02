@@ -10,6 +10,7 @@ import {LoadingService} from '../shared/components/loading/loading.service';
 import {IAuthDetails} from "./interfaces/IAuthDetails";
 import * as _ from "lodash";
 import {ITokenDetails} from "./interfaces/ITokenDetails";
+import {Login} from "../login/login";
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
@@ -37,13 +38,13 @@ export class AuthService {
     return this.isUserLoggedOnSubject.value;
   }
 
-  public login(authentication: any): any {
+  public login(authentication: Login): Observable<IAuthDetails> {
     this.loadingService.loadingOn();
 
     return this.httpClient
-      .post<any>(environment.baseUrl + this._AUTHENTICATION_URL + '/signin', authentication)
+      .post<IAuthDetails>(environment.baseUrl + this._AUTHENTICATION_URL + '/signin', authentication)
       .pipe(
-        map(authDetails => {
+        map((authDetails: IAuthDetails) => {
           this.saveAuthDetails(authDetails);
 
           return authDetails;
@@ -56,15 +57,13 @@ export class AuthService {
     this.stopRefreshTokenTimer();
   }
 
+  // TODO This should just be a void as there is no response from API
   public register(userDetails: UserRegistration): any {
-    console.log(userDetails);
-
     this.loadingService.loadingOn();
     return this.httpClient
       .post<any>(environment.baseUrl + this._AUTHENTICATION_URL + '/register', userDetails)
-      .pipe(map(user => {
-          console.log(user);
-          return user;
+      .pipe(map((): void => {
+          return;
         }),
         finalize(() => this.loadingService.loadingOff()));
   }
@@ -146,6 +145,7 @@ export class AuthService {
     clearTimeout(this.refreshTokenTimeout);
   }
 
+  // TODO add type
   private _refreshToken(): any {
     return this.httpClient
       .post<any>(environment.baseUrl + this._REFRESH_TOKEN_URL, {'refreshToken': this.getRefreshToken()})
@@ -163,7 +163,7 @@ export class AuthService {
     this.isUserLoggedOnSubject.next(false);
   }
 
-  private saveAuthDetails(authDetails: any): void {
+  private saveAuthDetails(authDetails: IAuthDetails): void {
     // store user details and jwt token in local storage to keep user logged in between page refreshes
     localStorage.setItem('templateUI-authDetails', JSON.stringify(authDetails));
     this.isUserLoggedOnSubject.next(true);
