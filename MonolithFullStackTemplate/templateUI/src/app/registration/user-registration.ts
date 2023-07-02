@@ -1,11 +1,11 @@
 export class UserRegistration {
-  firstName?: string;
-  lastName?: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
-  dateOfBirth?: string;
+  dateOfBirth?: string | null;
 
-  constructor(firstName: string, lastName: string, email: string, password: string, dateOfBirth: string) {
+  constructor(firstName: string, lastName: string, email: string, password: string, dateOfBirth: string | null) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;

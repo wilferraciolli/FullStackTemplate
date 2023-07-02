@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {UserRegistration} from './user-registration';
 import {first} from 'rxjs/operators';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NotificationService} from '../shared/notification.service';
 import {AuthService} from '../_services/auth-service';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
+import {RegistrationFormBuilder} from "./registration-form-builder";
 
 @Component({
   selector: 'app-registration',
@@ -15,76 +14,46 @@ import {environment} from '../../environments/environment';
 })
 export class RegistrationComponent implements OnInit {
 
-  private readonly _NAME_AVAILABILITY_URL = 'iam/users/usernames/availability?username=';
+  private readonly _NAME_AVAILABILITY_URL: string = 'iam/users/usernames/availability?username=';
 
-  registerForm!: FormGroup;
-  loading: boolean = false;
-  submitted: boolean = false;
-  hide: boolean = true;
-  error!: string;
+  public loading: boolean = false;
+  public submitted: boolean = false;
+  public hide: boolean = true;
+  private error!: string;
 
-  constructor(private formBuilder: FormBuilder,
-              private route: ActivatedRoute,
-              private router: Router,
-              private authenticationService: AuthService,
-              private notificationService: NotificationService,
-              private httpClient: HttpClient) {
-
-    // redirect to home if already logged in
-    // if (this.authenticationService.isUserLoggedOn) {
-    //   this.router.navigate(['/']);
-    // }
+  constructor(
+    public formBuilder: RegistrationFormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private authenticationService: AuthService,
+    private notificationService: NotificationService,
+    private httpClient: HttpClient) {
 
     this.authenticationService.isUserLoggedOn
-      .subscribe(x => {
-        if (x === true) {
+      .subscribe((alreadyLoggedOn: boolean) => {
+        if (alreadyLoggedOn) {
           this.router.navigate(['/']);
         }
       });
   }
 
-  // convenience getter for easy access to form fields
-  get f() {
-    return this.registerForm.controls;
-  }
-
   ngOnInit(): void {
-    // initialize form with default values
-    this.registerForm = this.formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      dateOfBirth: ['']
-    });
   }
 
-  register(): void {
+  public register(): void {
     this.submitted = true;
 
     // stop here if form is invalid
-    if (this.registerForm.invalid) {
+    if (this.formBuilder.form.invalid) {
+      console.log('Register form is invalid')
       return;
     }
 
     this.loading = true;
-    const userRegistration: UserRegistration = new UserRegistration(
-      // @ts-ignore
-      this.f.firstName.value,
-      // @ts-ignore
-      this.f.lastName.value,
-      // @ts-ignore
-      this.f.email.value,
-      // @ts-ignore
-      this.f.password.value,
-      // @ts-ignore
-      this.f.dateOfBirth.value
-    );
-
-    this.authenticationService.register(userRegistration)
+    this.authenticationService.register(this.formBuilder.getFormValue())
       .pipe(first())
       .subscribe(
-        (data: any): void => {
+        (): void => {
           this.notificationService.success('User Created successfully');
           this.router.navigate(['/login']);
         },

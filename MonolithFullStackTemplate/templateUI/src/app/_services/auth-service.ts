@@ -6,7 +6,6 @@ import {finalize, map} from 'rxjs/operators';
 import {UserRegistration} from '../registration/user-registration';
 
 import jwt_decode from 'jwt-decode';
-import {ProfileService} from './profile.service';
 import {LoadingService} from '../shared/components/loading/loading.service';
 import {IAuthDetails} from "./interfaces/IAuthDetails";
 import * as _ from "lodash";
@@ -71,8 +70,10 @@ export class AuthService {
   }
 
   private hasValidTokenAndCredentials(): boolean {
-    console.log('is logged on ', this.isTokenExpired());
-    return !this.isTokenExpired();
+    const isTokenExpired: boolean = !this.isTokenExpired();
+
+    console.log('is token expired ', isTokenExpired);
+    return isTokenExpired;
   }
 
   public getTokenFromLocalStorage(): string {
@@ -100,10 +101,8 @@ export class AuthService {
       return false;
     }
 
-    const tokenExpired: boolean = !_.isNull(tokenExpireDateTime)
+    return !_.isNull(tokenExpireDateTime)
       && (tokenExpireDateTime.valueOf() < new Date().valueOf());
-
-    return tokenExpired;
   }
 
   private getRefreshToken(): string {

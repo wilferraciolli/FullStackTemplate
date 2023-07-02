@@ -15,8 +15,12 @@ export class DateTimeService {
    * Formats a date string onto ISO date.
    * @param The date to format.
    */
-  public parseDate(date: string): string | null {
-    return this.dateTime.transform(date, 'yyyy-MM-dd');
+  public parseDate(date: string | null): string | null {
+    if (date) {
+      return this.dateTime.transform(date, 'yyyy-MM-dd');
+    }
+
+    return null;
   }
 
   /**
