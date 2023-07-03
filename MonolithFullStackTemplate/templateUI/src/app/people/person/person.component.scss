@@ -29,7 +29,10 @@ $tabletSize: 800px;
   }
 
   &-form-actions {
-    padding-right: 10%;
-    //padding-bottom: 10%;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 8%;
+    width: 100%;
   }
 }

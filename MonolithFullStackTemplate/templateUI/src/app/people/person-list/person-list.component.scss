@@ -48,6 +48,7 @@ $tabletSize: 800px;
     margin-top: 20px;
     align-items: center;
     flex-direction: column;
+    padding-top: 10px;
 
     @media (min-width: $tabletSize) {
       flex-direction: row;

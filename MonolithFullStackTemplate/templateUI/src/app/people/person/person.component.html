@@ -8,7 +8,7 @@
       </button>
     </mat-toolbar>
   </div>
-  <div class="shown-small-screen" align="end">
+  <div class="shown-small-screen">
     <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1">
       <mat-icon>clear</mat-icon>
     </button>
@@ -81,8 +81,8 @@
         </div>
       </div>
 
-      <mat-card-actions class="person-dialog-form-actions">
-        <div align="end">
+      <mat-card-actions>
+        <div class="person-dialog-form-actions">
           <button mat-raised-button (click)="onClear()">{{'form.clear' | translate}}</button>
           <button mat-raised-button color="primary" type="submit"
                   [disabled]="personFormBuilder.form.invalid"
