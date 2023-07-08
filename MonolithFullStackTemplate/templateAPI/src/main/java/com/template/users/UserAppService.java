@@ -60,8 +60,8 @@ public class UserAppService {
                 .firstName("Name")
                 .lastName("Surname")
                 .username("user1@wiltech.com")
-                .password("password1")
-                .roleIds(Arrays.asList(UserRoleType.ROLE_USER.name()))
+                .password("Pa$$word1")
+                .roleIds(List.of(UserRoleType.ROLE_USER.name()))
                 .active(true)
                 .build();
     }
