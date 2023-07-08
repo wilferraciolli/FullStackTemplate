@@ -18,10 +18,11 @@ import {MetadataService} from '../../_services/metadata.service';
 })
 export class UserComponent implements OnInit {
 
-  hide: boolean = true;
-  link!: Link;
-  user!: User;
-  availableRoles: Array<ValueViewValue> = [];
+  public hide: boolean = true;
+  public availableRoles: Array<ValueViewValue> = [];
+
+  private link!: Link;
+  private user!: User;
 
   constructor(private userService: UserServiceService,
               public userFormBuilder: UserFormBuilder,
@@ -43,32 +44,34 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
     if (this.linkService.isTemplateLink(this.link)) {
       this.getUserTemplate(this.link.href).then((data: UserResponse) => {
-        this.user = this.adapter.adapt(data._data.user, data._data.user.links, data._metadata);
-        this.availableRoles = this.metadataService.resolveMetadataIdValues(this.user.meta.roleIds.values);
 
-        this.userFormBuilder.initializeFormGroupWithTemplateValues(this.user);
+        this.user = this.adapter.adapt(data._data.user, data._data.user.links, data._metadata);
+        if (this.user.meta) {
+          this.availableRoles = this.metadataService.resolveMetadataIdValues(this.user.meta.roleIds.values);
+        }
+
+        this.userFormBuilder.populateFormValues(this.user);
       });
     } else {
 
       this.getSingleUser(this.link.href).then((data) => {
         this.user = this.adapter.adapt(data._data.user, data._data.user.links, data._metadata);
-        this.availableRoles = this.metadataService.resolveMetadataIdValues(this.user.meta.roleIds.values);
+        if (this.user.meta) {
+          this.availableRoles = this.metadataService.resolveMetadataIdValues(this.user.meta.roleIds.values);
+        }
 
-        this.userFormBuilder.populateForm(this.user);
+        this.userFormBuilder.populateFormValues(this.user);
       });
     }
   }
 
-  /**
-   * Clear out form and re initialize it
-   */
-  onClear(): void {
+  public onClear(): void {
     this.userFormBuilder.form.reset();
     this.userFormBuilder.resetFormGroup();
     this.notificationService.success('Form cleared successfully');
   }
 
-  onSubmit(): void {
+  public onSubmit(): void {
     if (this.userFormBuilder.form.valid) {
 
       if (this.userFormBuilder.form.value.$key) {
@@ -81,7 +84,7 @@ export class UserComponent implements OnInit {
     }
   }
 
-  create(): void {
+ public create(): void {
     // @ts-ignore
     this.userService.add(this.linkService.getCreateUrlFromTemplateUrl(this.link), this.userFormBuilder.getFormValue())
       .subscribe((data: User) => {
@@ -95,7 +98,7 @@ export class UserComponent implements OnInit {
         });
   }
 
-  update(): void {
+ public update(): void {
     console.log('updating');
 
     this.userService.update(this.link.href, this.userFormBuilder.getFormValue())
@@ -110,10 +113,7 @@ export class UserComponent implements OnInit {
         });
   }
 
-  /**
-   * Method to be called once the add dialog is closed.
-   */
-  onClose(): void {
+  public onClose(): void {
     // pass returned data to the caller
     this.dialogRef.close(this.user);
 
@@ -122,12 +122,10 @@ export class UserComponent implements OnInit {
   }
 
   private getUserTemplate(url: string): Promise<UserResponse> {
-
     return this.userService.getTemplateAsync(url);
   }
 
   private getSingleUser(url: string): Promise<any> {
-
     return this.userService.getById(url);
   }
 }

@@ -6,8 +6,12 @@ export interface UserResponse {
     user: User
   };
   _metadata: {
-    id: MetaDataRules,
-    roleIds: MetaDataWithValues
+    id: MetaDataRules;
+    // firstName: MetaDataRules;
+    // lastName: MetaDataRules;
+    username: MetaDataRules;
+    password: MetaDataRules;
+    roleIds: MetaDataWithValues;
   };
   _metaLinks: {
     self: {

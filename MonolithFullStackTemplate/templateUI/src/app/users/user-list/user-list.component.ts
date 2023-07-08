@@ -21,6 +21,8 @@ import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/lay
 import {LoadingService} from '../../shared/components/loading/loading.service';
 import {finalize} from 'rxjs/operators';
 import {MetadataService} from '../../_services/metadata.service';
+import {Person} from "../../people/person";
+import * as _ from "lodash";
 
 @Component({
   selector: 'app-user-list',
@@ -63,12 +65,17 @@ export class UserListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('REceived users link ', this.userListLink);
+    console.log('Received users link ', this.userListLink);
     if (this.userListLink) {
       this.loadAll(this.userListLink.href);
     }else {
       this.router.navigate(['/home']);
     }
+  }
+
+  public disableUpdateUser(user: User): boolean {
+    return _.isNull(user.links)
+      || _.isNull(user.links.updateUser);
   }
 
   onSearchClear(): void {
@@ -80,9 +87,6 @@ export class UserListComponent implements OnInit {
     // this.users.filter = this.searchKey.trim().toLowerCase();
   }
 
-  /**
-   * Method to filter the columns the search should use.
-   */
   getFilterColumnsToSearchForPredicate() {
     // TODO implement search
     return null;
@@ -123,6 +127,7 @@ export class UserListComponent implements OnInit {
       maxHeight: '100vh',
       autoFocus: true,
       disableClose: true,
+      // @ts-ignore
       data: {link: row.links.self}
     });
 
@@ -182,7 +187,6 @@ export class UserListComponent implements OnInit {
   }
 
   private loadAll(url: string): void {
-
     this.loadingService.loadingOn();
 
     this.userService.getAll<UserListResponse>(url)
@@ -213,12 +217,10 @@ export class UserListComponent implements OnInit {
   }
 
   private resolveCollectionLinks(metaLinks: any): UserLinksCollection {
-
     return new UserLinksCollection(metaLinks.self, metaLinks.createUser);
   }
 
   private resolveCollectionMeta(collectionMeta: any): UserMeta {
-
     return collectionMeta;
   }
 }

@@ -3,28 +3,27 @@ import * as _ from 'lodash';
 import { UserMeta } from './user-meta';
 
 export class User {
-
-  id: string;
+  id: string | null;
   firstName: string;
   lastName: string;
   username: string;
   password: string;
-  dateOfBirth?: string;
-  active: boolean;
+  dateOfBirth: string | null;
+  active: boolean | null;
   roleIds: Array<string>;
-  links: UserLinks;
-  meta: UserMeta;
+  links: UserLinks | null;
+  meta: UserMeta | null;
 
-  constructor(id: string,
+  constructor(id: string | null,
               firstName: string,
               lastName: string,
               username: string,
               password: string,
-              dateOfBirth: string | undefined,
-              active: boolean,
+              dateOfBirth: string | null,
+              active: boolean | null,
               roleIds: Array<string>,
-              links: UserLinks,
-              meta: UserMeta) {
+              links: UserLinks | null,
+              meta: UserMeta | null) {
 
     this.id = id;
     this.firstName = firstName;

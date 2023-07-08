@@ -8,7 +8,7 @@
       <mat-form-field floatLabel="auto" class="full-width">
         <input matInput type="text" [(ngModel)]="searchKey" placeholder="Search" autocomplete="off"
                (keyup)="applyFilter()">
-        <button (click)="onSearchClear()" mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchKey">
+        <button (click)="onSearchClear()" mat-button matSuffix aria-label="Clear" *ngIf="searchKey">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
@@ -31,10 +31,10 @@
       <div> {{user.username}}</div>
       <div> {{user.roleIds | convertIdsToValues: userCollectionRoleIds}}</div>
       <div class="user-list-content-card-actions">
-        <button mat-icon-button [disabled]="!user.links.updateUser.href" (click)="onEdit(user)">
+        <button mat-icon-button [disabled]="disableUpdateUser(user)" (click)="onEdit(user)">
           <mat-icon>launch</mat-icon>
         </button>
-        <button mat-icon-button color="warn" [disabled]="!user.links.deleteUser.href" (click)="delete(user.links.deleteUser.href)">
+        <button *ngIf="user.links && user.links.deleteUser" mat-icon-button color="warn" [disabled]="!user.links.deleteUser.href" (click)="delete(user.links.deleteUser.href)">
           <mat-icon>delete_outline</mat-icon>
         </button>
       </div>

@@ -1,4 +1,3 @@
-<!--<div class="container">-->
 <mat-card>
   <div class="hidden-small-screen">
     <mat-toolbar>
@@ -11,7 +10,7 @@
       </button>
     </mat-toolbar>
   </div>
-  <div class="shown-small-screen" align="end">
+  <div class="shown-small-screen">
     <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1">
       <mat-icon>clear</mat-icon>
     </button>
@@ -71,7 +70,7 @@
           </mat-form-field>
 
           <!-- Create a div to hold the nested form array, as it cannot be used as controlFormName -->
-          <div formArrayName="roles">
+          <div formArrayName="roleIds">
             <span>{{'user.roles' | translate}}</span>
             <button mat-icon-button (click)="userFormBuilder.addRoleFormGroup()">
               <mat-icon>add</mat-icon>
@@ -80,13 +79,15 @@
             <div *ngFor="let role of userFormBuilder.rolesFormArray.controls; let i = index;" [formGroupName]="i">
               <mat-form-field color="primary">
                 <mat-label>{{'user.role' | translate}}</mat-label>
-                <mat-select formControlName="value" required>
+
+                <mat-select required formControlName="id">
                   <mat-option *ngFor="let role of availableRoles" [value]="role.value">
                     {{role.viewValue}}
                   </mat-option>
                 </mat-select>
+
               </mat-form-field>
-              <button mat-icon-button color="warn" [disabled]="userFormBuilder.rolesFormArray.length === 1"
+              <button mat-icon-button color="warn" [disabled]="userFormBuilder.rolesFormArray.value.length === 1"
                       (click)="userFormBuilder.deleteRoleFormGroup(i)">
                 <mat-icon>delete_outline</mat-icon>
               </button>
@@ -96,7 +97,7 @@
       </div>
 
       <mat-card-actions class="user-dialog-form-actions">
-        <div align="end">
+        <div>
           <button mat-raised-button (click)="onClear()">{{'form.clear' | translate}}</button>
           <button mat-raised-button color="primary" type="submit"
                   [disabled]="userFormBuilder.form.invalid"
@@ -108,4 +109,3 @@
 
   </mat-card-content>
 </mat-card>
-<!--</div>-->

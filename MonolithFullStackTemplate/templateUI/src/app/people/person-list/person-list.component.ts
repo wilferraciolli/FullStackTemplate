@@ -69,16 +69,21 @@ export class PersonListComponent implements OnInit {
     }
   }
 
-  onSearchClear(): void {
+  public disableUpdatePerson(person: Person): boolean {
+    return _.isNull(person.links)
+      || _.isNull(person.links.updatePerson);
+  }
+
+  public onSearchClear(): void {
     this.searchKey = '';
     this.applyFilter();
   }
 
-  applyFilter(): void {
+  public applyFilter(): void {
     // this.users.filter = this.searchKey.trim().toLowerCase();
   }
 
-  create(): void {
+  public create(): void {
     const signInDialogRef = this.dialog.open(UserComponent, {
       width: '50%',
       height: '50%',
@@ -103,6 +108,52 @@ export class PersonListComponent implements OnInit {
       // TODO reloading the page is not working
       this.personService.reloadCurrentRoute();
       smallDialogSubscription.unsubscribe();
+    });
+  }
+
+  public onEdit(row: Person): void {
+
+    const signInDialogRef = this.dialog.open(PersonComponent, {
+      width: '50%',
+      height: '50%',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      autoFocus: true,
+      disableClose: true,
+      // @ts-ignore
+      data: {link: row.links.self}
+    });
+
+    // subscribe to screen size
+    const smallDialogSubscription = this.isExtraSmall.subscribe(result => {
+      if (result.matches) {
+        signInDialogRef.updateSize('100%', '100%');
+      } else {
+        signInDialogRef.updateSize('75%', '75%');
+      }
+    });
+    signInDialogRef.afterClosed().subscribe(result => {
+      this.personService.reloadCurrentRoute();
+      smallDialogSubscription.unsubscribe();
+    });
+  }
+
+  public delete(url: string): void {
+    // TODO replace this inner subscriptions
+    this.dialogService.openConfirmDialog('Are you sure you want to delete this person?')
+      .afterClosed().subscribe(res => {
+      if (res) {
+        this.personService.delete(url)
+          .subscribe(data => {
+              console.log('Success', data);
+              this.notificationService.warn('Person deleted successfully');
+              this.personService.reloadCurrentRoute();
+            },
+            error => {
+              console.log('Error', error);
+              this.notificationService.error('Person could not be deleted');
+            });
+      }
     });
   }
 
@@ -132,52 +183,6 @@ export class PersonListComponent implements OnInit {
       });
   }
 
-  onEdit(row: Person): void {
-
-    const signInDialogRef = this.dialog.open(PersonComponent, {
-      width: '50%',
-      height: '50%',
-      maxWidth: '100vw',
-      maxHeight: '100vh',
-      autoFocus: true,
-      disableClose: true,
-      // @ts-ignore
-      data: {link: row.links.self}
-    });
-
-    // subscribe to screen size
-    const smallDialogSubscription = this.isExtraSmall.subscribe(result => {
-      if (result.matches) {
-        signInDialogRef.updateSize('100%', '100%');
-      } else {
-        signInDialogRef.updateSize('75%', '75%');
-      }
-    });
-    signInDialogRef.afterClosed().subscribe(result => {
-      this.personService.reloadCurrentRoute();
-      smallDialogSubscription.unsubscribe();
-    });
-  }
-
-  delete(url: string): void {
-    // TODO replace this inner subscriptions
-    this.dialogService.openConfirmDialog('Are you sure you want to delete this person?')
-      .afterClosed().subscribe(res => {
-      if (res) {
-        this.personService.delete(url)
-          .subscribe(data => {
-              console.log('Success', data);
-              this.notificationService.warn('Person deleted successfully');
-              this.personService.reloadCurrentRoute();
-            },
-            error => {
-              console.log('Error', error);
-              this.notificationService.error('Person could not be deleted');
-            });
-      }
-    });
-  }
-
   private assignPeople(collectionBody: any[]): void {
     this.people = this.convertResponse(collectionBody);
   }
@@ -196,10 +201,5 @@ export class PersonListComponent implements OnInit {
   private resolveCollectionMeta(collectionMeta: any): PersonMeta {
 
     return collectionMeta;
-  }
-
-  public disableUpdatePerson(person: Person): boolean {
-    return _.isNull(person.links)
-      || _.isNull(person.links.updatePerson);
   }
 }
