@@ -16,7 +16,7 @@ export class LoginFormBuilder {
 
     this.form = this.formBuilder.group<LoginForm>({
         username: this.formBuilder.nonNullable.control('', {
-          validators: [Validators.required]
+          validators: [Validators.required, Validators.minLength(2), Validators.email]
         }),
         password: this.formBuilder.nonNullable.control('', {
           validators: [Validators.required]

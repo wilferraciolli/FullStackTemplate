@@ -5,6 +5,7 @@ import {AuthService} from '../_services/auth-service';
 import {LoadingService} from '../shared/components/loading/loading.service';
 import {ProfileService} from "../_services/profile.service";
 import {LoginFormBuilder} from "./login-form-builder";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-login',
@@ -16,6 +17,12 @@ export class LoginComponent implements OnInit {
   public loading: boolean = false;
   public submitted: boolean = false;
   public hide: boolean = true;
+
+  public usernameRequiredErrorLabel: string | null = null;
+  public usernameMinLenghtLabel: string | null = null;
+  public usernameFormatErrorLabel: string | null = null;
+
+  public passwordRequiredErrorLabel: string | null = null;
 
   private returnUrl!: string;
   private error!: string;
@@ -31,7 +38,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private authenticationService: AuthService,
     private profileService: ProfileService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private translateService: TranslateService
   ) {
 
     // redirect to home if already logged in
@@ -51,9 +59,16 @@ export class LoginComponent implements OnInit {
    * Sets the this.returnUrl property to the value passed in the url querystring, or defaults to the home page ('/') if there isn't a value in the querystring. The return url property
    * allows you to redirect the user back to the original page they requested before logging in.
    */
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+
+    await this.translateService.use('en').toPromise();
+    this.usernameRequiredErrorLabel = this.translateService.instant('form.validation.required');
+    this.usernameMinLenghtLabel = this.translateService.instant('form.validation.minLength', {value: 3});
+    this.usernameFormatErrorLabel = this.translateService.instant('form.validation.emailFormat');
+
+    this.passwordRequiredErrorLabel = this.translateService.instant('form.validation.required');
   }
 
   /**

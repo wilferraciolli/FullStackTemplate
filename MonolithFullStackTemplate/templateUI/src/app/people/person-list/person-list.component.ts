@@ -61,7 +61,6 @@ export class PersonListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('Received person link ', this.personListLink); //TODO if removed the value is never there
     if (this.personListLink) {
       this.loadAll(this.personListLink.href);
     } else {
@@ -103,9 +102,6 @@ export class PersonListComponent implements OnInit {
       }
     });
     signInDialogRef.afterClosed().subscribe(result => {
-      console.log('The value of creating a person is ', result);
-
-      // TODO reloading the page is not working
       this.personService.reloadCurrentRoute();
       smallDialogSubscription.unsubscribe();
     });
@@ -139,13 +135,11 @@ export class PersonListComponent implements OnInit {
   }
 
   public delete(url: string): void {
-    // TODO replace this inner subscriptions
     this.dialogService.openConfirmDialog('Are you sure you want to delete this person?')
       .afterClosed().subscribe(res => {
       if (res) {
         this.personService.delete(url)
           .subscribe(data => {
-              console.log('Success', data);
               this.notificationService.warn('Person deleted successfully');
               this.personService.reloadCurrentRoute();
             },
@@ -167,8 +161,6 @@ export class PersonListComponent implements OnInit {
         const collectionData = response._data;
         const collectionMeta: any = response._metadata;
         const metaLinks: any = response._metaLinks;
-
-        console.log('After resolver people ', response);
 
         this.personTemplateLink = metaLinks.creratePerson;
 

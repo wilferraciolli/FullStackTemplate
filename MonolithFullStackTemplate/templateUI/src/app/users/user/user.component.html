@@ -24,25 +24,31 @@
 
           <mat-form-field color="primary">
             <input formControlName="firstName" required matInput placeholder="{{'user.firstName' | translate}}">
-            <!-- adding validation message based on error type -->
-            <mat-error *ngIf="userFormBuilder.form.controls['firstName'].errors?.['required']">Mandatory</mat-error>
-            <mat-error *ngIf="userFormBuilder.form.controls['firstName'].errors?.['minLength']">Minimum 2 characters
+            <mat-error *ngIf="userFormBuilder.firstName.hasError('required')">
+              {{'form.validation.required' | translate}}
+            </mat-error>
+            <mat-error *ngIf="userFormBuilder.firstName.hasError('minlength')">
+              {{'form.validation.minLength' | translate: {value: 2} }}
             </mat-error>
           </mat-form-field>
 
           <mat-form-field color="primary">
             <input formControlName="lastName" required matInput placeholder="{{'user.lastName' | translate}}">
-            <!-- adding validation message based on error type -->
-            <mat-error *ngIf="userFormBuilder.form.controls['lastName'].errors?.['required']">Mandatory</mat-error>
-            <mat-error *ngIf="userFormBuilder.form.controls['lastName'].errors?.['minLength']">Minimum 2 characters
+            <mat-error *ngIf="userFormBuilder.lastName.hasError('required')">
+              {{'form.validation.required' | translate}}
+            </mat-error>
+            <mat-error *ngIf="userFormBuilder.lastName.hasError('minlength')">
+              {{'form.validation.minLength' | translate: {value: 2} }}
             </mat-error>
           </mat-form-field>
 
           <mat-form-field color="primary">
             <input formControlName="username" matInput placeholder="{{'user.username' | translate}}">
-            <mat-error *ngIf="userFormBuilder.form.controls['username'].errors?.['required']">Mandatory</mat-error>
-            <mat-error *ngIf="userFormBuilder.form.controls['username'].errors?.['email']">Must be a valid email
-              format
+            <mat-error *ngIf="userFormBuilder.username.hasError('required')">
+              {{'form.validation.required' | translate}}
+            </mat-error>
+            <mat-error *ngIf="userFormBuilder.username.hasError('email')">
+              {{'form.validation.emailFormat' | translate}}
             </mat-error>
           </mat-form-field>
 
@@ -51,8 +57,11 @@
                    [type]="hide? 'password' : 'text'">
             <mat-icon color="primary" matSuffix
                       (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-            <mat-error *ngIf="userFormBuilder.form.controls['password'].errors?.['required']">Mandatory</mat-error>
-            <mat-error *ngIf="userFormBuilder.form.controls['password'].errors?.['minLength']">Minimum 6 characters
+            <mat-error *ngIf="userFormBuilder.password.hasError('required')">
+              {{'form.validation.required' | translate}}
+            </mat-error>
+            <mat-error *ngIf="userFormBuilder.password.hasError('pattern')">
+              {{'form.validation.passwordPattern' | translate}}
             </mat-error>
           </mat-form-field>
 
@@ -64,7 +73,8 @@
         <div class="user-dialog-form-content">
           <mat-form-field color="primary">
             <mat-label>{{'user.dateOfBirth' | translate}}</mat-label>
-            <input matInput [matDatepicker]="picker" placeholder="{{'form.chooseADate' | translate}}" formControlName="dateOfBirth">
+            <input matInput [matDatepicker]="picker" placeholder="{{'form.chooseADate' | translate}}"
+                   formControlName="dateOfBirth">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
@@ -96,8 +106,8 @@
         </div>
       </div>
 
-      <mat-card-actions class="user-dialog-form-actions">
-        <div>
+      <mat-card-actions>
+        <div class="user-dialog-form-actions">
           <button mat-raised-button (click)="onClear()">{{'form.clear' | translate}}</button>
           <button mat-raised-button color="primary" type="submit"
                   [disabled]="userFormBuilder.form.invalid"

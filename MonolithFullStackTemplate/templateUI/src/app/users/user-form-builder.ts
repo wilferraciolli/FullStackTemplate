@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {User} from './user';
 import {UserServiceService} from './user-service.service';
 import * as _ from 'lodash';
@@ -7,6 +7,7 @@ import {MetadataService} from '../_services/metadata.service';
 import {DateTimeService} from '../_services/date-time.service';
 import {UserForm} from "./user-form";
 import {Id} from "../shared/response/id";
+import {EMAIL_PATTERN} from "../shared/constants";
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +34,7 @@ export class UserFormBuilder {
       password: this.formBuilder.nonNullable.control('', {
         validators: [
           Validators.required,
-          Validators.pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$'))
+          Validators.pattern(new RegExp(EMAIL_PATTERN))
         ]
       }),
       dateOfBirth: this.formBuilder.control(null),
@@ -46,6 +47,26 @@ export class UserFormBuilder {
 
   public get rolesFormArray(): FormArray {
     return this.form.controls.roleIds;
+  }
+
+  get firstName(): FormControl<string> {
+    return this.form.controls.firstName;
+  }
+
+  get lastName(): FormControl<string> {
+    return this.form.controls.lastName;
+  }
+
+  get username(): FormControl<string> {
+    return this.form.controls.username;
+  }
+
+  get password(): FormControl<string> {
+    return this.form.controls.password;
+  }
+
+  get dateOfBirth(): FormControl<string | null> {
+    return this.form.controls.dateOfBirth;
   }
 
   public getFormValue(): User {

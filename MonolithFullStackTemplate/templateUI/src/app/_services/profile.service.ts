@@ -43,7 +43,6 @@ export class ProfileService {
   }
 
   public fetchUserProfile(): void {
-    console.log('Adding userProfile in Profile Service');
     this.loadUserProfile()
       .then((userProfileResponse: UserProfileResponse) => {
         this.populateUserProfile(userProfileResponse);
@@ -51,7 +50,6 @@ export class ProfileService {
   }
 
   public removeUserProfile(): void {
-    console.log('removing userProfile in Profile Service');
     localStorage.removeItem('templateUI-userProfile');
 
     // TODO tell all of the subscribers that this can be completed
@@ -71,8 +69,6 @@ export class ProfileService {
   }
 
   private populateUserProfile(userProfileResponse: UserProfileResponse): void {
-    console.log('populating userProfile in Profile Service', userProfileResponse);
-
     const userProfile: UserProfile = new UserProfile(userProfileResponse);
     localStorage.setItem('templateUI-userProfile', JSON.stringify(userProfile));
     this.currentUserProfileSubject.next(userProfile);

@@ -19,7 +19,14 @@
     "submit": "Submit",
     "update": "Update",
     "clear": "Clear",
-    "chooseADate": "Choose a date"
+    "chooseADate": "Choose a date",
+    "validation": {
+      "emailFormat": "Invalid format, Eg name@domain",
+      "minLength": "Must be at least {{value}} letters",
+      "passwordPattern": "Must be 6 digits and include Capital letters and Special Symbols",
+      "phonePrefix": "Include area code",
+      "required": "Value is mandatory"
+    }
   },
   "registration": {
     "title": "Register",
@@ -29,17 +36,7 @@
     "password": "Password",
     "dateOfBirth": "Date of birth",
     "login": "Login",
-    "register": "REGISTER",
-    "validation": {
-      "firstNameNull": "First name is required",
-      "firstNameMinLength": "First name must be at least 2 letters",
-      "lastNameNull": "Last name is required",
-      "lastNameMinLength": "Last name must be at least 2 letters",
-      "emailNull": " Email is required",
-      "emailFormat": "Invalid format, correct is name@domain",
-      "passwordNull": "Password is required",
-      "passwordPattern": "Must be 6 digits and include Capital letters and Special Symbols"
-    }
+    "register": "REGISTER"
   },
   "login": {
     "title": "Login",
@@ -70,7 +67,7 @@
     },
     "firstName": "First name",
     "lastName": "Last name",
-    "username": "Username",
+    "username": "Email",
     "password": "Password",
     "active": "Active",
     "dateOfBirth": "Date of birth",

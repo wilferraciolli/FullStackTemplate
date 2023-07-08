@@ -8,13 +8,17 @@
       <mat-card-content>
         <form [formGroup]="formBuilder.form" (ngSubmit)="login()">
 
-          <mat-form-field class="full-width">
+          <mat-form-field class="full-width" appearance="outline">
             <mat-label>{{'login.email' | translate}}</mat-label>
             <input matInput placeholder="{{'login.email' | translate}}" name="email"
                    formControlName="username" required>
+
+            <mat-error *ngIf="this.formBuilder.username.hasError('required')">{{usernameRequiredErrorLabel}}</mat-error>
+            <mat-error *ngIf="this.formBuilder.username.hasError('minlength')">{{usernameMinLenghtLabel}}</mat-error>
+            <mat-error *ngIf="this.formBuilder.username.hasError('email')">{{usernameFormatErrorLabel}}</mat-error>
           </mat-form-field>
 
-          <mat-form-field class="full-width">
+          <mat-form-field class="full-width" appearance="outline">
             <mat-label>{{'login.password' | translate}}</mat-label>
             <input matInput placeholder="{{'login.password' | translate}}"
                    name="password"
@@ -22,6 +26,9 @@
                    [type]="hide? 'password' : 'text'">
             <mat-icon color="primary" matSuffix
                       (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+
+            <mat-error *ngIf="this.formBuilder.password.hasError('required')">{{passwordRequiredErrorLabel}}</mat-error>
+
           </mat-form-field>
 
           <mat-card-actions>

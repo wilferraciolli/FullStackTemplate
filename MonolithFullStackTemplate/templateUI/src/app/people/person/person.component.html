@@ -23,27 +23,41 @@
 
           <mat-form-field color="primary">
             <input formControlName="firstName" required matInput placeholder="{{'person.firstName' | translate}}">
-            <!-- adding validation message based on error type -->
-            <mat-error *ngIf="personFormBuilder.form.controls['firstName'].errors?.['required']">Mandatory</mat-error>
-            <mat-error *ngIf="personFormBuilder.form.controls['firstName'].errors?.['minLength']">Minimum 2 characters
+
+            <mat-error *ngIf="personFormBuilder.firstName.hasError('required')">
+              {{'form.validation.required' | translate}}
+            </mat-error>
+            <mat-error *ngIf="personFormBuilder.firstName.hasError('minlength')">
+              {{'form.validation.minLength' | translate: {value: 2} }}
             </mat-error>
           </mat-form-field>
 
           <mat-form-field color="primary">
             <input formControlName="lastName" required matInput placeholder="{{'person.lastName' | translate}}">
-            <!-- adding validation message based on error type -->
-            <mat-error *ngIf="personFormBuilder.form.controls['lastName'].errors?.['required']">Mandatory</mat-error>
-            <mat-error *ngIf="personFormBuilder.form.controls['lastName'].errors?.['minLength']">Minimum 2 characters
+
+            <mat-error *ngIf="personFormBuilder.lastName.hasError('required')">
+              {{'form.validation.required' | translate}}
+            </mat-error>
+            <mat-error *ngIf="personFormBuilder.lastName.hasError('minlength')">
+              {{'form.validation.minLength' | translate: {value: 2} }}
             </mat-error>
           </mat-form-field>
 
           <mat-form-field color="primary">
             <input formControlName="email" matInput placeholder="{{'person.email' | translate}}">
+
+            <mat-error *ngIf="personFormBuilder.email.hasError('required')">
+              {{'form.validation.required' | translate}}
+            </mat-error>
+            <mat-error *ngIf="personFormBuilder.email.hasError('email')">
+              {{'form.validation.emailFormat' | translate}}
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field color="primary">
             <mat-label>{{'person.dateOfBirth' | translate}}</mat-label>
-            <input matInput [matDatepicker]="picker" placeholder="{{'form.chooseADate' | translate}}" formControlName="dateOfBirth">
+            <input matInput [matDatepicker]="picker" placeholder="{{'form.chooseADate' | translate}}"
+                   formControlName="dateOfBirth">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
@@ -71,11 +85,21 @@
           </mat-form-field>
 
           <mat-form-field color="primary">
-            <input formControlName="numberOfDependants" matInput placeholder="{{'person.numberOfDependants' | translate}}">
+            <input formControlName="numberOfDependants" matInput
+                   placeholder="{{'person.numberOfDependants' | translate}}"
+                   type="number"
+                   min="0"
+                   max="10"
+                   step="1">
           </mat-form-field>
 
           <mat-form-field color="primary">
-            <input formControlName="phoneNumber" matInput placeholder="{{'person.telephoneNumber' | translate}}">
+            <input type="tel" formControlName="phoneNumber" matInput #input maxlength="15"
+                   placeholder="{{'person.telephoneNumber' | translate}}">
+            <span matTextPrefix>+&nbsp;</span>
+            <mat-icon matSuffix color="primary">phone</mat-icon>
+            <mat-hint>{{'form.validation.phonePrefix' | translate }}</mat-hint>
+            <mat-hint align="end">{{input.value.length}}/15</mat-hint>
           </mat-form-field>
 
         </div>

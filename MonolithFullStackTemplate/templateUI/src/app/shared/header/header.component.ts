@@ -37,7 +37,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // TODO move to get it from user pref
+    // TODO move to get it from user pref, maybe together with the app conponent
     this.availableLanguages = [
       new ValueViewValue(LocaleType.ENGLISH, 'header.language.english'),
       new ValueViewValue(LocaleType.GREEK, 'header.language.greek'),

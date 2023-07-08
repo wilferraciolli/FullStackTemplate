@@ -6,6 +6,7 @@ import {ConvertIdsToStringValuePipe} from '../_helpers/user-role-mapper-pipe';
 import {TranslateModule} from '@ngx-translate/core';
 import {HttpClientModule} from '@angular/common/http';
 import {ProjectMaterialModule} from "../app.module.material";
+import { MatErrorComponent } from './components/mat-error/mat-error.component';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import {ProjectMaterialModule} from "../app.module.material";
   ],
   declarations: [
     ConvertIdToStringValuePipe,
-    ConvertIdsToStringValuePipe
+    ConvertIdsToStringValuePipe,
+    MatErrorComponent
   ],
   exports: [
     ConvertIdToStringValuePipe,
@@ -27,7 +29,8 @@ import {ProjectMaterialModule} from "../app.module.material";
     FormsModule,
     ProjectMaterialModule,
     ReactiveFormsModule,
-    TranslateModule
+    TranslateModule,
+    MatErrorComponent
   ]
 })
 export class SharedModule {

@@ -40,7 +40,6 @@ export class UserProfileService {
   async loadUserProfile<T>(): Promise<any> {
     const data = await this.httpClient.get<T>(this._USER_PROFILE_URL)
       .toPromise();
-    // console.log(data);
 
     return data;
   }
@@ -68,8 +67,6 @@ export class UserProfileService {
   // }
 
   populateUserProfile(userProfileResponse: UserProfileResponse): void {
-    console.log('populating userProfile in UserProfileService', userProfileResponse);
-
     const userProfile = new UserProfile(userProfileResponse);
     localStorage.setItem('userProfile', JSON.stringify(userProfile));
     this.currentUserProfileSubject.next(userProfile);

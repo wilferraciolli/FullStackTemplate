@@ -65,7 +65,6 @@ export class UserListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('Received users link ', this.userListLink);
     if (this.userListLink) {
       this.loadAll(this.userListLink.href);
     }else {
@@ -85,11 +84,6 @@ export class UserListComponent implements OnInit {
 
   applyFilter(): void {
     // this.users.filter = this.searchKey.trim().toLowerCase();
-  }
-
-  getFilterColumnsToSearchForPredicate() {
-    // TODO implement search
-    return null;
   }
 
   create(): void {
@@ -112,8 +106,6 @@ export class UserListComponent implements OnInit {
       }
     });
     signInDialogRef.afterClosed().subscribe(result => {
-      console.log('The value returned from the dialog ', result);
-
       this.userService.reloadCurrentRoute();
       smallDialogSubscription.unsubscribe();
     });
@@ -140,11 +132,7 @@ export class UserListComponent implements OnInit {
       }
     });
     signInDialogRef.afterClosed().subscribe(result => {
-
-      console.log('The value returned from the dialog ', result);
-      // TODO not working reload
       this.userService.reloadCurrentRoute();
-
       smallDialogSubscription.unsubscribe();
     });
   }
@@ -155,7 +143,6 @@ export class UserListComponent implements OnInit {
       if (res) {
         this.userService.delete(url)
           .subscribe(data => {
-              console.log('Success', data);
               this.notificationService.warn('User deleted successfully');
               this.userService.reloadCurrentRoute();
             },

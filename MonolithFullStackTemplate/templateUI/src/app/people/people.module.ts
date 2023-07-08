@@ -1,9 +1,9 @@
-import { NgModule } from '@angular/core';
-import { PeopleRoutingModule } from './people-routing.module';
-import { PersonComponent } from './person/person.component';
-import { PersonListComponent } from './person-list/person-list.component';
-import { MatConfirmDialogComponent } from '../shared/components/mat-confirm-dialog/mat-confirm-dialog.component';
-import { SharedModule } from '../shared/shared.module';
+import {NgModule} from '@angular/core';
+import {PeopleRoutingModule} from './people-routing.module';
+import {PersonComponent} from './person/person.component';
+import {PersonListComponent} from './person-list/person-list.component';
+import {MatConfirmDialogComponent} from '../shared/components/mat-confirm-dialog/mat-confirm-dialog.component';
+import {SharedModule} from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -15,7 +15,7 @@ import { SharedModule } from '../shared/shared.module';
     SharedModule
   ],
   // add components used in pop ups
- // TODO migration entryComponents: [PersonComponent, MatConfirmDialogComponent]
+  // TODO migration entryComponents: [PersonComponent, MatConfirmDialogComponent]
 })
 export class PeopleModule {
 }

@@ -39,7 +39,8 @@
 
             <mat-form-field color="primary">
               <mat-label>{{'userProfile.dateOfBirth' | translate}}</mat-label>
-              <input matInput [matDatepicker]="picker" placeholder="{{'form.chooseADate' | translate}}" formControlName="dateOfBirth">
+              <input matInput [matDatepicker]="picker" placeholder="{{'form.chooseADate' | translate}}"
+                     formControlName="dateOfBirth">
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
@@ -66,18 +67,28 @@
             </mat-form-field>
 
             <mat-form-field color="primary">
-              <input formControlName="numberOfDependants" matInput placeholder="{{'userProfile.numberOfDependants' | translate}}">
+              <input formControlName="numberOfDependants" matInput
+                     placeholder="{{'userProfile.numberOfDependants' | translate}}"
+                     type="number"
+                     min="0"
+                     max="10"
+                     step="1">
             </mat-form-field>
 
             <mat-form-field color="primary">
-              <input formControlName="phoneNumber" matInput placeholder="{{'userProfile.phoneNumber' | translate}}">
+              <input formControlName="phoneNumber" matInput matInput #input maxlength="15"
+                     placeholder="{{'userProfile.phoneNumber' | translate}}">
+              <span matTextPrefix>+&nbsp;</span>
+              <mat-icon matSuffix color="primary">phone</mat-icon>
+              <mat-hint>{{'form.validation.phonePrefix' | translate }}</mat-hint>
+              <mat-hint align="end">{{input.value.length}}/15</mat-hint>
             </mat-form-field>
 
           </div>
         </div>
 
         <mat-card-actions class="user-profile-form-actions">
-          <div align="end">
+          <div>
             <button [disabled]="!userProfileFormBuilder.form.valid" mat-raised-button type="submit" color="primary">
               {{'form.update' | translate}}
             </button>

@@ -18,6 +18,9 @@ $tabletSize: 800px;
 }
 
 .shown-small-screen {
+  margin-left: auto;
+  padding: 10px 10px 0;
+
   @media (min-width: $tabletSize) {
     display: none;
   }

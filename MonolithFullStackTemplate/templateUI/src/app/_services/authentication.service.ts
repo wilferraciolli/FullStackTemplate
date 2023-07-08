@@ -166,7 +166,6 @@ export class AuthenticationService {
   register(userDetails: UserRegistration) {
     return this.http.post<any>(environment.baseUrl + this._AUTHENTICATION_URL + '/register', userDetails)
       .pipe(map(user => {
-        console.log(user);
         return user;
       }));
   }

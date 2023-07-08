@@ -15,9 +15,11 @@
                    formControlName="firstName" required>
 
             <mat-error *ngIf="formBuilder.firstName.hasError('required')">
-              {{'registration.validation.firstNameNull' | translate}} </mat-error>
+              {{'form.validation.required' | translate}}
+            </mat-error>
             <mat-error *ngIf="formBuilder.firstName.hasError('minlength')">
-              {{'registration.validation.firstNameMinLength' | translate}}</mat-error>
+              {{'form.validation.minLength' | translate: {value: 2} }}
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field class="full-width">
@@ -26,9 +28,11 @@
                    formControlName="lastName" required>
 
             <mat-error *ngIf="formBuilder.lastName.hasError('required')">
-              {{'registration.validation.lastNameNull' | translate}}</mat-error>
+              {{'form.validation.required' | translate}}
+            </mat-error>
             <mat-error *ngIf="formBuilder.lastName.hasError('minlength')">
-              {{'registration.validation.lastNameMinLength' | translate}}</mat-error>
+              {{'form.validation.minLength' | translate: {value: 2} }}
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field class="full-width">
@@ -38,9 +42,11 @@
             <!--            <mat-error *ngIf="isUsernameAvailable('WilFerraciolli@wiltech.com')">Name taken biatch</mat-error>-->
             <!--            <mat-error *ngIf="formBuilder.email.hasError('alreadyExists')">Name taken  </mat-error>-->
             <mat-error *ngIf="formBuilder.email.hasError('required')">
-              {{'registration.validation.emailNull' | translate}}</mat-error>
+              {{'form.validation.required' | translate}}
+            </mat-error>
             <mat-error *ngIf="formBuilder.email.hasError('email')">
-              {{'registration.validation.emailFormat' | translate}}</mat-error>
+              {{'form.validation.emailFormat' | translate}}
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field class="full-width">
@@ -53,9 +59,11 @@
                       (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
 
             <mat-error *ngIf="formBuilder.password.hasError('required')">
-              {{'registration.validation.passwordNull' | translate}}</mat-error>
+              {{'form.validation.required' | translate}}
+            </mat-error>
             <mat-error *ngIf="formBuilder.password.hasError('pattern')">
-              {{'registration.validation.passwordPattern' | translate}}</mat-error>
+              {{'form.validation.passwordPattern' | translate}}
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field>

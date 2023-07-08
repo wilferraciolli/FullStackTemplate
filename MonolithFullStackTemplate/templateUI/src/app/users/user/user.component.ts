@@ -88,22 +88,17 @@ export class UserComponent implements OnInit {
     // @ts-ignore
     this.userService.add(this.linkService.getCreateUrlFromTemplateUrl(this.link), this.userFormBuilder.getFormValue())
       .subscribe((data: User) => {
-          console.log('Success', data);
           this.user = data;
           this.notificationService.success('User created successfully');
         },
         error => {
-          console.log('error send from creating duplicated user', error);
           this.notificationService.error('User could not be created');
         });
   }
 
  public update(): void {
-    console.log('updating');
-
     this.userService.update(this.link.href, this.userFormBuilder.getFormValue())
       .subscribe((data: User) => {
-          console.log('Success', data);
           this.user = data;
           this.notificationService.success('User updated successfully');
         },

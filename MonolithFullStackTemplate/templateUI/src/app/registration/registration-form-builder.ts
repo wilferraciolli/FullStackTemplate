@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 import {DateTimeService} from '../_services/date-time.service';
 import {RegistrationForm} from "./registration-form";
 import {UserRegistration} from "./user-registration";
+import {EMAIL_PATTERN} from "../shared/constants";
 
 
 @Injectable({
@@ -31,7 +32,7 @@ export class RegistrationFormBuilder {
         password: this.formBuilder.nonNullable.control('', {
           validators: [
             Validators.required,
-            Validators.pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$'))
+            Validators.pattern(new RegExp(EMAIL_PATTERN))
           ]
         }),
         dateOfBirth: this.formBuilder.control(null)

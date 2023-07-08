@@ -15,8 +15,6 @@ export class LinksService {
    * @param link true if the link is defined.
    */
   public hasLink(link: Link | undefined): boolean {
-    // console.log(link);
-
     return !_.isUndefined(link);
   }
 

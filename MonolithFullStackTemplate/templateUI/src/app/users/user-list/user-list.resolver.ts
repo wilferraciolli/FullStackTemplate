@@ -10,15 +10,11 @@ export class UserListResolver {
   private readonly profileService: ProfileService = inject(ProfileService);
 
   public async resolveUserListLink(): Promise<Link | null> {
-    console.log('Geting user link ');
-
     const userProfile: UserProfile | null = await firstValueFrom(this.profileService.currentUserProfile)
       .then((userProfile: UserProfile) => userProfile);
     //
     // const userProfile: UserProfile | undefined = await this.profileService.currentUserProfile
     //   .pipe(first()).toPromise()
-
-    console.log('After user link ');
 
     if (!userProfile) {
       return null;

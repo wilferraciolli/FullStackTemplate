@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {DateTimeService} from '../_services/date-time.service';
 import {Person} from './person';
 import {PersonForm} from "./person-form";
@@ -37,7 +37,19 @@ export class PersonFormBuilder {
     });
   }
 
-  getFormValue(): Person {
+  get firstName(): FormControl<string> {
+    return this.form.controls.firstName;
+  }
+
+  get lastName(): FormControl<string> {
+    return this.form.controls.lastName;
+  }
+
+  get email(): FormControl<string> {
+    return this.form.controls.email;
+  }
+
+  public getFormValue(): Person {
     const person: Person = new Person(
       this.form.controls.$key.value,
       this.form.controls.userId.value,
@@ -56,9 +68,7 @@ export class PersonFormBuilder {
     return person;
   }
 
-  populateForm(person: Person): void {
-    console.log('the value of person is ', person);
-
+  public populateForm(person: Person): void {
     this.form.patchValue(
       {
         $key: person.id,
@@ -78,7 +88,7 @@ export class PersonFormBuilder {
   /**
    * Initialize the form with default values.
    */
-  resetFormGroup(): void {
+  public resetFormGroup(): void {
     this.form.setValue(
       {
         $key: null,

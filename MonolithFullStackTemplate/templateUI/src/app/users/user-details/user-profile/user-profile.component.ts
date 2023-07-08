@@ -58,7 +58,6 @@ export class UserProfileComponent implements OnInit {
     if (this.person.links && this.person.links.updatePerson) {
       this.userDetailsProfileService.update(this.person.links.updatePerson.href, this.userProfileFormBuilder.getFormValue())
         .subscribe(data => {
-            console.log('success ', data);
             this.notificationService.success('Person updated successfully');
           },
           error => {
@@ -66,8 +65,6 @@ export class UserProfileComponent implements OnInit {
             this.notificationService.error('Person could not be updated');
           }
         );
-    } else {
-      console.log('Could not Updating person');
     }
   }
 }
