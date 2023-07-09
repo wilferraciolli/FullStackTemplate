@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {Link} from '../../shared/response/link';
 import {ProfileService} from '../../_services/profile.service';
-import {UserProfile} from '../profile/user.profile';
+import {UserProfile} from '../user-details/user-profile/user.profile';
 import {firstValueFrom} from "rxjs";
 
 @Injectable({providedIn: 'root'})

@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {ProfileService} from '../../_services/profile.service';
-import {UserProfile} from '../../users/profile/user.profile';
+import {UserProfile} from '../../users/user-details/user-profile/user.profile';
 import {firstValueFrom} from 'rxjs';
 import {Link} from "../../shared/response/link";
 

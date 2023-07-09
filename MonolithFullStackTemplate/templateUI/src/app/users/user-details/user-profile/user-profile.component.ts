@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {UserProfile} from '../../profile/user.profile';
+import {UserProfile} from './user.profile';
 import {UserDetailsProfileService} from './user-details-profile.service';
 import {PersonAdapter} from '../../../people/person.adapter';
 import {Person} from '../../../people/person';
@@ -8,8 +8,8 @@ import {ValueViewValue} from '../../../shared/response/value-viewValue';
 import {NotificationService} from '../../../shared/notification.service';
 import {ProfileService} from '../../../_services/profile.service';
 import {UserProfileFormBuilder} from './user-profile-form-builds';
-import {UserProfileResponse} from './user-profile-response';
 import {MetadataService} from '../../../_services/metadata.service';
+import {PersonResponse} from "../../../people/person/person-response";
 
 @Component({
   selector: 'app-user-profile',
@@ -42,7 +42,7 @@ export class UserProfileComponent implements OnInit {
       });
 
     this.userDetailsProfileService.getById(this.userProfile.links.person.href)
-      .then((response: UserProfileResponse) => {
+      .then((response: PersonResponse) => {
 
         // get person details and populate form
         this.person = this.adapter.adapt(response._data.person, response._data.person.links, response._metadata);
@@ -58,11 +58,11 @@ export class UserProfileComponent implements OnInit {
     if (this.person.links && this.person.links.updatePerson) {
       this.userDetailsProfileService.update(this.person.links.updatePerson.href, this.userProfileFormBuilder.getFormValue())
         .subscribe(data => {
-            this.notificationService.success('Person updated successfully');
+            this.notificationService.success('User profile updated successfully');
           },
           error => {
             console.log('Error', error);
-            this.notificationService.error('Person could not be updated');
+            this.notificationService.error('User profile not be updated');
           }
         );
     }

@@ -2,8 +2,9 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../environments/environment';
-import {UserProfileResponse} from '../users/profile/user.profile.response';
-import {UserProfile} from '../users/profile/user.profile';
+import {UserProfileResponse} from '../users/user-details/user-profile/user.profile.response';
+import {UserProfile} from '../users/user-details/user-profile/user.profile';
+import {UserProfileAdapter} from "../users/user-details/user-profile/user.profile-adapter";
 
 @Injectable({providedIn: 'root'})
 export class ProfileService {
@@ -13,7 +14,8 @@ export class ProfileService {
   public currentUserProfile!: Observable<UserProfile>;
   private currentUserProfileSubject!: BehaviorSubject<UserProfile>;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient,
+              private adapter: UserProfileAdapter) {
     // let userFromLocalStorage: string | null = localStorage.getItem('templateUI-userProfile');
     // if (userFromLocalStorage) {
     //   this.currentUserProfileSubject = new BehaviorSubject<UserProfile>(JSON.parse(userFromLocalStorage));
@@ -69,7 +71,10 @@ export class ProfileService {
   }
 
   private populateUserProfile(userProfileResponse: UserProfileResponse): void {
-    const userProfile: UserProfile = new UserProfile(userProfileResponse);
+    const userProfile: UserProfile = this.adapter.adapt(
+      userProfileResponse._data.userProfile,
+      userProfileResponse._data.userProfile.links,
+      userProfileResponse._metadata);
     localStorage.setItem('templateUI-userProfile', JSON.stringify(userProfile));
     this.currentUserProfileSubject.next(userProfile);
   }

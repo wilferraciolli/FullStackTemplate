@@ -4,8 +4,7 @@ import { IdValue } from './id-value';
  * Default meta data interface to be extended by other interfaces;
  */
 export interface MetaData {
-
-  id: MetaData;
+  id: MetaDataRules;
 }
 
 export interface MetaDataRules {

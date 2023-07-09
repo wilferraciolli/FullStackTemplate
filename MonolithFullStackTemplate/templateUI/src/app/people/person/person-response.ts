@@ -1,17 +1,14 @@
 import {MetaDataRules, MetaDataWithValues} from '../../shared/response/meta-data';
 import {Person} from '../person';
+import {Link} from "../../shared/response/link";
+import {PersonMeta} from "../person-meta";
 
 export interface PersonResponse {
   _data: {
     person: Person
   };
-  _metadata: {
-    id: MetaDataRules,
-    roleIds: MetaDataWithValues
-  };
+  _metadata: PersonMeta;
   _metaLinks: {
-    self: {
-      href: string
-    }
+    self: Link
   };
 }

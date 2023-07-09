@@ -3,8 +3,8 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {catchError, retry, tap} from 'rxjs/operators';
 import {BehaviorSubject, Observable, Subject, throwError} from 'rxjs';
 import {environment} from '../../environments/environment';
-import {UserProfile} from '../users/profile/user.profile';
-import {UserProfileResponse} from '../users/profile/user.profile.response';
+import {UserProfile} from '../users/user-details/user-profile/user.profile';
+import {UserProfileResponse} from '../users/user-details/user-profile/user.profile.response';
 
 //TODO remove this service as not in use anymore
 

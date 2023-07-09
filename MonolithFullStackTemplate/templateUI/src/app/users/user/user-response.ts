@@ -7,8 +7,6 @@ export interface UserResponse {
   };
   _metadata: {
     id: MetaDataRules;
-    // firstName: MetaDataRules;
-    // lastName: MetaDataRules;
     username: MetaDataRules;
     password: MetaDataRules;
     roleIds: MetaDataWithValues;

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {UserProfile} from '../../users/profile/user.profile';
+import {UserProfile} from '../../users/user-details/user-profile/user.profile';
 import {Router} from '@angular/router';
 import {LinksService} from '../../_services/links-service';
 import {AuthService} from '../../_services/auth-service';
