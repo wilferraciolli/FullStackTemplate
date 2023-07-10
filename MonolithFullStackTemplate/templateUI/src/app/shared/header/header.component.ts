@@ -84,7 +84,6 @@ export class HeaderComponent implements OnInit {
    * Get the user profile for the person logged on. This can be used to work out areas access.
    */
   private getAreasAccess(): void {
-
     if (this.userProfile) {
       this.usersAccess = this.linksService.hasLink(this.userProfile.links.users);
       this.peopleAccess = this.linksService.hasLink(this.userProfile.links.people);

@@ -2,15 +2,14 @@
   <mat-sidenav-container class="wrapper-sidenav-container">
     <mat-sidenav #sidenav class="wrapper-sidenav mat-elevation-z10"
                  [mode]="'over'"
-                 [opened]="isNavBarOpen">
+                 [opened]="false">
       <mat-toolbar color="primary">
-        <!--        <span>Market Engine Nav bar title</span>-->
       </mat-toolbar>
 
       <div class="wrapper-sidenav-menu">
         <a mat-button class="btn-no-hover" routerLink="/home" (click)="sidenav.toggle()">{{'header.home' | translate}}</a>
-        <a mat-button class="btn-no-hover" [hidden]="!usersAccess" (click)="getUsers()">{{'header.users' | translate}}</a>
-        <a mat-button class="btn-no-hover" [hidden]="!peopleAccess" (click)="getPeople()">{{'header.people' | translate}}</a>
+        <a mat-button class="btn-no-hover" [hidden]="!usersAccess" (click)="getUsers(sidenav)">{{'header.users' | translate}}</a>
+        <a mat-button class="btn-no-hover" [hidden]="!peopleAccess" (click)="getPeople(sidenav)">{{'header.people' | translate}}</a>
       </div>
     </mat-sidenav>
 

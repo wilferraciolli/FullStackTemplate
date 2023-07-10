@@ -1,4 +1,4 @@
-<div class="container">
+<div class="user-details-profile">
   <mat-toolbar>
     <span>{{'userProfile.title' | translate}}</span>
   </mat-toolbar>
@@ -95,7 +95,8 @@
 
         <mat-card-actions>
           <div class="user-details-profile-form-actions">
-            <button [disabled]="!userDetailsProfileFormBuilder.form.valid" mat-raised-button type="submit" color="primary">
+            <button [disabled]="!userDetailsProfileFormBuilder.form.valid" mat-raised-button type="submit"
+                    color="primary">
               {{'form.update' | translate}}
             </button>
           </div>

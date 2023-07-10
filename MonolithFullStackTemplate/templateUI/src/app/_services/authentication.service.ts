@@ -16,9 +16,9 @@ export class AuthenticationService {
 
   private refreshTokenTimeout: any;
 
-  public currentUser: Observable<any>;
+  public currentUser!: Observable<any>;
   public isUserLoggedOn: boolean;
-  private currentUserSubject: BehaviorSubject<any>;
+  private currentUserSubject!: BehaviorSubject<any>;
 
   constructor(private http: HttpClient) {
     // check whether the token is expired
@@ -29,9 +29,12 @@ export class AuthenticationService {
     //   this.currentUser = this.currentUserSubject.asObservable();
     //   this.isUserLoggedOn = false;
     // } else {
+    const userFromLocalStorage: string | null = localStorage.getItem('currentUser');
+    if (userFromLocalStorage) {
+      this.currentUserSubject = new BehaviorSubject<any>(JSON.parse(userFromLocalStorage));
+      this.currentUser = this.currentUserSubject.asObservable();
+    }
 
-    this.currentUserSubject = new BehaviorSubject<any>(JSON.parse(localStorage.getItem('currentUser')));
-    this.currentUser = this.currentUserSubject.asObservable();
     this.isUserLoggedOn = !_.isNull(localStorage.getItem('currentUser'));
     // }
   }

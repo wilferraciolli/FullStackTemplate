@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import * as _ from 'lodash';
 import {UserProfile} from '../../_services/classes/user.profile';
 import {ProfileService} from '../../_services/profile.service';
+import {INavigationTabs} from "../../_services/interfaces/INavigationTabs";
 
 @Component({
   selector: 'app-user-details',
@@ -10,10 +11,10 @@ import {ProfileService} from '../../_services/profile.service';
   styleUrls: ['./user-details.component.scss']
 })
 export class UserDetailsComponent implements OnInit {
-  userProfile!: UserProfile;
+  public routeLinks: INavigationTabs[];
 
-  activeLinkIndex = -1;
-  routeLinks: any[];
+  private activeLinkIndex: number = -1;
+  private userProfile!: UserProfile;
 
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,
@@ -41,7 +42,7 @@ export class UserDetailsComponent implements OnInit {
   ngOnInit(): void {
 
     this.profileService.currentUserProfile
-      .subscribe(user => {
+      .subscribe((user: UserProfile) => {
         this.userProfile = user;
       });
 
@@ -52,7 +53,7 @@ export class UserDetailsComponent implements OnInit {
 
       // get the active children to display its component
       this.router.events.subscribe((res) => {
-        this.activeLinkIndex = this.routeLinks.indexOf(this.routeLinks.find(tab => tab.link === '.' + this.router.url));
+        this.activeLinkIndex = this.routeLinks.indexOf(<INavigationTabs>this.routeLinks.find((tab: INavigationTabs) => tab.link === '.' + this.router.url));
       });
     }
   }
