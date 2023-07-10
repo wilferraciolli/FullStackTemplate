@@ -32,8 +32,7 @@ export class PersonFormBuilder {
       genderId: this.formBuilder.control(null),
       maritalStatusId: this.formBuilder.control(null),
       numberOfDependants: this.formBuilder.control(null),
-      phoneNumber: this.formBuilder.nonNullable.control(''),
-      links: this.formBuilder.control(null)
+      phoneNumber: this.formBuilder.nonNullable.control('')
     });
   }
 
@@ -61,7 +60,7 @@ export class PersonFormBuilder {
       this.form.controls.maritalStatusId.value,
       this.form.controls.numberOfDependants.value,
       this.form.controls.phoneNumber.value,
-      this.form.controls.links.value,
+      null,
       null
     );
 
@@ -100,8 +99,7 @@ export class PersonFormBuilder {
         genderId: '',
         maritalStatusId: '',
         numberOfDependants: 0,
-        phoneNumber: '',
-        links: null
+        phoneNumber: ''
       }
     );
   }

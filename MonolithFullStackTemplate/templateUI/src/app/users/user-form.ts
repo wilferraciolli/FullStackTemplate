@@ -1,6 +1,4 @@
 import {FormArray, FormControl, FormGroup} from "@angular/forms";
-import {UserLinks} from "./user-links";
-import {ValueViewValue} from "../shared/response/value-viewValue";
 import {IdValueForm} from "../shared/response/id-valueForm";
 
 export interface UserForm {

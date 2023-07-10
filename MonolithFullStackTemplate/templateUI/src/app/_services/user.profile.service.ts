@@ -3,8 +3,8 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {catchError, retry, tap} from 'rxjs/operators';
 import {BehaviorSubject, Observable, Subject, throwError} from 'rxjs';
 import {environment} from '../../environments/environment';
-import {UserProfile} from '../users/user-details/user-profile/user.profile';
-import {UserProfileResponse} from '../users/user-details/user-profile/user.profile.response';
+import {UserProfile} from './classes/user.profile';
+import {UserProfileResponse} from './classes/user.profile.response';
 
 //TODO remove this service as not in use anymore
 
@@ -66,11 +66,11 @@ export class UserProfileService {
   //   return throwError(errorMessage);
   // }
 
-  populateUserProfile(userProfileResponse: UserProfileResponse): void {
-    const userProfile = new UserProfile(userProfileResponse);
-    localStorage.setItem('userProfile', JSON.stringify(userProfile));
-    this.currentUserProfileSubject.next(userProfile);
-  }
+  // populateUserProfile(userProfileResponse: UserProfileResponse): void {
+  //   const userProfile = new UserProfile(userProfileResponse);
+  //   localStorage.setItem('userProfile', JSON.stringify(userProfile));
+  //   this.currentUserProfileSubject.next(userProfile);
+  // }
 
   removeUserProfile(): void {
     console.log('removing userProfile in UserProfileService');

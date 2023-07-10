@@ -1,5 +1,4 @@
 import {FormControl} from "@angular/forms";
-import {PersonLinks} from "./person-links";
 
 export interface PersonForm {
   $key: FormControl<string | null>;
@@ -12,5 +11,4 @@ export interface PersonForm {
   maritalStatusId: FormControl<string | null>;
   numberOfDependants: FormControl<number | null>;
   phoneNumber: FormControl<string | null>;
-  links: FormControl<PersonLinks | null>;
 }

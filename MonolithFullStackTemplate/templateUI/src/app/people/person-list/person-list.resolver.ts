@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {ProfileService} from '../../_services/profile.service';
-import {UserProfile} from '../../users/user-details/user-profile/user.profile';
+import {UserProfile} from '../../_services/classes/user.profile';
 import {firstValueFrom} from 'rxjs';
 import {Link} from "../../shared/response/link";
 
@@ -12,7 +12,7 @@ export class PersonListResolver {
   public async resolvePersonListLink(): Promise<Link | null> {
     const userProfile: UserProfile | null = await firstValueFrom(this.profileService.currentUserProfile);
 
-    if (!userProfile) {
+    if (!userProfile || !userProfile.links.people) {
       return null;
     }
 

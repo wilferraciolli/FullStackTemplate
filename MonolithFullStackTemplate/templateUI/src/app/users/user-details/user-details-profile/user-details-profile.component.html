@@ -6,34 +6,40 @@
   <!-- user profile detail -->
   <mat-card>
     <mat-card-content>
-      <form [formGroup]="userProfileFormBuilder.form" (ngSubmit)="updatePerson()">
-        <div class="user-profile-form-container">
-          <div class="user-profile-form-content">
+      <form [formGroup]="userDetailsProfileFormBuilder.form" (ngSubmit)="updatePerson()">
+        <div class="user-details-profile-form-container">
+          <div class="user-details-profile-form-content">
             <input type="hidden" formControlName="$key">
             <mat-form-field color="primary">
               <input formControlName="firstName" matInput placeholder="{{'userProfile.firstName' | translate}}">
-              <!-- adding validation message based on error type -->
-              <mat-error *ngIf="userProfileFormBuilder.form.controls['firstName'].errors?.['required']">Mandatory
+
+              <mat-error *ngIf="userDetailsProfileFormBuilder.firstName.hasError('required')">
+                {{'form.validation.required' | translate}}
               </mat-error>
-              <mat-error *ngIf="userProfileFormBuilder.form.controls['firstName'].errors?.['minLength']">Minimum 2
-                characters
+              <mat-error *ngIf="userDetailsProfileFormBuilder.firstName.hasError('minLength')">
+                {{'form.validation.minLength' | translate: {value: 2} }}
               </mat-error>
             </mat-form-field>
 
             <mat-form-field color="primary">
               <input formControlName="lastName" matInput placeholder="{{'userProfile.lastName' | translate}}">
-              <!-- adding validation message based on error type -->
-              <mat-error *ngIf="userProfileFormBuilder.form.controls['lastName'].errors?.['required']">Mandatory
+
+              <mat-error *ngIf="userDetailsProfileFormBuilder.lastName.hasError('required')">
+                {{'form.validation.required' | translate}}
               </mat-error>
-              <mat-error *ngIf="userProfileFormBuilder.form.controls['lastName'].errors?.['minLength']">Minimum 2
-                characters
+              <mat-error *ngIf="userDetailsProfileFormBuilder.lastName.hasError('minLength')">
+                {{'form.validation.minLength' | translate: {value: 2} }}
               </mat-error>
             </mat-form-field>
 
             <mat-form-field color="primary">
               <input formControlName="email" matInput placeholder="{{'userProfile.email' | translate}}">
-              <!-- adding validation message based on error type -->
-              <mat-error *ngIf="userProfileFormBuilder.form.controls['email'].errors?.['required']">Mandatory
+
+              <mat-error *ngIf="userDetailsProfileFormBuilder.email.hasError('required')">
+                {{'form.validation.required' | translate}}
+              </mat-error>
+              <mat-error *ngIf="userDetailsProfileFormBuilder.email.hasError('email')">
+                {{'form.validation.emailFormat' | translate}}
               </mat-error>
             </mat-form-field>
 
@@ -47,7 +53,7 @@
 
           </div>
 
-          <div class="user-profile-form-content">
+          <div class="user-details-profile-form-content">
             <mat-form-field color="primary">
               <mat-label>{{'userProfile.gender' | translate}}</mat-label>
               <mat-select formControlName="genderId">
@@ -87,9 +93,9 @@
           </div>
         </div>
 
-        <mat-card-actions class="user-profile-form-actions">
-          <div>
-            <button [disabled]="!userProfileFormBuilder.form.valid" mat-raised-button type="submit" color="primary">
+        <mat-card-actions>
+          <div class="user-details-profile-form-actions">
+            <button [disabled]="!userDetailsProfileFormBuilder.form.valid" mat-raised-button type="submit" color="primary">
               {{'form.update' | translate}}
             </button>
           </div>

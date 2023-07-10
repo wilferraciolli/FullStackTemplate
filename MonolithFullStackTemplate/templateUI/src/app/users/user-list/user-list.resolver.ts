@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {Link} from '../../shared/response/link';
 import {ProfileService} from '../../_services/profile.service';
-import {UserProfile} from '../user-details/user-profile/user.profile';
+import {UserProfile} from '../../_services/classes/user.profile';
 import {firstValueFrom} from "rxjs";
 
 @Injectable({providedIn: 'root'})
@@ -16,7 +16,7 @@ export class UserListResolver {
     // const userProfile: UserProfile | undefined = await this.profileService.currentUserProfile
     //   .pipe(first()).toPromise()
 
-    if (!userProfile) {
+    if (!userProfile || !userProfile.links.users) {
       return null;
     }
 

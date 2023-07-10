@@ -14,7 +14,7 @@ import {PageNotFoundComponent} from "./shared/components/page-not-found/page-not
 import {RegistrationComponent} from "./registration/registration.component";
 import {TemplateComponent} from "./users/user-details/template/template.component";
 import {UserDetailsComponent} from "./users/user-details/user-details.component";
-import {UserProfileComponent} from "./users/user-details/user-profile/user-profile.component";
+import {UserDetailsProfileComponent} from "./users/user-details/user-details-profile/user-details-profile.component";
 import {WrapperComponent} from "./shared/wrapper/wrapper.component";
 import {UserSettingsComponent} from "./users/user-details/user-settings/user-settings.component";
 import {CommonModule, DatePipe} from "@angular/common";
@@ -41,7 +41,7 @@ import {MAT_DATE_LOCALE} from "@angular/material/core";
     RegistrationComponent,
     TemplateComponent,
     UserDetailsComponent,
-    UserProfileComponent,
+    UserDetailsProfileComponent,
     UserSettingsComponent,
     WrapperComponent
   ],

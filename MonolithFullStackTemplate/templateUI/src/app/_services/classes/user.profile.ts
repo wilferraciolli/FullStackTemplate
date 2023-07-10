@@ -1,5 +1,5 @@
-import { UserProfileLinks } from './user.profile-links';
-import {UserProfileResponse} from './user.profile.response';
+import {UserProfileLinks} from './user.profile-links';
+import {UserProfileMeta} from "./user.profile.response";
 
 export class UserProfile {
   id: string;
@@ -9,7 +9,7 @@ export class UserProfile {
   lastName: string;
   roleIds: string[];
   links: UserProfileLinks;
-
+  meta: UserProfileMeta;
 
   constructor(id: string,
               personId: string,
@@ -17,7 +17,8 @@ export class UserProfile {
               firstName: string,
               lastName: string,
               roleIds: string[],
-              links: UserProfileLinks) {
+              links: UserProfileLinks,
+              meta: UserProfileMeta) {
     this.id = id;
     this.personId = personId;
     this.username = username;
@@ -25,12 +26,6 @@ export class UserProfile {
     this.lastName = lastName;
     this.roleIds = roleIds;
     this.links = links;
+    this.meta = meta;
   }
 }
-// constructor(data: UserProfileResponse) {
-//   this.id = data._data.userProfile.id;
-//   this.personId = data._data.userProfile.personId;
-//   this.firstName = data._data.userProfile.firstName;
-//   this.lastName = data._data.userProfile.lastName;
-//   this.links = data._data.userProfile.links;
-// }

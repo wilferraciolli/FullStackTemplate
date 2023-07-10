@@ -2,9 +2,9 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../environments/environment';
-import {UserProfileResponse} from '../users/user-details/user-profile/user.profile.response';
-import {UserProfile} from '../users/user-details/user-profile/user.profile';
-import {UserProfileAdapter} from "../users/user-details/user-profile/user.profile-adapter";
+import {UserProfileResponse} from './classes/user.profile.response';
+import {UserProfile} from './classes/user.profile';
+import {UserProfileAdapter} from "./classes/user.profile-adapter";
 
 @Injectable({providedIn: 'root'})
 export class ProfileService {
