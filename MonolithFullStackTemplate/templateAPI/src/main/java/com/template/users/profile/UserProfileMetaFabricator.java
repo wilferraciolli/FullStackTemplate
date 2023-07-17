@@ -16,7 +16,6 @@ import com.template.users.UserRoleType;
 public class UserProfileMetaFabricator {
 
     public Map<String, Metadata> createMeta() {
-
         return buildBasicMeta();
     }
 
@@ -33,17 +32,30 @@ public class UserProfileMetaFabricator {
                 .readOnly(true)
                 .build());
 
-        metadata.put("firstName", Metadata.builder()
+        metadata.put("username", Metadata.builder()
                 .hidden(true)
                 .readOnly(true)
                 .build());
 
         metadata.put("firstName", Metadata.builder()
-                .hidden(true)
                 .readOnly(true)
+                .build());
+
+        metadata.put("lastName", Metadata.builder()
+                .readOnly(true)
+                .build());
+
+        metadata.put("roleIds", Metadata.builder()
+                .readOnly(true)
+                .values(generateUserRoleEmbedded())
                 .build());
 
         return metadata;
     }
 
+    private List<MetadataEmnbedded> generateUserRoleEmbedded() {
+        return UserRoleType.stream()
+                .map(value -> new MetadataEmnbedded(value.name(), value.getDescription()))
+                .collect(Collectors.toList());
+    }
 }

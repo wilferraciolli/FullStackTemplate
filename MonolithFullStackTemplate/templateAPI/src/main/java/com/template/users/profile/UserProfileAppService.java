@@ -10,6 +10,7 @@ import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -46,24 +47,26 @@ public class UserProfileAppService {
      * @return the user profile
      */
     public UserProfileResource getUserProfile(final UserDetails userDetails) {
-
         if (Objects.isNull(userDetails)){
             throw new DomainException("No user passed on ");
         }
 
         final UserDetailsView userDetailsView = this.getUser(((User) userDetails).getId());
-        final UserProfileResource userResource = this.buildUserProfileResource(userDetailsView);
+        final UserProfileResource userResource = this.buildUserProfileResource(userDetails, userDetailsView);
 
         return userResource;
     }
 
-    private UserProfileResource buildUserProfileResource(final UserDetailsView userDetailsView) {
-
+    private UserProfileResource buildUserProfileResource(final UserDetails userDetails, final UserDetailsView userDetailsView) {
         UserProfileResource user = UserProfileResource.builder()
                 .id(userDetailsView.getId())
                 .personId(userDetailsView.getPersonId())
+                .username(userDetailsView.getUsername())
                 .firstName(userDetailsView.getFirstName())
                 .lastName(userDetailsView.getLastName())
+                .roleIds(userDetails.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .toList())
                 .build();
         List<Link> linksToAdd = generateLinks(userDetailsView);
         user.addLinks(linksToAdd);
@@ -89,7 +92,6 @@ public class UserProfileAppService {
     }
 
     private UserDetailsView getUser(final Long userId) {
-
         return this.userDetailsViewRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("could not find user for given id"));
     }

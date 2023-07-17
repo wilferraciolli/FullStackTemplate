@@ -51,7 +51,7 @@ public class AuthenticationRestService extends BaseRestService {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/refreshtoken")
+    @PostMapping("/refresh/token")
     public ResponseEntity<AuthenticationResourceResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) throws RefreshTokenException {
         return ResponseEntity.status(OK)
                 .body(this.authenticateService.refreshToken(refreshTokenRequest));

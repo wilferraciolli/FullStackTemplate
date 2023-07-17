@@ -88,7 +88,6 @@ public class UserRestService extends BaseRestService {
      */
     @GetMapping("/{id}")
     public ResponseEntity<UserResource> findById(@PathVariable("id") final Long id) {
-
         final UserResource resource = this.appService.findById(id);
 
         Map<String, Metadata> metadata = metaFabricator.createMetaForSingleResource();

@@ -16,6 +16,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.Value;
 
+import java.util.List;
+
 /**
  * The type User profile resource.
  */
@@ -30,6 +32,8 @@ public class UserProfileResource extends BaseDTO {
 
     private Long id;
     private Long personId;
+    private String username;
     private String firstName;
     private String lastName;
+    private List<String> roleIds;
 }

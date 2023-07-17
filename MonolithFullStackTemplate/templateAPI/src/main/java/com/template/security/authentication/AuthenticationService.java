@@ -110,16 +110,8 @@ public class AuthenticationService extends BaseApplicationService {
     }
 
     public AuthenticationResourceResponse refreshToken(RefreshTokenRequest refreshTokenRequest) throws RefreshTokenException {
-
-//        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-//        final String refreshToken;
-//        final String username;
-//        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-//            throw new RefreshTokenException("Cannot refresh Token, invalid authorization Header");
-//        }
-
-       String refreshToken = refreshTokenRequest.getRefreshToken();
-        String  username = jwtService.extractUsername(refreshToken);
+        String refreshToken = refreshTokenRequest.getRefreshToken();
+        String username = jwtService.extractUsername(refreshToken);
 
         if (StringUtils.isNotBlank(username)) {
             User user = this.useRepository.findByUsername(username)
@@ -175,5 +167,4 @@ public class AuthenticationService extends BaseApplicationService {
                 });
         tokenRepository.saveAll(validUserTokens);
     }
-
 }

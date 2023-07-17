@@ -20,23 +20,18 @@ import com.template.libraries.rest.MetadataEmnbedded;
 public class UserMetaFabricator {
 
     public Map<String, Metadata> createMetaForTemplate() {
-
         return buildBasicMeta();
     }
 
     public Map<String, Metadata> createMetaForSingleResource() {
-
         return buildBasicMeta();
     }
 
-
     public Map<String, Metadata> createMetaForCreatedResource(final List<String> roleIds) {
-
         return buildCreatedMeta(roleIds);
     }
 
     public Map<String, Metadata> createMetaForCollectionResource(final Set<String> userRoleIds) {
-
         return buildCollectionMeta(userRoleIds);
     }
 
@@ -48,7 +43,7 @@ public class UserMetaFabricator {
                 .readOnly(true)
                 .build());
 
-        metadata.put("userName", Metadata.builder()
+        metadata.put("username", Metadata.builder()
                 .mandatory(true)
                 .build());
 
@@ -106,7 +101,6 @@ public class UserMetaFabricator {
     }
 
     private List<MetadataEmnbedded> generateUserRoleEmbedded() {
-
         return UserRoleType.stream()
                 .map(value -> new MetadataEmnbedded(value.name(), value.getDescription()))
                 .collect(Collectors.toList());
