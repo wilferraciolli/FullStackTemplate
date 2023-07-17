@@ -105,17 +105,18 @@ export class AuthService {
   }
 
   private getRefreshToken(): string {
+    const authDetailsStorage: string | null = localStorage.getItem('templateUI-authDetails');
+    if (authDetailsStorage) {
+      const authDetails = JSON.parse(authDetailsStorage);
 
-    // @ts-ignore
-    const authDetails = JSON.parse(localStorage.getItem('templateUI-authDetails'));
-
-    if (authDetails) {
-
-      return authDetails.refresh_token;
-    } else {
-
-      return '';
+      if (authDetails) {
+        return authDetails.refresh_token;
+      } else {
+        return '';
+      }
     }
+
+    return '';
   }
 
   private getTokenExpirationDate(token: string): Date | null {
@@ -146,10 +147,10 @@ export class AuthService {
   }
 
   // TODO add type
-  private _refreshToken(): any {
+  private _refreshToken(): Observable<IAuthDetails> {
     return this.httpClient
       .post<any>(environment.baseUrl + this._REFRESH_TOKEN_URL, {'refreshToken': this.getRefreshToken()})
-      .pipe(map((authDetails) => {
+      .pipe(map((authDetails: IAuthDetails) => {
 
         this.saveAuthDetails(authDetails);
         return authDetails;
