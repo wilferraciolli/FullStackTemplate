@@ -19,6 +19,8 @@ import {MatNativeDateModule} from '@angular/material/core';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatDividerModule} from "@angular/material/divider";
+import {MatRadioModule} from "@angular/material/radio";
 
 const MODULES = [
   MatButtonModule,
@@ -40,7 +42,9 @@ const MODULES = [
   MatSortModule,
   MatTableModule,
   MatTabsModule,
-  MatToolbarModule
+  MatToolbarModule,
+  MatDividerModule,
+  MatRadioModule
 ];
 
 @NgModule({
