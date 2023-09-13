@@ -1,0 +1,77 @@
+
+// Main heading style
+@mixin mainHeader-style($font-family: 'Montserrat, sans-serif') {
+  font-family: $font-family, serif;
+  font-size: 36px;
+  font-weight: bold;
+  line-height: 1.2;
+  color: #333;
+}
+
+// Subheading style
+@mixin subHeader-style {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 1.3;
+  color: #666;
+}
+
+// Title style
+@mixin title-style {
+  font-family: 'Raleway', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.4;
+  color: #444;
+}
+
+// Subtitle style
+@mixin subTitle-style {
+  font-family: 'Lato', sans-serif;
+  font-size: 18px;
+  font-weight: normal;
+  line-height: 1.4;
+  color: #555;
+}
+
+// Paragraph style
+@mixin paragraph-style {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 1.5;
+  color: #666;
+}
+
+// Link style
+@mixin link-style {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  color: #0077b6;
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+
+  &:hover {
+    color: #005d8f;
+  }
+}
+
+// Button style
+@mixin button-style {
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  background-color: #333;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color: #222;
+  }
+}

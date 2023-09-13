@@ -1,6 +1,12 @@
-$tabletSize: 800px;
+@import '../shared/styles/mixins/typography';
+@import '../shared/styles/mixins/media-query';
 
 .home {
+
+  &-title {
+    @include mainHeader-style();
+  }
+
   &-contentBody {
     display: flex;
     flex-direction: column;
@@ -9,7 +15,7 @@ $tabletSize: 800px;
 
     min-height: 700px;
 
-    @media (min-width: $tabletSize) {
+    @include media-query-lg {
       flex-direction: row;
       justify-content: space-evenly;
     }
@@ -19,22 +25,11 @@ $tabletSize: 800px;
     width: 90%;
     padding-top: 10px;
 
-    @media (min-width: $tabletSize) {
+    @include media-query-lg {
       width: 45%;
       padding-top: 20px;
     }
   }
-
-  //.example-card {
-  //  min-width: 200px;
-  //  max-width: 400px;
-  //  padding: 20px;
-  //}
-  //
-  //.example-header-image {
-  //  background-image: url('https://picsum.photos/20');
-  //  background-size: cover;
-  //}
 }
 
 
