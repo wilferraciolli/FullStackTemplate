@@ -55,6 +55,18 @@ npm install @ngx-translate/core @ngx-translate/http-loader rxjs --save
     ng generate module moduleName --route routeName --module app.module
     ```
 
+### Resoruces
+##### images
+`https://www.istockphoto.com/search/2/image?phrase=booking&mediatype=photography&irgwc=1&cid=IS&utm_medium=affiliate_SP&utm_source=FreeImages&clickid=243zxH1NdxyPWjLz67xZCWaxUkFRFzTFxxTGRU0&utm_term=booking&utm_campaign=home_freephoto_searchbar-popup&utm_content=270498&irpid=246195`
+
+##### mockUps
+https://www.freepik.com/free-photos-vectors/survey
+https://www.mockupworld.co/free/category/
+https://www.ls.graphics/
+https://unblast.com/taxi-booking-ui-components-template-sketch/ FREE MOCK UPS
+https://shots.so/
+
+
 
 ## Development server
 
