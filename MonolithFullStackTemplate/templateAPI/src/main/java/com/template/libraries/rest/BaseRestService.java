@@ -26,7 +26,9 @@ public class BaseRestService {
      */
     protected URI buildLocationHeader(final Long id) {
 
-        return MvcUriComponentsBuilder.fromController(getClass()).path("/{id}").buildAndExpand(id).toUri();
+        //TODO FIX THIS Fail;s when multiple params are passed
+//        return MvcUriComponentsBuilder.fromController(getClass()).path("/{id}").buildAndExpand(id).toUri();
+        return null;
     }
 
     /**

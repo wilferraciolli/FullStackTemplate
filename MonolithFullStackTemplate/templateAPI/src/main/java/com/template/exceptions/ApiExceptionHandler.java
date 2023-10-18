@@ -18,6 +18,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
@@ -30,7 +31,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(DomainException.class)
     public ResponseEntity<Object> handleDomainException(DomainException ex, WebRequest request) {
         var status = HttpStatus.BAD_REQUEST;
-
         log.error("handling 400 bad request", ex.getMessage());
 
         var error = Error.builder()
@@ -71,6 +71,20 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
 
         return super.handleExceptionInternal(ex, error, headers, status, request);
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<Object> handleMaxSizeException(MaxUploadSizeExceededException ex,  WebRequest request) {
+        var status = HttpStatus.BAD_REQUEST;
+        log.error("handling 400 MaxUploadSizeExceededException request", ex.getMessage());
+
+        var error = Error.builder()
+                .statusCode(status.value())
+                .title(ex.getMessage())
+                .dateTime(LocalDateTime.now())
+                .build();
+
+        return handleExceptionInternal(ex, error, new HttpHeaders(), status, request);
     }
 
     private List<PropertyField> getFailedValidationFields(MethodArgumentNotValidException ex) {

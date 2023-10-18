@@ -27,6 +27,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
      */
     Long checkUsernameExists(String username);
 
-
     Boolean checkUsernameIsAvailableIgnoringSelf(String username, Long id);
 }

@@ -67,6 +67,10 @@ https://reflectoring.io/spring-boot-application-events-explained/
  and this
 https://panlw.github.io/15459049161482.html
 
+# File upload
+This uses file upload to upload files to the server. The files are stored on the server and the path is stored on the database.
+`https://www.bezkoder.com/spring-boot-upload-file-database/`
+It requires the file multipart setting added to the properties file
 
 # Docker
 Tu build the image use the following command - This will build the image and tag it
