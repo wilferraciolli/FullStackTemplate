@@ -6,6 +6,7 @@ export interface PersonForm {
   firstName: FormControl<string>;
   lastName: FormControl<string>;
   email: FormControl<string>;
+  imageId: FormControl<string | null>;
   dateOfBirth: FormControl<string | null>;
   genderId: FormControl<string | null>;
   maritalStatusId: FormControl<string | null>;

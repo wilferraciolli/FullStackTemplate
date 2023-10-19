@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpEvent, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
+import { PersonPhotoResponse } from '../../people/person-photo/person-photo.response';
 
 @Injectable()
 export class HttpBaseService {
@@ -80,6 +81,32 @@ export class HttpBaseService {
     return this.httpClient.post<T>(url, payloadToAdd, { headers: this.headers });
   }
 
+  uploadFile<T>(url: string, file: File): Observable<T>  {
+    const formData: FormData = new FormData();
+
+    formData.append('file', file, file.name);
+
+    return this.httpClient.post<T>(url, formData);
+
+    // this.httpClient.post(url, formData).subscribe(
+    //   (response) => {
+    //     console.log('Response', response);
+    //   },
+    //   (error) => {
+    //     console.error('Error', error);
+    //   }
+    // );
+
+
+
+    // const req:HttpRequest<any> = new HttpRequest('POST', url, formData, {
+    //   reportProgress: true,
+    //   responseType: 'json'
+    // });
+    //
+    // return this.httpClient.request(req);
+  }
+
   update<T>(url: string, payloadToUpdate: T) {
     return this.httpClient.put<T>(url, payloadToUpdate, { headers: this.headers });
   }
@@ -87,7 +114,6 @@ export class HttpBaseService {
   delete(url: string) {
     return this.httpClient.delete(url);
   }
-
 
   handleError(error: HttpErrorResponse) {
     let errorMessage = 'Unknown error!';

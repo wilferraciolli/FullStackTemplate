@@ -55,6 +55,15 @@ $tabletSize: 800px;
     }
   }
 
+  &-content-card-image {
+    background-size: cover;
+    padding: 0;
+
+    @media (min-width: $tabletSize) {
+      padding: 0 20px;
+    }
+  }
+
   &-content-card-actions {
     display: flex;
     flex-direction: row;

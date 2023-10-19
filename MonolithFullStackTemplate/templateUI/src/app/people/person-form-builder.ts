@@ -28,6 +28,7 @@ export class PersonFormBuilder {
       email: this.formBuilder.nonNullable.control('', {
         validators: [Validators.required, Validators.email]
       }),
+      imageId: this.formBuilder.nonNullable.control(''),
       dateOfBirth: this.formBuilder.control(null),
       genderId: this.formBuilder.control(null),
       maritalStatusId: this.formBuilder.control(null),
@@ -55,6 +56,7 @@ export class PersonFormBuilder {
       this.form.controls.firstName.value,
       this.form.controls.lastName.value,
       this.form.controls.email.value,
+      this.form.controls.imageId.value,
       this.form.controls.dateOfBirth.value,
       this.form.controls.genderId.value,
       this.form.controls.maritalStatusId.value,
@@ -75,6 +77,7 @@ export class PersonFormBuilder {
         firstName: person.firstName,
         lastName: person.lastName,
         email: person.email,
+        imageId: person.imageId,
         dateOfBirth: person.dateOfBirth,
         genderId: person.genderId,
         maritalStatusId: person.maritalStatusId,
@@ -95,6 +98,7 @@ export class PersonFormBuilder {
         firstName: '',
         lastName: '',
         email: '',
+        imageId: '',
         dateOfBirth: '',
         genderId: '',
         maritalStatusId: '',

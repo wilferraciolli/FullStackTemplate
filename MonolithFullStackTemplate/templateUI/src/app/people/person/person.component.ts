@@ -1,15 +1,17 @@
-import {Component, Inject, OnInit, Optional} from '@angular/core';
-import {PersonService} from '../person.service';
-import {PersonAdapter} from '../person.adapter';
-import {NotificationService} from '../../shared/notification.service';
-import {LinksService} from '../../_services/links-service';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {MetadataService} from '../../_services/metadata.service';
-import {Link} from '../../shared/response/link';
-import {Person} from '../person';
-import {PersonFormBuilder} from '../person-form-builder';
-import {PersonResponse} from './person-response';
-import {ValueViewValue} from '../../shared/response/value-viewValue';
+import { HttpClient } from '@angular/common/http';
+import { Component, Inject, OnInit, Optional, signal, WritableSignal } from '@angular/core';
+import { PersonPhotoResponse } from '../person-photo/person-photo.response';
+import { PersonService } from '../person.service';
+import { PersonAdapter } from '../person.adapter';
+import { NotificationService } from '../../shared/notification.service';
+import { LinksService } from '../../_services/links-service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MetadataService } from '../../_services/metadata.service';
+import { Link } from '../../shared/response/link';
+import { Person } from '../person';
+import { PersonFormBuilder } from '../person-form-builder';
+import { PersonResponse } from './person-response';
+import { ValueViewValue } from '../../shared/response/value-viewValue';
 
 @Component({
   selector: 'app-person',
@@ -17,7 +19,12 @@ import {ValueViewValue} from '../../shared/response/value-viewValue';
   styleUrls: ['./person.component.scss']
 })
 export class PersonComponent implements OnInit {
+  public selectedFile: File | null = null;
 
+  // this does not work as it will fail with a 403 error
+  public imageUrl: WritableSignal<string> = signal('https://picsum.photos/200/300');
+  public canUpdatePersonPhoto: boolean = false;
+  public hasPersonPhoto: boolean = false;
   public availableGenders: Array<ValueViewValue> = [];
   public availableMaritalStatuses: Array<ValueViewValue> = [];
 
@@ -31,6 +38,7 @@ export class PersonComponent implements OnInit {
               private linkService: LinksService,
               public dialogRef: MatDialogRef<PersonComponent>,
               private metadataService: MetadataService,
+              private http: HttpClient,
               @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
 
 
@@ -45,6 +53,13 @@ export class PersonComponent implements OnInit {
   ngOnInit(): void {
     this._getSinglePerson(this.link.href).then((person: PersonResponse): void => {
       this.person = this.adapter.adapt(person._data.person, person._data.person.links, person._metadata);
+
+      this.hasPersonPhoto = this.person.imageId !== null;
+      this.canUpdatePersonPhoto = this.person.links?.createUpdatePersonPhoto !== undefined;
+      if (this.hasPersonPhoto && this.person.links?.downloadPersonPhoto) {
+        this.imageUrl.set(this.person.links?.downloadPersonPhoto?.href);
+      }
+
       if (this.person.meta) {
         this.availableGenders = this.metadataService.resolveMetadataIdValues(this.person.meta.genderId.values);
         this.availableMaritalStatuses = this.metadataService.resolveMetadataIdValues(this.person.meta.maritalStatusId.values);
@@ -81,15 +96,33 @@ export class PersonComponent implements OnInit {
     }
   }
 
+  public onFileSelected(event: any): void {
+    this.selectedFile = event.target.files[0] as File;
+
+    let href: string | undefined = this.person.links?.createUpdatePersonPhoto?.href;
+
+    if (href) {
+      this.personService.uploadFile<PersonPhotoResponse>(href, this.selectedFile)
+          .subscribe((response: PersonPhotoResponse) => {
+              if (response._data.personPhoto.links.downloadPersonPhoto) {
+                this.imageUrl.set(response._data.personPhoto.links.downloadPersonPhoto.href);
+              }
+            }, (error) => {
+              console.error('Error uploading file:', error);
+            }
+          );
+    }
+  }
+
   private _update(): void {
     this.personService.update(this.link.href, this.personFormBuilder.getFormValue())
-      .subscribe((personUpdated: Person): void => {
-          this.notificationService.success('Person updated successfully');
-        },
-        (error: string): void => {
-          console.log('Error', error);
-          this.notificationService.error('Person could not be updated');
-        });
+        .subscribe((personUpdated: Person): void => {
+            this.notificationService.success('Person updated successfully');
+          },
+          (error: string): void => {
+            console.log('Error', error);
+            this.notificationService.error('Person could not be updated');
+          });
   }
 
   private _getSinglePerson(url: string): Promise<PersonResponse> {

@@ -5,17 +5,28 @@
 
   <div class="person-list">
     <div class="person-list-search">
-      <mat-form-field floatLabel="auto" class="full-width">
-        <input matInput type="text" [(ngModel)]="searchKey" placeholder="Search" autocomplete="off"
+      <mat-form-field floatLabel="auto"
+                      class="full-width">
+        <input matInput
+               type="text"
+               [(ngModel)]="searchKey"
+               placeholder="Search"
+               autocomplete="off"
                (keyup)="applyFilter()">
-        <button (click)="onSearchClear()" matSuffix mat-icon-button aria-label="Clear" *ngIf="searchKey">
+        <button (click)="onSearchClear()"
+                matSuffix
+                mat-icon-button
+                aria-label="Clear"
+                *ngIf="searchKey">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
     </div>
 
     <div class="person-list-search-actions">
-      <button mat-raised-button (click)="create()" [disabled]="!userCreateAccess">
+      <button mat-raised-button
+              (click)="create()"
+              [disabled]="!userCreateAccess">
         <mat-icon>add</mat-icon>
         <span>{{'personList.add' | translate}}</span>
       </button>
@@ -25,18 +36,30 @@
   <!-- List of persons -->
   <div class="person-list-content">
 
-    <mat-card class="person-list-content-card" *ngFor="let person of people">
-      <div>
-        <mat-icon class="material-icons md-48">face</mat-icon>
+    <mat-card class="person-list-content-card"
+              *ngFor="let person of people">
+      <div class="person-list-content-card-image">
+        <mat-icon *ngIf="!hasDownloadLink(person)"
+                  class="material-icons md-56">face
+        </mat-icon>
+        <div *ngIf="hasDownloadLink(person)"
+             mat-card-avatar
+             [style.background-image]="'url(' + person.links?.downloadPersonPhoto?.href + ')'">
+        </div>
       </div>
       <div> {{person.firstName}} {{person.lastName}}</div>
       <div> {{person.genderId | convertIdToValues: personCollectionGenderIds}}</div>
       <div> {{person.maritalStatusId | convertIdToValues: personCollectionMaritalStatusesIds}}</div>
       <div class="person-list-content-card-actions">
-        <button mat-icon-button [disabled]="disableUpdatePerson(person)" (click)="onEdit(person)">
+        <button mat-icon-button
+                [disabled]="disableUpdatePerson(person)"
+                (click)="onEdit(person)">
           <mat-icon>launch</mat-icon>
         </button>
-        <button *ngIf="person.links && person.links.deletePerson" mat-icon-button color="warn" [disabled]="!person.links.deletePerson.href"
+        <button *ngIf="person.links && person.links.deletePerson"
+                mat-icon-button
+                color="warn"
+                [disabled]="!person.links.deletePerson.href"
                 (click)="delete(person.links.deletePerson.href)">
           <mat-icon>delete_outline</mat-icon>
         </button>

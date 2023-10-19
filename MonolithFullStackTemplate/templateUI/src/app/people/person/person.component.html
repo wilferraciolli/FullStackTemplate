@@ -3,15 +3,34 @@
     <mat-toolbar>
       <span>{{'person.form.updatePerson' | translate}}</span>
       <span class="fill-remaining-space"></span>
-      <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1">
+      <button class="btn-dialog-close"
+              mat-stroked-button
+              (click)="onClose()"
+              tabindex="-1">
         <mat-icon>clear</mat-icon>
       </button>
     </mat-toolbar>
   </div>
   <div class="shown-small-screen">
-    <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1">
+    <button class="btn-dialog-close"
+            mat-stroked-button
+            (click)="onClose()"
+            tabindex="-1">
       <mat-icon>clear</mat-icon>
     </button>
+  </div>
+
+  <div class="person-dialog-image-container" >
+    <input class="person-dialog-image-selector"
+           id="fileInput"
+           type="file"
+           accept="image/*"
+           (change)="onFileSelected($event)"
+    />
+    <label for="fileInput" *ngIf="canUpdatePersonPhoto"
+           class="person-dialog-image-input"
+           [style.background-image]="'url(' + imageUrl() + ')'">
+    </label>
   </div>
 
   <mat-card-content>
@@ -19,32 +38,41 @@
       <div class="person-dialog-form-container">
 
         <div class="person-dialog-form-content">
-          <input type="hidden" formControlName="$key">
+          <input type="hidden"
+                 formControlName="$key">
 
           <mat-form-field color="primary">
-            <input formControlName="firstName" required matInput placeholder="{{'person.firstName' | translate}}">
+            <input formControlName="firstName"
+                   required
+                   matInput
+                   placeholder="{{'person.firstName' | translate}}">
 
             <mat-error *ngIf="personFormBuilder.firstName.hasError('required')">
               {{'form.validation.required' | translate}}
             </mat-error>
             <mat-error *ngIf="personFormBuilder.firstName.hasError('minlength')">
-              {{'form.validation.minLength' | translate: {value: 2} }}
+              {{'form.validation.minLength' | translate: { value: 2 } }}
             </mat-error>
           </mat-form-field>
 
           <mat-form-field color="primary">
-            <input formControlName="lastName" required matInput placeholder="{{'person.lastName' | translate}}">
+            <input formControlName="lastName"
+                   required
+                   matInput
+                   placeholder="{{'person.lastName' | translate}}">
 
             <mat-error *ngIf="personFormBuilder.lastName.hasError('required')">
               {{'form.validation.required' | translate}}
             </mat-error>
             <mat-error *ngIf="personFormBuilder.lastName.hasError('minlength')">
-              {{'form.validation.minLength' | translate: {value: 2} }}
+              {{'form.validation.minLength' | translate: { value: 2 } }}
             </mat-error>
           </mat-form-field>
 
           <mat-form-field color="primary">
-            <input formControlName="email" matInput placeholder="{{'person.email' | translate}}">
+            <input formControlName="email"
+                   matInput
+                   placeholder="{{'person.email' | translate}}">
 
             <mat-error *ngIf="personFormBuilder.email.hasError('required')">
               {{'form.validation.required' | translate}}
@@ -56,9 +84,12 @@
 
           <mat-form-field color="primary">
             <mat-label>{{'person.dateOfBirth' | translate}}</mat-label>
-            <input matInput [matDatepicker]="picker" placeholder="{{'form.chooseADate' | translate}}"
+            <input matInput
+                   [matDatepicker]="picker"
+                   placeholder="{{'form.chooseADate' | translate}}"
                    formControlName="dateOfBirth">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker-toggle matSuffix
+                                   [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
 
@@ -69,7 +100,8 @@
           <mat-form-field color="primary">
             <mat-label>{{'person.gender' | translate}}</mat-label>
             <mat-select formControlName="genderId">
-              <mat-option *ngFor="let gender of availableGenders" [value]="gender.value">
+              <mat-option *ngFor="let gender of availableGenders"
+                          [value]="gender.value">
                 {{gender.viewValue}}
               </mat-option>
             </mat-select>
@@ -78,14 +110,16 @@
           <mat-form-field color="primary">
             <mat-label>{{'person.maritalStatus' | translate}}</mat-label>
             <mat-select formControlName="maritalStatusId">
-              <mat-option *ngFor="let maritalStatus of availableMaritalStatuses" [value]="maritalStatus.value">
+              <mat-option *ngFor="let maritalStatus of availableMaritalStatuses"
+                          [value]="maritalStatus.value">
                 {{maritalStatus.viewValue}}
               </mat-option>
             </mat-select>
           </mat-form-field>
 
           <mat-form-field color="primary">
-            <input formControlName="numberOfDependants" matInput
+            <input formControlName="numberOfDependants"
+                   matInput
                    placeholder="{{'person.numberOfDependants' | translate}}"
                    type="number"
                    min="0"
@@ -94,10 +128,16 @@
           </mat-form-field>
 
           <mat-form-field color="primary">
-            <input type="tel" formControlName="phoneNumber" matInput #input maxlength="15"
+            <input type="tel"
+                   formControlName="phoneNumber"
+                   matInput
+                   #input
+                   maxlength="15"
                    placeholder="{{'person.telephoneNumber' | translate}}">
             <span matTextPrefix>+&nbsp;</span>
-            <mat-icon matSuffix color="primary">phone</mat-icon>
+            <mat-icon matSuffix
+                      color="primary">phone
+            </mat-icon>
             <mat-hint>{{'form.validation.phonePrefix' | translate }}</mat-hint>
             <mat-hint align="end">{{input.value.length}}/15</mat-hint>
           </mat-form-field>
@@ -107,8 +147,11 @@
 
       <mat-card-actions>
         <div class="person-dialog-form-actions">
-          <button mat-raised-button (click)="onClear()">{{'form.clear' | translate}}</button>
-          <button mat-raised-button color="primary" type="submit"
+          <button mat-raised-button
+                  (click)="onClear()">{{'form.clear' | translate}}</button>
+          <button mat-raised-button
+                  color="primary"
+                  type="submit"
                   [disabled]="personFormBuilder.form.invalid"
                   (click)="onSubmit()">{{'form.submit' | translate}}
           </button>

@@ -20,7 +20,7 @@ export class JwtInterceptor implements HttpInterceptor {
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${this.authenticationService.getTokenFromLocalStorage()}`,
-          'Content-Type': 'application/json',
+          // 'Content-Type': 'application/json',
           // 'Access-Control-Allow-Origin': '*',
           Accept: 'application/json'
         }

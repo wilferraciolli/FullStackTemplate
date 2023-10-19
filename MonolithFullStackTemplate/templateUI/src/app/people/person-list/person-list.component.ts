@@ -37,11 +37,11 @@ export class PersonListComponent implements OnInit {
 
   personTemplateLink!: Link;
   personCollectionLinks!: PersonLinksCollection;
+
   personCollectionMeta!: PersonMeta;
-
   personCollectionGenderIds: Array<ValueViewValue> = [];
-  personCollectionMaritalStatusesIds: Array<ValueViewValue> = [];
 
+  personCollectionMaritalStatusesIds: Array<ValueViewValue> = [];
   isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(Breakpoints.XSmall);
   userCreateAccess: boolean = false;
 
@@ -193,5 +193,9 @@ export class PersonListComponent implements OnInit {
   private resolveCollectionMeta(collectionMeta: any): PersonMeta {
 
     return collectionMeta;
+  }
+
+  public hasDownloadLink(person: Person): boolean {
+    return person.links?.downloadPersonPhoto !== undefined;
   }
 }

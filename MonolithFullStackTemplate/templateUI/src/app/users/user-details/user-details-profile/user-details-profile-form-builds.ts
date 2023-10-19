@@ -27,6 +27,7 @@ export class UserDetailsProfileFormBuilder {
       email: this.formBuilder.nonNullable.control({value: '', disabled: true}, {
         validators: [Validators.required, Validators.email]
       }),
+      imageId: this.formBuilder.control(''),
       dateOfBirth: this.formBuilder.control(null),
       genderId: this.formBuilder.control(null),
       maritalStatusId: this.formBuilder.control(null),
@@ -54,6 +55,7 @@ export class UserDetailsProfileFormBuilder {
       this.form.controls.firstName.value,
       this.form.controls.lastName.value,
       this.form.controls.email.value,
+      this.form.controls.imageId.value,
       this.dateTimeService.parseDate(this.form.controls.dateOfBirth.value),
       this.form.controls.genderId.value,
       this.form.controls.maritalStatusId.value,
