@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface PersonPhotoRepository extends JpaRepository<PersonPhoto, Long> {
 
-    Optional<PersonPhoto> findByUserId(Long userId);
+    Optional<PersonPhoto> findByPersonId(Long userId);
 }

@@ -12,7 +12,7 @@ drop table IF EXISTS tp_person_photo;
 create TABLE tp_person_photo
 (
     id                  BIGINT       NOT NULL auto_increment,
-    user_id             BIGINT       NOT NULL,
+    person_id           BIGINT       NOT NULL,
     file_id             VARCHAR(36) NOT NULL,
     PRIMARY KEY (id)
 );

@@ -21,6 +21,7 @@ CREATE TABLE tp_person
 (
     id                   BIGINT       NOT NULL auto_increment,
     user_id              BIGINT       NOT NULL,
+    image_id             VARCHAR(36)  NULL,
     first_name           VARCHAR(255) NOT NULL,
     last_name            VARCHAR(255) NOT NULL,
     email                VARCHAR(255) NOT NULL,

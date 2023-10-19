@@ -5,6 +5,8 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -16,6 +18,16 @@ public class PersonPhotoLinkProvider {
             return linkTo(methodOn(PersonPhotoRestService.class)
                     .findById(personId, id))
                     .withSelfRel();
+        }
+
+        return null;
+    }
+
+    public Link createUpdateImageLink(final Long personId) {
+        if (Objects.nonNull(personId)) {
+            return linkTo(methodOn(PersonPhotoRestService.class)
+                    .create(personId, null))
+                    .withRel("createUpdatePersonPhoto");
         }
 
         return null;

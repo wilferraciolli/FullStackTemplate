@@ -8,6 +8,11 @@ import java.util.stream.Stream;
 public enum UserRoleType {
 
     /**
+     * Role used to bypass security. Used for performing actions that are not related to a specific user.
+     */
+    ROLE_INTEGRATION("Integration user"),
+
+    /**
      * Role admin user role type.
      */
     ROLE_ADMIN("Admin"),

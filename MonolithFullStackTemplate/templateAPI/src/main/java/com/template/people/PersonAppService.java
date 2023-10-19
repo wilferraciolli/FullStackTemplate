@@ -48,14 +48,12 @@ public class PersonAppService {
      * @return the list
      */
     public List<PersonResource> findAll() {
-
         return repository.findAll().stream()
                 .map(assembler::convertToDTO)
                 .collect(Collectors.toList());
     }
 
     public List<PersonResource> search(final String query) {
-
         return repository.searchByNameAndSurname(query)
                 .stream()
                 .map(assembler::convertToDTO)

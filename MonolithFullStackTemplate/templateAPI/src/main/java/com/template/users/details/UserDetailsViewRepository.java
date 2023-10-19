@@ -11,6 +11,10 @@ import com.template.users.details.UserDetailsView;
  */
 public interface UserDetailsViewRepository extends JpaRepository<UserDetailsView, Long> {
 
+    Optional<UserDetailsView> findById(Long id);
+
+    Optional<UserDetailsView> findByUsername(String username);
+
     Optional<UserDetailsView> findByPersonId(Long personId);
 
 }

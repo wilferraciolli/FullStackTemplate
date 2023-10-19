@@ -39,6 +39,8 @@ public class PersonResource extends BaseDTO {
 
     private Long userId;
 
+    private String imageId;
+
     @JsonProperty("firstName")
     @NotEmpty(message = "{user.firstName.blank}")
     @Size(max = 80, message = "{user.firstName.tooLong}")

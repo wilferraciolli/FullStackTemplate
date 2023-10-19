@@ -139,7 +139,8 @@ public class AuthenticationService extends BaseApplicationService {
     }
 
     private User resolveUser(final String username) {
-        return this.useRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username " + username + "not found"));
+        return this.useRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Username " + username + "not found"));
     }
 
     private void saveUserToken(User user, String jwtToken) {

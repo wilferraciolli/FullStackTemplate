@@ -25,7 +25,7 @@ public class PersonPhotoResource extends BaseDTO {
 
     private Long id;
 
-    private Long userId;
+    private Long personId;
 
     private String fileId;
 

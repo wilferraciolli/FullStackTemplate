@@ -1,8 +1,13 @@
 package com.template.people;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.template.people.images.PersonPhotoLinkProvider;
+import com.template.security.UserDetailsContextHolder;
+import com.template.users.UserRoleType;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
@@ -15,6 +20,9 @@ public class PersonResourceAssembler {
 
     @Autowired
     private PersonLinkProvider linkProvider;
+
+    @Autowired
+    private PersonPhotoLinkProvider personPhotoLinkProvider;
 
     /**
      * Convert to entity person.
@@ -47,6 +55,7 @@ public class PersonResourceAssembler {
                 .firstName(entity.getFirstName())
                 .lastName(entity.getLastName())
                 .email(entity.getEmail())
+                .imageId(entity.getImageId())
                 .phoneNumber(entity.getPhoneNumber())
                 .dateOfBirth(entity.getDateOfBirth())
                 .genderId(entity.getGender())
@@ -54,11 +63,22 @@ public class PersonResourceAssembler {
                 .numberOfDependants(entity.getNumberOfDependants())
                 .build();
 
-        List<Link> linksToAdd = Arrays.asList(
-                linkProvider.generateSelfLink(personResource.getId()),
-                linkProvider.generateGetAllPeopleLink(),
-                linkProvider.generateUpdateLink(personResource.getId()),
-                linkProvider.generateDeleteLink(personResource.getId()));
+        List<Link> linksToAdd = new ArrayList<>();
+        linksToAdd.add(linkProvider.generateSelfLink(personResource.getId()));
+        linksToAdd.add(linkProvider.generateGetAllPeopleLink());
+        linksToAdd.add(linkProvider.generateUpdateLink(personResource.getId()));
+        linksToAdd.add(linkProvider.generateDeleteLink(personResource.getId()));
+
+        if (StringUtils.isNotEmpty(personResource.getImageId())) {
+            linksToAdd.add(personPhotoLinkProvider.generateDownloadLink(personResource.getId(), personResource.getImageId()));
+        }
+
+        // add person photo edit if same
+        if (UserDetailsContextHolder.hasRole(UserRoleType.ROLE_HR_ADMIN.name())
+                || UserDetailsContextHolder.personId().equals(personResource.getId())) {
+            linksToAdd.add(personPhotoLinkProvider.createUpdateImageLink(personResource.getId()));
+        }
+
         personResource.addLinks(linksToAdd);
 
         return personResource;

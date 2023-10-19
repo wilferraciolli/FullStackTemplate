@@ -31,8 +31,12 @@ public class PersonPhoto implements Serializable {
     private Long id;
 
     @NotNull
-    private Long userId;
+    private Long personId;
 
     @NotNull
     private String fileId;
+
+    public void updateFileId(String fileId) {
+        this.fileId = fileId;
+    }
 }

@@ -35,6 +35,8 @@ public class Person {
     @NotNull
     private Long userId;
 
+    private String imageId;
+
     @NotEmpty
     private String firstName;
 
@@ -76,5 +78,13 @@ public class Person {
         this.lastName = lastName;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public void addImageId(String imageId){
+        this.imageId = imageId;
+    }
+
+    public void removeImageId(){
+        this.imageId = null;
     }
 }
