@@ -15,6 +15,17 @@ public class FileService {
     @Autowired
     private FileRepository fileRepository;
 
+    public File compressAndStore(MultipartFile file) throws IOException {
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        File fileToCreate = File.builder()
+                .name(fileName)
+                .type(file.getContentType())
+                .data(ImageUtils.compressImage(ImageUtils.compressImage(file)))
+                .build();
+
+        return fileRepository.save(fileToCreate);
+    }
+
     public File store(MultipartFile file) throws IOException {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         File fileToCreate = File.builder()

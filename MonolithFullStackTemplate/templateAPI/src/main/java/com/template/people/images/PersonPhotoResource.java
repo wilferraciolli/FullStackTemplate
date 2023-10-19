@@ -33,4 +33,5 @@ public class PersonPhotoResource extends BaseDTO {
     private String mimeType;
     private long size;
     private byte[] data;
+    private String encodedData;
 }

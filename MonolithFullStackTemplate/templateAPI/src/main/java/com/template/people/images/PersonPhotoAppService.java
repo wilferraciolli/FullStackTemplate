@@ -15,7 +15,12 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,9 +40,8 @@ public class PersonPhotoAppService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public PersonPhotoResource create(Long personId, MultipartFile fileToCreate) {
-
         try {
-            File file = fileService.store(fileToCreate);
+            File file = fileService.compressAndStore(fileToCreate);
             PersonPhoto personPhoto = createUpdatePersonPhoto(personId, file.getId());
             publishPersonImageAddedEvent(personId, personPhoto.getFileId());
 
@@ -79,7 +83,9 @@ public class PersonPhotoAppService {
                 .fileId(file.getId())
                 .name(file.getName())
                 .data(null)
+//                .encodedData(convertToBase64(file.getData()))
                 .mimeType(file.getType())
+                .size(file.getData().length)
                 .build();
 
         List<Link> linksToAdd = Arrays.asList(
@@ -89,6 +95,10 @@ public class PersonPhotoAppService {
         personPhotoResource.addLinks(linksToAdd);
 
         return personPhotoResource;
+    }
+
+    private static String convertToBase64(byte[] imageBytes) {
+        return Base64.getEncoder().encodeToString(imageBytes);
     }
 
     private PersonPhoto createUpdatePersonPhoto(Long personId, String fileId) {

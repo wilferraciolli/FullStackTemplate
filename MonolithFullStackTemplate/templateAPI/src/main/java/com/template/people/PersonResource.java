@@ -2,6 +2,8 @@ package com.template.people;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.template.libraries.rest.CustomNullSerializer;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -39,6 +41,7 @@ public class PersonResource extends BaseDTO {
 
     private Long userId;
 
+    @JsonSerialize(nullsUsing = CustomNullSerializer.class)
     private String imageId;
 
     @JsonProperty("firstName")

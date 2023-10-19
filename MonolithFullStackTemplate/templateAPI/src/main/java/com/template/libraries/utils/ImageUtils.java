@@ -1,7 +1,12 @@
 package com.template.libraries.utils;
 
 
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
@@ -57,5 +62,32 @@ public class ImageUtils {
         }
 
         return outputStream.toByteArray();
+    }
+
+    /**
+     * Helper method to compress an image.
+     * @param file the file
+     * @return byte [ ]
+     * @throws IOException the io exception
+     */
+    public static byte[] compressImage(MultipartFile file) throws IOException {
+        BufferedImage originalImage = ImageIO.read(file.getInputStream());
+        int thumbnailWidth = 56; // Set your desired thumbnail width
+        int thumbnailHeight = 56; // Set your desired thumbnail height
+        BufferedImage thumbnailImage = new BufferedImage(thumbnailWidth, thumbnailHeight, originalImage.getType());
+        thumbnailImage.getGraphics().drawImage(originalImage.getScaledInstance(thumbnailWidth, thumbnailHeight, java.awt.Image.SCALE_SMOOTH), 0, 0, null);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(thumbnailImage, getFileExtension(file), baos);
+        baos.flush();
+        byte[] imageInByte = baos.toByteArray();
+        baos.close();
+
+        return imageInByte;
+    }
+
+    private static String getFileExtension(MultipartFile file) {
+        String originalFileName = file.getOriginalFilename();
+        return originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
     }
 }
