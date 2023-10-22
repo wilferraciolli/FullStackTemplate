@@ -39,17 +39,13 @@
     <mat-card class="person-list-content-card"
               *ngFor="let person of people">
       <div class="person-list-content-card-image">
-        <mat-icon *ngIf="!hasDownloadLink(person)"
-                  class="material-icons md-56">face
-        </mat-icon>
-        <div *ngIf="hasDownloadLink(person)"
-             mat-card-avatar
-             [style.background-image]="'url(' + person.links?.downloadPersonPhoto?.href + ')'">
-        </div>
+        <app-person-photo [imageUrl]="person.links?.downloadPersonPhoto?.href"/>
       </div>
-      <div> {{person.firstName}} {{person.lastName}}</div>
+
+      <div class="person-list-person-names"> {{person.firstName}} {{person.lastName}}</div>
       <div> {{person.genderId | convertIdToValues: personCollectionGenderIds}}</div>
       <div> {{person.maritalStatusId | convertIdToValues: personCollectionMaritalStatusesIds}}</div>
+
       <div class="person-list-content-card-actions">
         <button mat-icon-button
                 [disabled]="disableUpdatePerson(person)"

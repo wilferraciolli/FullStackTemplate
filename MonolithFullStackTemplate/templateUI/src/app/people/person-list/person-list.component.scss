@@ -1,4 +1,6 @@
-$tabletSize: 800px;
+@import 'src/app/shared/styles/mixins/typography';
+@import 'src/app/shared/styles/mixins/media-query';
+
 
 .person-list {
   min-height: 100px;
@@ -8,7 +10,7 @@ $tabletSize: 800px;
   justify-content: center;
   padding-top: 10px;
 
-  @media (min-width: $tabletSize) {
+  @include media-query-lg {
     padding-top: 50px;
   }
 
@@ -29,7 +31,7 @@ $tabletSize: 800px;
   &-search-actions span {
     display: none;
 
-    @media (min-width: $tabletSize) {
+    @include media-query-lg {
       display: inherit;
     }
   }
@@ -50,7 +52,7 @@ $tabletSize: 800px;
     flex-direction: column;
     padding-top: 10px;
 
-    @media (min-width: $tabletSize) {
+    @include media-query-lg {
       flex-direction: row;
     }
   }
@@ -59,9 +61,13 @@ $tabletSize: 800px;
     background-size: cover;
     padding: 0;
 
-    @media (min-width: $tabletSize) {
+    @include media-query-lg {
       padding: 0 20px;
     }
+  }
+
+  &-content-person-names {
+    @include mainHeader-style();
   }
 
   &-content-card-actions {

@@ -1,0 +1,28 @@
+<div class="photo-thumbnail-image-container">
+  <ng-container *ngIf="createUpdateUrl; then createImage; else image;"></ng-container>
+
+  <!-- When cannot create so either display the image or empty block -->
+  <ng-template #image>
+<!--    <p>Display image works!</p>-->
+    <label class="photo-thumbnail-image-input"
+           [style.cursor]="cursorType"
+           [style.background-image]="getImageBackgroundUrl()">
+    </label>
+  </ng-template>
+
+  <!-- Here display the image and also allows to upload a new one -->
+  <ng-template #createImage>
+<!--    <p>Create iange works!</p>-->
+    <input class="photo-thumbnail-image-selector"
+           id="fileInput"
+           type="file"
+           accept="image/*"
+           (change)="onFileSelected($event)"
+    />
+    <label for="fileInput"
+           class="photo-thumbnail-image-input"
+           [style.cursor]="cursorType"
+           [style.background-image]="'url(' + imageUrl + ')'">
+    </label>
+  </ng-template>
+</div>

@@ -2,8 +2,23 @@
 
   <mat-toolbar>
     <span class="home-title">{{'home.title' | translate}}</span>
+
+    <app-photo-thumbnail
+      [imageUrl]="'http://localhost:5001/api/public/people/2000/images/fc7dbada-987a-41ae-8a4c-7ea852ead18f/download'">
+    </app-photo-thumbnail>
+
+    <app-photo-thumbnail
+      [imageUrl]="'http://localhost:5001/api/public/people/2000/images/fc7dbada-987a-41ae-8a4c-7ea852ead18f/download'"
+      [createUpdateUrl]="'http://localhost:5001/api/hrm/people/2000/images'">
+    </app-photo-thumbnail>
+
+    <app-photo-thumbnail
+      [imageUrl]="''"  >
+    </app-photo-thumbnail>
   </mat-toolbar>
   <br>
+
+
 
   <div class="home-contentBody">
     <div class="home-card">

@@ -1,0 +1,31 @@
+.photo-thumbnail {
+  &-image-container {
+    position: relative;
+    width: 56px; /* Adjust the width as needed */
+    height: 56px; /* Adjust the height as needed */
+    padding: 20px;
+  }
+
+  &-image-selector {
+    display: none; /* Hide the input field initially */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    //cursor: pointer;
+  }
+
+  &-image-input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%; /* Occupy the entire width of the container */
+    height: 100%; /* Occupy the entire height of the container */
+    border-radius: 50%; /* Make the div round */
+    background-color: #ddd; /* Set a background color or use a background image */
+    color: #555; /* Set the color of the icon or text */
+    font-size: 24px; /* Adjust the font size as needed */
+  }
+}

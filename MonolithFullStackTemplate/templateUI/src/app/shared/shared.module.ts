@@ -6,7 +6,7 @@ import {ConvertIdsToStringValuePipe} from '../_helpers/user-role-mapper-pipe';
 import {TranslateModule} from '@ngx-translate/core';
 import {HttpClientModule} from '@angular/common/http';
 import {ProjectMaterialModule} from "../app.module.material";
-import { MatErrorComponent } from './components/mat-error/mat-error.component';
+import {MatErrorComponent} from './components/mat-error/mat-error.component';
 
 @NgModule({
   imports: [

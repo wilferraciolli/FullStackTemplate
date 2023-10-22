@@ -1,0 +1,14 @@
+<div class="person-photo-image-container">
+  <img class="person-photo-image"
+       src="{{ resolvedImageUrl() }}"
+       alt="Person photo">
+
+  <div class="person-photo-image-create" *ngIf="addImageUrl">
+    <input id="fileInput"
+           class="person-photo-image-create-input"
+           type="file"
+           accept="image/*"
+           (change)="onFileSelected($event)">
+    <label for="fileInput" class="person-photo-image-create-button">{{ label }}</label>
+  </div>
+</div>

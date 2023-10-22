@@ -26,6 +26,8 @@ import {JwtInterceptor} from "./_helpers/jwt.interceptor";
 import {ErrorInterceptor} from "./_helpers/error.interceptor";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {MAT_DATE_LOCALE} from "@angular/material/core";
+import {PhotoThumbnailComponent} from "./shared/business-components/photo-thumbnail/photo-thumbnail.component";
+import {PersonPhotoComponent} from "./shared/business-components/person-photo/person-photo.component";
 
 
 @NgModule({
@@ -51,6 +53,8 @@ import {MAT_DATE_LOCALE} from "@angular/material/core";
     BrowserAnimationsModule,
     CommonModule,
     SharedModule,
+    PhotoThumbnailComponent,
+    PersonPhotoComponent,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

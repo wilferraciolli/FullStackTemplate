@@ -20,18 +20,24 @@
     </button>
   </div>
 
-  <div class="person-dialog-image-container" >
-    <input class="person-dialog-image-selector"
-           id="fileInput"
-           type="file"
-           accept="image/*"
-           (change)="onFileSelected($event)"
-    />
-    <label for="fileInput" *ngIf="canUpdatePersonPhoto"
-           class="person-dialog-image-input"
-           [style.background-image]="'url(' + imageUrl() + ')'">
-    </label>
-  </div>
+  <!--  <app-photo-thumbnail-->
+  <!--    [imageUrl]="person.links?.downloadPersonPhoto?.href"-->
+  <!--    [createUpdateUrl]="person.links?.createUpdatePersonPhoto?.href">-->
+  <!--  </app-photo-thumbnail>-->
+
+    <app-person-photo *ngIf="person"
+      [imageUrl]="person.links?.downloadPersonPhoto?.href"
+      [createUpdateUrl]="person.links?.createUpdatePersonPhoto?.href">
+    </app-person-photo>
+
+<!--  <div class="person-dialog-image-container">-->
+<!--    <img class="person-dialog-image" src="{{imageUrl}}" alt="Person photo">-->
+
+<!--    <div class="person-dialog-image-create">-->
+<!--      <input id="fileInput" class="person-dialog-image-create-input" type="file" accept="image/*">-->
+<!--      <label for="fileInput" class="person-dialog-image-create-button">Upload File123</label>-->
+<!--    </div>-->
+<!--  </div>-->
 
   <mat-card-content>
     <form [formGroup]="personFormBuilder.form">

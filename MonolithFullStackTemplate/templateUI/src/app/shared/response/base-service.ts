@@ -107,6 +107,13 @@ export class HttpBaseService {
     // return this.httpClient.request(req);
   }
 
+  async downloadFile<T>(url: string): Promise<any> {
+    const imageBlob: Blob | undefined = await this.httpClient.get(url, { responseType: 'blob' })
+      .toPromise();
+
+    return imageBlob;
+  }
+
   update<T>(url: string, payloadToUpdate: T) {
     return this.httpClient.put<T>(url, payloadToUpdate, { headers: this.headers });
   }
