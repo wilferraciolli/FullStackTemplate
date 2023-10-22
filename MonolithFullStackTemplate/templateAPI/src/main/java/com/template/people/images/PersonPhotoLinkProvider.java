@@ -34,19 +34,19 @@ public class PersonPhotoLinkProvider {
     }
 
     public Link generateDownloadLink(final Long personId, final String id) {
-//        if (ObjectUtils.allNotNull(personId, id)) {
-//            return linkTo(methodOn(PersonPhotoRestService.class)
-//                    .download(personId, id))
-//                    .withRel("downloadPersonPhoto");
-//        }
-
-
-        // TODO had to create public rest service
         if (ObjectUtils.allNotNull(personId, id)) {
-            return linkTo(methodOn(PublicRestService.class)
+            return linkTo(methodOn(PersonPhotoRestService.class)
                     .download(personId, id))
                     .withRel("downloadPersonPhoto");
         }
+
+
+        // TODO had to create public rest service
+//        if (ObjectUtils.allNotNull(personId, id)) {
+//            return linkTo(methodOn(PublicRestService.class)
+//                    .download(personId, id))
+//                    .withRel("downloadPersonPhoto");
+//        }
 
         return null;
     }
