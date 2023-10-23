@@ -3,6 +3,14 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.5.
 This is the ui for the market engine application
 
+
+# Ideas 
+Look here for form bricks
+https://github.com/formbricks/formbricks
+
+Look here for rating samples
+https://github.com/clickvote/clickvote
+
 ## Imports
 
 ######Angular Material
