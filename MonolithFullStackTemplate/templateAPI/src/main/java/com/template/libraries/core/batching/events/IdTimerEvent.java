@@ -1,6 +1,8 @@
 package com.template.libraries.core.batching.events;
 
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.template.libraries.core.EventScheduled;
 
@@ -12,11 +14,13 @@ import java.util.Objects;
 @JsonRootName("idTimer")
 public class IdTimerEvent implements EventScheduled {
 
+    @JsonProperty("id")
     private String id;
 
     public IdTimerEvent() {
     }
 
+    @JsonCreator
     public IdTimerEvent(String id) {
         this.id = id;
     }
