@@ -70,7 +70,7 @@ public class SchedulerService {
 
             ScheduledJob jobToSchedule = ScheduledJob.builder()
                     .rootName(getJsonRootName(jobData))
-                    .jobData(objectMapper.writeValueAsString(serializedData))
+                    .jobData(serializedData)
                     .scheduledDateTime(scheduledTime)
                     .build();
 

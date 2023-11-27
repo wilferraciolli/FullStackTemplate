@@ -21,7 +21,7 @@ public class IdTimerEvent implements EventScheduled {
     }
 
     @JsonCreator
-    public IdTimerEvent(String id) {
+    public IdTimerEvent(@JsonProperty("id") String id) {
         this.id = id;
     }
 
