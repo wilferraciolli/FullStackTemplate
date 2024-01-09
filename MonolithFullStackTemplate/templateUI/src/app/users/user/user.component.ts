@@ -1,4 +1,5 @@
 import {Component, Inject, OnInit, Optional} from '@angular/core';
+import { DialogLinkData } from '../../shared/dialog.service';
 import {UserServiceService} from '../user-service.service';
 import {NotificationService} from '../../shared/notification.service';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
@@ -31,10 +32,10 @@ export class UserComponent implements OnInit {
               private linkService: LinksService,
               public dialogRef: MatDialogRef<UserComponent>,
               private metadataService: MetadataService,
-              @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
+              @Optional() @Inject(MAT_DIALOG_DATA) public data: DialogLinkData) {
 
     // get the link passed on
-    if (data) {
+    if (data?.link) {
       this.link = data.link;
     } else {
       console.warn('no link to get single user was passed');

@@ -1,5 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Component, Inject, OnInit, Optional} from '@angular/core';
+import { DialogLinkData } from '../../shared/dialog.service';
 import {PersonService} from '../person.service';
 import {PersonAdapter} from '../person.adapter';
 import {NotificationService} from '../../shared/notification.service';
@@ -39,11 +40,11 @@ export class PersonComponent implements OnInit {
               public dialogRef: MatDialogRef<PersonComponent>,
               private metadataService: MetadataService,
               private http: HttpClient,
-              @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
+              @Optional() @Inject(MAT_DIALOG_DATA) public data: DialogLinkData) {
 
 
     // get the link passed on
-    if (data) {
+    if (data?.link) {
       this.link = data.link;
     } else {
       console.warn('no link to get single person was passed');

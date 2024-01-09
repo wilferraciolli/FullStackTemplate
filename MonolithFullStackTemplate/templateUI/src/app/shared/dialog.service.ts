@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatConfirmDialogComponent } from './components/mat-confirm-dialog/mat-confirm-dialog.component';
+import { Link } from './response/link';
 
 @Injectable({
   providedIn: 'root'
@@ -21,4 +22,15 @@ export class DialogService {
       }
     });
   }
+}
+
+export enum DialogClosedActionType {
+  CREATED = 'Created',
+  UPDATED = 'Updated',
+  DELETED = 'Deleted',
+  DISMISSED = 'Dismissed'
+}
+
+export interface DialogLinkData {
+  link: Link | null | undefined;
 }
