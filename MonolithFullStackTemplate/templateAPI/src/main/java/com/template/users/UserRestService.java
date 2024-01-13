@@ -70,8 +70,7 @@ public class UserRestService extends BaseRestService {
      * @return the response entity
      */
     @GetMapping("")
-    public ResponseEntity<UserResource> findAll() throws InterruptedException {
-        Thread.sleep(100);
+    public ResponseEntity<UserResource> findAll() {
         final List<UserResource> resources = this.appService.findUsers();
 
         Set<String> usedRoleIds = appService.resolveUsedRoleIds(resources);
