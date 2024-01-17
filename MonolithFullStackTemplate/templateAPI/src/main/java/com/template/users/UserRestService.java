@@ -127,7 +127,6 @@ public class UserRestService extends BaseRestService {
 
     @GetMapping("/usernames/availability")
     public ResponseEntity<Boolean> checkUsernameAvailability(@RequestParam("username") final String username) {
-
         final boolean isAvailable = this.appService.checkUsernameAvailability(StringUtils.defaultString(username));
 
         return ResponseEntity

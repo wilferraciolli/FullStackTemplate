@@ -36,7 +36,6 @@ public class UserProfileRestService extends BaseRestService {
      */
     @GetMapping("")
     public ResponseEntity<UserProfileResource> getUserProfile(@AuthenticationPrincipal final UserDetails userDetails) {
-
         final UserProfileResource resource = userProfileAppService.getUserProfile(userDetails);
 
         return buildResponseOk(getJsonRootName(UserProfileResource.class), resource, metaFabricator.createMeta());
