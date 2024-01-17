@@ -1,23 +1,27 @@
 package com.template.people.images;
 
 
+import com.template.libraries.rest.LinkBuilder;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.Objects;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 @Service
+@RequiredArgsConstructor
 public class PersonPhotoLinkProvider {
+
+    private final LinkBuilder linkBuilder;
 
     public Link generateSelfLink(final Long personId, final String id) {
         if (ObjectUtils.allNotNull(personId, id)) {
-            return linkTo(methodOn(PersonPhotoRestService.class)
-                    .findById(personId, id))
-                    .withSelfRel();
+            return linkBuilder.buildSelfLink(
+                    PersonPhotoRestService.class,
+                    "findById",
+                    Map.of("personId", personId, "id", id));
         }
 
         return null;
@@ -25,9 +29,11 @@ public class PersonPhotoLinkProvider {
 
     public Link createUpdateImageLink(final Long personId) {
         if (Objects.nonNull(personId)) {
-            return linkTo(methodOn(PersonPhotoRestService.class)
-                    .create(personId, null))
-                    .withRel("createUpdatePersonPhoto");
+            return linkBuilder.buildLink(
+                    PersonPhotoRestService.class,
+                    "create",
+                    "createUpdatePersonPhoto",
+                    Map.of("personId", personId));
         }
 
         return null;
@@ -35,9 +41,11 @@ public class PersonPhotoLinkProvider {
 
     public Link generateDownloadLink(final Long personId, final String id) {
         if (ObjectUtils.allNotNull(personId, id)) {
-            return linkTo(methodOn(PersonPhotoRestService.class)
-                    .download(personId, id))
-                    .withRel("downloadPersonPhoto");
+            return linkBuilder.buildLink(
+                    PersonPhotoRestService.class,
+                    "download",
+                    "downloadPersonPhoto",
+                    Map.of("personId", personId, "id", id));
         }
 
 

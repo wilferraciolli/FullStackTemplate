@@ -22,50 +22,59 @@ import java.util.Objects;
  * Utility class to build links.
  */
 @Component
-public class LinkBuilder {
+public class LinkBuilderDeprecated {
     @Value("${server.servlet.context-path}")
     private String serverContextPath;
 
-    public LinkBuilder() {
+    private Class<? extends BaseRestService> controllerClass;
+    private String methodName;
+    private String linkName;
+    private Map<String, Object> pathParams;
+    private Map<String, Object> queryParams;
+
+
+    private LinkBuilderDeprecated() {
         // Private constructor to force the use of the builder methods
     }
 
-    public Link buildLink(
-            Class<? extends BaseRestService> controllerClass,
-            String methodName,
-            String linkName,
-            Map<String, Object> pathParams
-    ) {
-        return buildLink(controllerClass, methodName, linkName, pathParams, null);
+    public static LinkBuilderDeprecated builder() {
+        return new LinkBuilderDeprecated();
     }
 
-    public Link buildSelfLink(
-            Class<? extends BaseRestService> controllerClass,
-            String methodName,
-            Map<String, Object> pathParams
-    ) {
-        return buildLink(controllerClass, methodName, IanaLinkRelations.SELF.value(), pathParams, null);
+    public LinkBuilderDeprecated withControllerClass(Class<? extends BaseRestService> controllerClass) {
+        this.controllerClass = controllerClass;
+        return this;
     }
 
-    public Link buildSelfLink(
-            Class<? extends BaseRestService> controllerClass,
-            String methodName,
-            Map<String, Object> pathParams,
-            Map<String, Object> queryParams
-    ) {
-        return buildLink(controllerClass, methodName, IanaLinkRelations.SELF.value(), pathParams, queryParams);
+    public LinkBuilderDeprecated withMethodName(String methodName) {
+        this.methodName = methodName;
+        return this;
     }
 
-    public Link buildLink(
-            Class<? extends BaseRestService> controllerClass,
-            String methodName,
-            String linkName,
-            Map<String, Object> pathParams,
-            Map<String, Object> queryParams
-    ) {
-        if (Objects.isNull(controllerClass)
-                || Objects.isNull(methodName)
-                || Objects.isNull(linkName)) {
+    public LinkBuilderDeprecated withLinkName(String linkName) {
+        this.linkName = linkName;
+        return this;
+    }
+
+    public LinkBuilderDeprecated withSelfLinkName() {
+        this.linkName = IanaLinkRelations.SELF.value();
+        return this;
+    }
+
+    public LinkBuilderDeprecated withPathParams(Map<String, Object> pathParams) {
+        this.pathParams = pathParams;
+        return this;
+    }
+
+    public LinkBuilderDeprecated withQueryParams(Map<String, Object> queryParams) {
+        this.queryParams = queryParams;
+        return this;
+    }
+
+    public Link build() {
+        if (Objects.isNull(this.controllerClass)
+                || Objects.isNull(this.methodName)
+                || Objects.isNull(this.linkName)) {
             System.out.println("Controller class or method name cannot be null");
             return null;
         }
@@ -73,7 +82,7 @@ public class LinkBuilder {
         String path = getPathFromRestController(controllerClass, methodName);
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(path);
 
-        if (Objects.nonNull(queryParams)) {
+        if (Objects.nonNull(this.queryParams)) {
             queryParams.forEach(uriBuilder::queryParam);
         }
 
@@ -81,6 +90,28 @@ public class LinkBuilder {
                 .withRel(linkName)
                 .expand(Objects.isNull(pathParams) ? Map.of() : pathParams);
     }
+
+
+//    public Link buildLinkFromRestService(
+//            Class<? extends BaseRestService> controllerClass,
+//            String methodName,
+//            String linkName,
+//            Map<String, Object> pathParams) {
+//
+//        Link link = Link.of(getPathFromRestController(controllerClass, methodName))
+//                .withRel(linkName)
+//                .expand(Objects.isNull(pathParams) ? Map.of() : pathParams);
+//
+//        return link;
+//    }
+
+//    public Link buildSelfLinkFromRestService(
+//            Class<? extends BaseRestService> controllerClass,
+//            String methodName,
+//            Map<String, Object> pathParams) {
+//
+//        return buildLinkFromRestService(controllerClass, methodName, IanaLinkRelations.SELF.value(), pathParams);
+//    }
 
     private <T extends BaseRestService> String getPathFromRestController(Class<T> controllerClass, String methodName) {
         StringBuilder urlFromRestService = new StringBuilder();

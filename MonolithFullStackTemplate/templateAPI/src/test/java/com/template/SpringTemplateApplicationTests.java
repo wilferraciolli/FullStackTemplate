@@ -1,11 +1,8 @@
 package com.template;
 
-import com.template.libraries.rest.LinkBuilder;
-import com.template.people.images.PersonPhotoRestService;
+import com.template.libraries.rest.LinkBuilderDeprecated;
 import com.template.users.UserRestService;
-import com.template.users.user.User;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Map;
 
@@ -14,13 +11,13 @@ class SpringTemplateApplicationTests {
 
     @Test
     void contextLoads() {
-        System.out.println(LinkBuilder.builder()
+        System.out.println(LinkBuilderDeprecated.builder()
                 .withControllerClass(UserRestService.class)
                 .withMethodName("getAllUsers")
                 .withLinkName("users")
                 .build());
 
-        System.out.println(LinkBuilder.builder()
+        System.out.println(LinkBuilderDeprecated.builder()
                 .withControllerClass(UserRestService.class)
                 .withMethodName("findById")
                 .withSelfLinkName()
