@@ -3,6 +3,7 @@ import {NgIf} from "@angular/common";
 import {HttpClient} from "@angular/common/http";
 import {PersonPhotoResponse} from "../../../people/person-photo/person-photo.response";
 import {Observable} from "rxjs";
+import {environment} from "../../../../environments/environment";
 
 const defaultImageUrl: string = 'assets/images/user-profile-placeholder.jpg';
 
@@ -65,7 +66,7 @@ export class PersonPhotoComponent implements OnInit {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
 
-    return this.httpClient.post<T>(url, formData);
+    return this.httpClient.post<T>(environment.baseUrl + url, formData);
   }
 
   private async _resolveImageUrl(imageUrlToFetch: string | undefined): Promise<void> {
@@ -82,7 +83,7 @@ export class PersonPhotoComponent implements OnInit {
   private async _fetchImage(imageUrl: string): Promise<void> {
     try {
       const imageBlob: Blob | undefined = await this.httpClient.get(
-        imageUrl,
+        environment.baseUrl + imageUrl,
         { responseType: 'blob' })
         .toPromise();
 
