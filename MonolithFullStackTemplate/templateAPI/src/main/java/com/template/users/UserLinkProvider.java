@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.Objects;
 
 @Service
@@ -24,7 +25,8 @@ public class UserLinkProvider {
         if (Objects.nonNull(id)) {
             return linkBuilder.buildSelfLink(
                     UserRestService.class,
-                    "findById");
+                    "findById",
+                    Map.of("id", id));
         }
 
         return null;
@@ -35,7 +37,8 @@ public class UserLinkProvider {
             return linkBuilder.buildLink(
                     UserRestService.class,
                     "update",
-                    "updateUser");
+                    "updateUser",
+                    Map.of("id", id));
         }
 
         return null;
@@ -46,7 +49,8 @@ public class UserLinkProvider {
             return linkBuilder.buildLink(
                     UserRestService.class,
                     "deleteById",
-                    "deleteUser");
+                    "deleteUser",
+                    Map.of("id", id));
         }
 
         return null;
