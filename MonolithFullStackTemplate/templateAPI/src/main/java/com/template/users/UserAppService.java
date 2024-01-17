@@ -55,7 +55,6 @@ public class UserAppService {
     private EventPublisher eventPublisher;
 
     public UserResource createTemplate() {
-
         return UserResource.builder()
                 .firstName("Name")
                 .lastName("Surname")
@@ -71,7 +70,6 @@ public class UserAppService {
      * @return the list
      */
     public List<UserResource> findUsers() {
-
         return this.userDetailsViewRepository.findAll().stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
@@ -98,7 +96,6 @@ public class UserAppService {
      * @return the user resource
      */
     public UserResource findById(final Long id) {
-
         final UserDetailsView user = this.userDetailsViewRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("could not find user for given id"));
 
@@ -106,7 +103,6 @@ public class UserAppService {
     }
 
     public boolean checkUsernameAvailability(final String username) {
-
         return Long.valueOf(0L).equals(this.userRepository.checkUsernameExists(username));
     }
 
@@ -152,7 +148,6 @@ public class UserAppService {
     }
 
     public List<Link> generateCollectionLinks() {
-
         List<Link> links = new ArrayList<>();
         links.add(linkProvider.generateCreateUserLink());
 
@@ -160,7 +155,6 @@ public class UserAppService {
     }
 
     public Set<String> resolveUsedRoleIds(List<UserResource> resources) {
-
         return resources.stream()
                 .map(UserResource::getRoleIds)
                 .flatMap(Collection::stream)
@@ -168,7 +162,6 @@ public class UserAppService {
     }
 
     private void publishUserCreatedEventWithPersonDetails(final Long userId, final UserResource userResourceCreated) {
-
         this.eventPublisher.publishEvent(
                 UserCreatedEvent.builder()
                         .userId(userId)
@@ -180,10 +173,12 @@ public class UserAppService {
     }
 
     private UserResource convertToDTO(final UserDetailsView userDetailsView) {
-
         UserResource userResource = this.assembler.convertToDTO(userDetailsView, this.resolveUserRoles(userDetailsView));
 
-        List<Link> linksToAdd = Arrays.asList(linkProvider.generateSelfLink(userResource.getId()), linkProvider.generateUpdateLink(userResource.getId()), linkProvider.generateDeleteLink(userResource.getId()));
+        List<Link> linksToAdd = Arrays.asList(
+                linkProvider.generateSelfLink(userResource.getId()),
+                linkProvider.generateUpdateLink(userResource.getId()),
+                linkProvider.generateDeleteLink(userResource.getId()));
         userResource.addLinks(linksToAdd);
 
         return userResource;
@@ -199,14 +194,16 @@ public class UserAppService {
                 .roleIds(user.getRoles())
                 .build();
 
-        List<Link> linksToAdd = Arrays.asList(linkProvider.generateSelfLink(userResource.getId()), linkProvider.generateUpdateLink(userResource.getId()), linkProvider.generateDeleteLink(userResource.getId()));
+        List<Link> linksToAdd = Arrays.asList(
+                linkProvider.generateSelfLink(userResource.getId()),
+                linkProvider.generateUpdateLink(userResource.getId()),
+                linkProvider.generateDeleteLink(userResource.getId()));
         userResource.addLinks(linksToAdd);
 
         return userResource;
     }
 
     private List<String> resolveUserRoles(final UserDetailsView userDetailsView) {
-
         return this.userDetailsService.loadUserByUsername(userDetailsView.getUsername()).getAuthorities()
                 .stream()
                 .map(role -> role.getAuthority())

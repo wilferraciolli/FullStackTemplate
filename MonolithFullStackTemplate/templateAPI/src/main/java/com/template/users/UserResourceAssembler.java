@@ -25,7 +25,6 @@ public class UserResourceAssembler {
      * @return the user
      */
     public User convertToEntity(final UserResource payload) {
-
         return User.builder()
                 .username(payload.getUsername())
                 .password(this.passwordEncoder.encode(payload.getPassword()))
@@ -54,7 +53,6 @@ public class UserResourceAssembler {
     //    }
 
     public UserResource convertToDTO(final UserDetailsView entity, final List<String> roleIds) {
-
         return UserResource.builder()
                 .id(entity.getId())
                 .firstName(entity.getFirstName())
