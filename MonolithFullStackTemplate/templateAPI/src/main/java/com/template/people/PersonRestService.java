@@ -37,7 +37,6 @@ public class PersonRestService extends BaseRestService {
      */
     @GetMapping("")
     public ResponseEntity<PersonResource> findAll() {
-
         final List<PersonResource> resources = appService.findAll();
 
         Map<String, Metadata> metaForCollectionResource = metaFabricator.createMetaForCollectionResource(

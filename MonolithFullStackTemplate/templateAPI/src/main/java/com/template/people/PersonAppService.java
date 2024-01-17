@@ -67,7 +67,7 @@ public class PersonAppService {
      */
     public PersonResource findById(final Long id) {
         final Person person = repository.findById(id)
-                .orElseThrow(() -> new com.template.exceptions.EntityNotFoundException("could not find person for given id"));
+                .orElseThrow(() -> new EntityNotFoundException("could not find person for given id"));
 
         return assembler.convertToDTO(person);
     }
@@ -82,12 +82,12 @@ public class PersonAppService {
     @Transactional(propagation = Propagation.REQUIRED)
     public PersonResource update(final Long id, @Valid final PersonResource PersonResource) {
         final Person person = repository.findById(id)
-                .orElseThrow(() -> new com.template.exceptions.EntityNotFoundException("could not find person for given id"));
+                .orElseThrow(() -> new EntityNotFoundException("could not find person for given id"));
         person.updatePerson(PersonResource);
         repository.save(person);
         publishPersonUpdatedEvent(person);
 
-        log.error("Sending event person updated " + person.toString());
+        log.error("Sending event person updated " + person);
 
         return assembler.convertToDTO(person);
     }
@@ -110,7 +110,6 @@ public class PersonAppService {
     }
 
     public Set<String> resolveMaritalStatusesIds(List<PersonResource> resources) {
-
         return resources.stream()
                 .filter(p -> Objects.nonNull(p.getMaritalStatusId()))
                 .map(p -> p.getMaritalStatusId().name())
@@ -118,7 +117,6 @@ public class PersonAppService {
     }
 
     public Set<String> resolveGenderIds(List<PersonResource> resources) {
-
         return resources.stream()
                 .filter(p -> Objects.nonNull(p.getGenderId()))
                 .map(p -> p.getGenderId().name())
@@ -133,7 +131,6 @@ public class PersonAppService {
     }
 
     private void publishPersonUpdatedEvent(final Person person) {
-
         PersonUpdatedEvent personUpdatedEvent = PersonUpdatedEvent.builder()
                 .id(person.getId())
                 .firstName(person.getFirstName())

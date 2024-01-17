@@ -1,59 +1,54 @@
 package com.template.users;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+import com.template.libraries.rest.LinkBuilder;
+import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.Link;
+import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
-import org.springframework.stereotype.Service;
-import org.springframework.hateoas.Link;
-
 @Service
+@RequiredArgsConstructor
 public class UserLinkProvider {
 
-    public Link generateCreateUserLink() {
+    private final LinkBuilder linkBuilder;
 
-        return linkTo(methodOn(UserRestService.class).template()).withRel("createUser");
+    public Link generateCreateUserLink() {
+        return linkBuilder.buildLink(
+                UserRestService.class,
+                "template",
+                "createUser");
     }
 
     public Link generateSelfLink(final Long id) {
-        if (Objects.nonNull(id)){
-
-            return linkTo(methodOn(UserRestService.class).findById(id)).withSelfRel();
+        if (Objects.nonNull(id)) {
+            return linkBuilder.buildSelfLink(
+                    UserRestService.class,
+                    "findById");
         }
 
         return null;
     }
 
     public Link generateUpdateLink(final Long id) {
-
-        if (Objects.nonNull(id)){
-
-            return linkTo(methodOn(UserRestService.class).findById(id)).withRel("updateUser");
+        if (Objects.nonNull(id)) {
+            return linkBuilder.buildLink(
+                    UserRestService.class,
+                    "update",
+                    "updateUser");
         }
 
         return null;
     }
 
     public Link generateDeleteLink(final Long id) {
-
-        if (Objects.nonNull(id)){
-
-            return linkTo(methodOn(UserRestService.class).deleteById(id)).withRel("deleteUser");
+        if (Objects.nonNull(id)) {
+            return linkBuilder.buildLink(
+                    UserRestService.class,
+                    "deleteById",
+                    "deleteUser");
         }
 
         return null;
     }
-
-    //    public static List<Link> createLinksToCollection(final Long personId) {
-    //        //add self link to the list
-    //        final Link selfRel = linkTo(methodOn(PersonToDoRestService.class)
-    //                .findAll(personId)).withSelfRel();
-    //
-    //        //add create/template link to the list
-    //        final Link createLink = linkTo(methodOn(PersonToDoRestService.class)
-    //                .template(personId)).withRel("createTodo");
-    //
-    //        return Arrays.asList(selfRel, createLink);
-    //    }
 }

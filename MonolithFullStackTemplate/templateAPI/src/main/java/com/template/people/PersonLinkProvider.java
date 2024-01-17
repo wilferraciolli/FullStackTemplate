@@ -1,58 +1,58 @@
 package com.template.people;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
-import java.util.Objects;
-
+import com.template.libraries.rest.LinkBuilder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 
-import com.template.users.UserRestService;
+import java.util.Map;
+import java.util.Objects;
 
 @Service
+@RequiredArgsConstructor
 public class PersonLinkProvider {
 
+    private final LinkBuilder linkBuilder;
+
     public Link generateGetAllPeopleLink() {
-        return linkTo(methodOn(PersonRestService.class).findAll()).withRel("people");
+        return linkBuilder.buildLink(
+                PersonRestService.class,
+                "findAll",
+                "people");
     }
 
     public Link generateSelfLink(final Long id) {
-        if (Objects.nonNull(id)){
-
-            return linkTo(methodOn(PersonRestService.class).findById(id)).withSelfRel();
+        if (Objects.nonNull(id)) {
+            return linkBuilder.buildSelfLink(
+                    PersonRestService.class,
+                    "findById",
+                    Map.of("id", id));
         }
 
         return null;
     }
 
     public Link generateUpdateLink(final Long id) {
-        if (Objects.nonNull(id)){
-
-            return linkTo(methodOn(PersonRestService.class).findById(id)).withRel("updatePerson");
+        if (Objects.nonNull(id)) {
+            return linkBuilder.buildLink(
+                    PersonRestService.class,
+                    "update",
+                    "updatePerson",
+                    Map.of("id", id));
         }
 
         return null;
     }
 
     public Link generateDeleteLink(final Long id) {
-        if (Objects.nonNull(id)){
-
-            return linkTo(methodOn(PersonRestService.class).deleteById(id)).withRel("deletePerson");
+        if (Objects.nonNull(id)) {
+            return linkBuilder.buildLink(
+                    PersonRestService.class,
+                    "deleteById",
+                    "deletePerson",
+                    Map.of("id", id));
         }
 
         return null;
     }
-
-    //    public static List<Link> createLinksToCollection(final Long personId) {
-    //        //add self link to the list
-    //        final Link selfRel = linkTo(methodOn(PersonToDoRestService.class)
-    //                .findAll(personId)).withSelfRel();
-    //
-    //        //add create/template link to the list
-    //        final Link createLink = linkTo(methodOn(PersonToDoRestService.class)
-    //                .template(personId)).withRel("createTodo");
-    //
-    //        return Arrays.asList(selfRel, createLink);
-    //    }
 }

@@ -33,10 +33,25 @@ public class LinkBuilder {
     public Link buildLink(
             Class<? extends BaseRestService> controllerClass,
             String methodName,
+            String linkName
+    ) {
+        return buildLink(controllerClass, methodName, linkName, Map.of(), Map.of());
+    }
+
+    public Link buildLink(
+            Class<? extends BaseRestService> controllerClass,
+            String methodName,
             String linkName,
             Map<String, Object> pathParams
     ) {
-        return buildLink(controllerClass, methodName, linkName, pathParams, null);
+        return buildLink(controllerClass, methodName, linkName, pathParams, Map.of());
+    }
+
+    public Link buildSelfLink(
+            Class<? extends BaseRestService> controllerClass,
+            String methodName
+    ) {
+        return buildLink(controllerClass, methodName, IanaLinkRelations.SELF.value(), Map.of(), Map.of());
     }
 
     public Link buildSelfLink(
@@ -44,7 +59,7 @@ public class LinkBuilder {
             String methodName,
             Map<String, Object> pathParams
     ) {
-        return buildLink(controllerClass, methodName, IanaLinkRelations.SELF.value(), pathParams, null);
+        return buildLink(controllerClass, methodName, IanaLinkRelations.SELF.value(), pathParams, Map.of());
     }
 
     public Link buildSelfLink(

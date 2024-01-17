@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.template.libraries.rest.LinkBuilder;
 import com.template.people.images.PersonPhotoLinkProvider;
 import com.template.security.UserDetailsContextHolder;
 import com.template.users.UserRoleType;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
@@ -16,13 +18,12 @@ import org.springframework.stereotype.Service;
  * The type Person resource assembler.
  */
 @Service
+@RequiredArgsConstructor
 public class PersonResourceAssembler {
 
-    @Autowired
-    private PersonLinkProvider linkProvider;
+    private final PersonLinkProvider linkProvider;
 
-    @Autowired
-    private PersonPhotoLinkProvider personPhotoLinkProvider;
+    private final PersonPhotoLinkProvider personPhotoLinkProvider;
 
     /**
      * Convert to entity person.
