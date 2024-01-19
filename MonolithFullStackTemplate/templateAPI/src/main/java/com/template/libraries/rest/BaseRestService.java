@@ -1,18 +1,14 @@
 package com.template.libraries.rest;
 
+import com.fasterxml.jackson.annotation.JsonRootName;
+import org.springframework.hateoas.Link;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.LinkRelation;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import com.fasterxml.jackson.annotation.JsonRootName;
-import com.template.users.UserResource;
 
 /**
  * The type Base rest service.
@@ -36,7 +32,9 @@ public class BaseRestService {
      * @return the link
      */
     private Link buildSelfLink() {
-        final String uriString = ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString();
+        final String uriString = removeBeforeApi(ServletUriComponentsBuilder.fromCurrentRequest()
+                .build().toUriString()
+        );
 
         return Link.of(uriString, "self");
     }
@@ -132,7 +130,7 @@ public class BaseRestService {
      * @return the response entity
      */
     public ResponseEntity buildResponseOk(final String rootName, final List<? extends BaseDTO> resources, final Map<String, Metadata> metadata,
-            final List<Link> metaLinks) {
+                                          final List<Link> metaLinks) {
 
         // add the self link to the collection of links
         List<Link> metaLinksToAdd = generateMetaLinks(metaLinks);
@@ -165,5 +163,16 @@ public class BaseRestService {
         metaLinksToAdd.addAll(metaLinks);
 
         return metaLinksToAdd;
+    }
+
+    private static String removeBeforeApi(String originalString) {
+        int indexOfApi = originalString.indexOf("/api");
+
+        if (indexOfApi != -1) {
+            return originalString.substring(indexOfApi);
+        } else {
+            // "/api" not found in the string
+            return originalString;
+        }
     }
 }
