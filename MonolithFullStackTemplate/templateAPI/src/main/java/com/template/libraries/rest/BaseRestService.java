@@ -3,6 +3,7 @@ package com.template.libraries.rest;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -16,15 +17,15 @@ import java.util.Map;
 public class BaseRestService {
 
     /**
-     * Build location header uri.
-     * @param id the id
+     * Build location header uri. It assumes that the endpoint wil always have an extra {id} param added
+     * @param params  the parameters to be added
      * @return the uri
      */
-    protected URI buildLocationHeader(final Long id) {
-
-        //TODO FIX THIS Fail;s when multiple params are passed
-//        return MvcUriComponentsBuilder.fromController(getClass()).path("/{id}").buildAndExpand(id).toUri();
-        return null;
+    protected URI buildLocationHeader(final Object... params) {
+        return MvcUriComponentsBuilder.fromController(getClass())
+                .path("/{id}")
+                .buildAndExpand(params)
+                .toUri();
     }
 
     /**
@@ -46,7 +47,6 @@ public class BaseRestService {
      * @return the response entity
      */
     public ResponseEntity buildResponseOk(final String rootName, final BaseDTO resource) {
-
         final BaseResponse response = new BaseResponse();
         response.setData(rootName, resource);
         response.setMessages("Template Message");
@@ -63,7 +63,6 @@ public class BaseRestService {
      * @return the response entity
      */
     public ResponseEntity buildResponseOk(final String rootName, final BaseDTO resource, final Map<String, Metadata> metadata) {
-
         final BaseResponse response = new BaseResponse();
         response.setData(rootName, resource);
         response.setMetadata(metadata);
@@ -72,24 +71,24 @@ public class BaseRestService {
         return ResponseEntity.ok().body(response);
     }
 
-
-    public ResponseEntity buildResponseCreated(String rootName, BaseDTO createdResource, Map<String, Metadata> metadata) {
-
+    /**
+     *  Build response created response entity.
+     * @param rootName the root name
+     * @param createdResource the resource created
+     * @param metadata the metadata
+     * @param locationHeader the location header
+     * @return the response entity
+     */
+    public ResponseEntity buildResponseCreated(String rootName, BaseDTO createdResource, Map<String, Metadata> metadata, URI locationHeader) {
         final BaseResponse response = new BaseResponse();
         response.setData(rootName, createdResource);
         response.setMetadata(metadata);
         response.addMetaLink(buildSelfLink());
 
         return ResponseEntity
-                .created(buildLocationHeader(1L))
+                .created(locationHeader)
                 .body(response);
-
-//        return ResponseEntity
-//                .created(buildLocationHeader(createdResource.getId()))
-//                .body(createdResource);
-
     }
-
 
     /**
      * Build response ok response entity. For a collection.
@@ -131,7 +130,6 @@ public class BaseRestService {
      */
     public ResponseEntity buildResponseOk(final String rootName, final List<? extends BaseDTO> resources, final Map<String, Metadata> metadata,
                                           final List<Link> metaLinks) {
-
         // add the self link to the collection of links
         List<Link> metaLinksToAdd = generateMetaLinks(metaLinks);
 
@@ -149,7 +147,6 @@ public class BaseRestService {
      * @return the json root name
      */
     public String getJsonRootName(final Class<? extends BaseDTO> clazz) {
-
         if (clazz.isAnnotationPresent(JsonRootName.class)) {
             return clazz.getAnnotation(JsonRootName.class).value();
         } else {

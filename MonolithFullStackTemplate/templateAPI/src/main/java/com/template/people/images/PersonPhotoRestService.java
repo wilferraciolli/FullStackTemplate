@@ -28,7 +28,12 @@ public class PersonPhotoRestService extends BaseRestService {
     public ResponseEntity<PersonPhotoResource> create(@PathVariable final Long personId, @RequestParam("file") MultipartFile file) {
         final PersonPhotoResource createdResource = this.appService.create(personId, file);
 
-        return buildResponseCreated(getJsonRootName(PersonPhotoResource.class), createdResource, new HashMap<>());
+        return buildResponseCreated(
+                getJsonRootName(PersonPhotoResource.class),
+                createdResource,
+                new HashMap<>(),
+                buildLocationHeader(createdResource.getPersonId(), createdResource.getFileId())
+        );
     }
 
     @GetMapping("/{id}")

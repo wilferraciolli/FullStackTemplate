@@ -62,7 +62,12 @@ public class UserRestService extends BaseRestService {
 
         Map<String, Metadata> metadata = metaFabricator.createMetaForCreatedResource(createdResource.getRoleIds());
 
-        return buildResponseCreated(getJsonRootName(UserResource.class), createdResource, metadata);
+        return buildResponseCreated(
+                getJsonRootName(UserResource.class),
+                createdResource,
+                metadata,
+                buildLocationHeader(createdResource.getId())
+        );
     }
 
     /**
