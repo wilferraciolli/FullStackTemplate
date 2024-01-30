@@ -13,19 +13,19 @@ https://github.com/clickvote/clickvote
 
 ## Imports
 
-######Angular Material
+###### Angular Material
 ng add @angular/material
 
-######Gesture Hammer JS
+###### Gesture Hammer JS
 npm install --save hammerjs
 Followed by adding it to the main.ts file
 
-######Angular Material icons
+###### Angular Material icons
 added
 `<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">`
 to the index.htm head section
 
-######Lodash
+###### Lodash
 npm install lodash --save
 npm install @types/lodash --save-dev
 
