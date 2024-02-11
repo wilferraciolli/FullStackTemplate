@@ -1,6 +1,7 @@
 package com.template.libraries.rest;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
+import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
@@ -15,6 +16,8 @@ import java.util.Map;
  * The type Base rest service.
  */
 public class BaseRestService {
+
+    private static final String SERVER_CONTEXT_PATH = "/api";
 
     /**
      * Build location header uri. It assumes that the endpoint wil always have an extra {id} param added
@@ -37,7 +40,7 @@ public class BaseRestService {
                 .build().toUriString()
         );
 
-        return Link.of(uriString, "self");
+        return Link.of(uriString, IanaLinkRelations.SELF.value());
     }
 
     /**
@@ -163,7 +166,7 @@ public class BaseRestService {
     }
 
     private static String removeBeforeApi(String originalString) {
-        int indexOfApi = originalString.indexOf("/api");
+        int indexOfApi = originalString.indexOf(SERVER_CONTEXT_PATH);
 
         if (indexOfApi != -1) {
             return originalString.substring(indexOfApi);
