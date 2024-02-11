@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import {TranslateService} from "@ngx-translate/core";
-import {LocaleType} from "./shared/locale.enum";
+import { Component, inject } from '@angular/core';
+import { TranslateService } from "@ngx-translate/core";
+import { UserSettingService } from "./_services/user-setting.service";
 
 @Component({
   selector: 'app-root',
@@ -8,25 +8,12 @@ import {LocaleType} from "./shared/locale.enum";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title: string = 'templateUI';
+  public title: string = 'templateUI';
 
-  //TODO should the user logged on be resolved here??????????????????????????
-  //TODO should the user logged on be resolved here??????????????????????????
-  //TODO should the user logged on be resolved here??????????????????????????
-  //TODO should the user logged on be resolved here??????????????????????????
+  private _userSettingService: UserSettingService = inject(UserSettingService);
+  private _translateService: TranslateService = inject(TranslateService);
 
-  constructor(private translate: TranslateService) {
-    const usersChosenLanguage: string | null = this.resolveUsersLanguage();
-
-    if (usersChosenLanguage) {
-      translate.setDefaultLang(usersChosenLanguage);
-    } else {
-      translate.setDefaultLang(LocaleType.ENGLISH);
-    }
-  }
-
-  private resolveUsersLanguage(): string | null {
-    // TODO load default language from user preferences
-    return localStorage.getItem('templateUI-chosenLanguage');
+  constructor() {
+    this._translateService.setDefaultLang(this._userSettingService.selectedUserLanguage().id);
   }
 }

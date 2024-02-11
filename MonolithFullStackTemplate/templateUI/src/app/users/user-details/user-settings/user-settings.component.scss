@@ -1,34 +1,42 @@
 $tabletSize: 800px;
 
 .user-settings {
-  padding: 20px;
-
   &-toolbar, span {
     text-align: center;
   }
 
   &-content {
-    padding: 30px;
+    padding: 10px;
     display: flex;
     flex-flow: column;
-
-    @media (min-width: $tabletSize) {
-      flex-direction: row;
-    }
+    align-items: center;
 
     &-item {
+      align-self: center;
       width: 100%;
-      padding-left: 10%;
-      padding-right: 10%;
+      max-width: 600px;
+      padding: 10px 10px 0 10px;
+      display: flex;
+      justify-content: center;
 
       @media (min-width: $tabletSize) {
         width: 100%;
-        padding: 5%;
+        padding: 10px;
       }
     }
 
     &-item > * {
       width: 80%;
+    }
+  }
+
+  &-actions-container {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 10px;
+
+    @media (min-width: $tabletSize) {
+      padding: 0 20px;
     }
   }
 }

@@ -84,5 +84,16 @@
     "maritalStatus": "Estado civil",
     "numberOfDependants": "Número de dependentes",
     "telephoneNumber": "Número do telefone"
+  },
+  "language": {
+    "en-gb": "EG - Inglês",
+    "el": "GR - Grego",
+    "pt-br": "PT - Português"
+  },
+  "locale": {
+    "Etc/GMT": "(UTC+00:00) Tempo Universal",
+    "Europe/London": "(UTC+00:00) Londres",
+    "Europe/Istanbul": "(UTC+02:00) Atenas",
+    "America/Sao_Paulo": "(UTC-03:00) Brasilia Sap paulo"
   }
 }

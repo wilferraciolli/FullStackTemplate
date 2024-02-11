@@ -11,6 +11,9 @@ https://github.com/formbricks/formbricks
 Look here for rating samples
 https://github.com/clickvote/clickvote
 
+Look here for state management with Signals
+https://medium.com/ngconf/keeping-state-with-a-service-using-signals-bee652158ecf
+
 ## Imports
 
 ###### Angular Material

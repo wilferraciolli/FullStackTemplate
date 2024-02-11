@@ -6,32 +6,42 @@
       </mat-toolbar>
     </div>
 
-    <div class="user-settings-content">
-      <div class="user-settings-content-item">
-        <!-- language -->
-        <mat-form-field>
-          <mat-label>Language</mat-label>
-          <mat-select>
-            <mat-option *ngFor="let setting of availableLanguages" [value]="setting.value">
-              {{setting.viewValue}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+    <form [formGroup]="formBuilder.form" (ngSubmit)="changeUserSetting()">
+      <div class="user-settings-content">
+        <div class="user-settings-content-item">
+          <!-- language -->
+          <mat-form-field>
+            <mat-label>Language</mat-label>
+            <mat-select formControlName="userLanguage">
+              <mat-option *ngFor="let setting of availableLanguages" [value]="setting.value">
+                {{ setting.viewValue | translate }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="user-settings-content-item">
+          <!-- timezone -->
+          <mat-form-field>
+            <mat-label>Timezone</mat-label>
+            <mat-select formControlName="userLocale">
+              <mat-option *ngFor="let setting of availableLocales" [value]="setting.value">
+                {{ setting.viewValue | translate }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       </div>
 
-      <div class="user-settings-content-item">
-        <!-- timezone -->
-        <mat-form-field>
-          <mat-label>Timezone</mat-label>
-          <mat-select>
-            <mat-option *ngFor="let setting of availableLocale" [value]="setting.value">
-              {{setting.viewValue}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+      <mat-divider></mat-divider>
+      <div class="user-settings-actions-container">
+        <mat-card-actions>
+          <button [disabled]="!formBuilder.form.valid" mat-raised-button type="submit"
+                  color="primary">{{ 'form.submit' | translate }}
+          </button>
+        </mat-card-actions>
       </div>
-
-    </div>
+    </form>
   </mat-card>
 
 </div>

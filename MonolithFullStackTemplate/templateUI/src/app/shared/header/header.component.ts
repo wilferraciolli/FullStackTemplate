@@ -1,12 +1,12 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {UserProfile} from '../../_services/classes/user.profile';
-import {Router} from '@angular/router';
-import {LinksService} from '../../_services/links-service';
-import {AuthService} from '../../_services/auth-service';
-import {ProfileService} from '../../_services/profile.service';
-import {TranslateService} from '@ngx-translate/core';
-import {ValueViewValue} from '../response/value-viewValue';
-import {LocaleType} from '../locale.enum';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { UserProfile } from '../../_services/classes/user.profile';
+import { Router } from '@angular/router';
+import { LinksService } from '../../_services/links-service';
+import { AuthService } from '../../_services/auth-service';
+import { ProfileService } from '../../_services/profile.service';
+import { ValueViewValue } from '../response/value-viewValue';
+import { UserSettingService } from "../../_services/user-setting.service";
+import { UserSetting } from "../../_services/classes/user-settings-available";
 
 @Component({
   selector: 'app-header',
@@ -32,16 +32,14 @@ export class HeaderComponent implements OnInit {
               private authenticationService: AuthService,
               private profileService: ProfileService,
               private linksService: LinksService,
-              private translate: TranslateService) {
+              private userSettingService: UserSettingService) {
   }
 
   ngOnInit(): void {
-
-    // TODO move to get it from user pref, maybe together with the app conponent
     this.availableLanguages = [
-      new ValueViewValue(LocaleType.ENGLISH, 'header.language.english'),
-      new ValueViewValue(LocaleType.GREEK, 'header.language.greek'),
-      new ValueViewValue(LocaleType.PORTUGUESE, 'header.language.portuguese')
+      new ValueViewValue(UserSetting.englishLanguage.id, 'header.language.english'),
+      new ValueViewValue(UserSetting.greekLanguage.id, 'header.language.greek'),
+      new ValueViewValue(UserSetting.portugueseLanguage.id, 'header.language.portuguese')
     ];
 
     this.authenticationService.isUserLoggedOn
@@ -71,12 +69,12 @@ export class HeaderComponent implements OnInit {
   }
 
   getUsers(): void {
-    const dataObject = {state: {usersLink: this.userProfile.links.users}};
+    const dataObject = { state: { usersLink: this.userProfile.links.users } };
     this.router.navigate(['users'], dataObject);
   }
 
   getPeople(): void {
-    const dataObject = {state: {peopleLink: this.userProfile.links.people}};
+    const dataObject = { state: { peopleLink: this.userProfile.links.people } };
     this.router.navigate(['people'], dataObject);
   }
 
@@ -97,9 +95,11 @@ export class HeaderComponent implements OnInit {
    * Set the language to be used.
    * @param language the language id to be used
    */
-  useLanguage(language: string): void {
-    localStorage.setItem('templateUI-chosenLanguage', language);
-    this.translate.use(language);
+  useLanguage(language: ValueViewValue): void {
+    this.userSettingService.setUserLanguage({
+      id: language.value,
+      name: language.viewValue
+    });
   }
 
 }

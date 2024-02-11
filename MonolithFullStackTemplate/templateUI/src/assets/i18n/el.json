@@ -83,5 +83,16 @@
     "maritalStatus": "οικογενειακή κατάσταση",
     "numberOfDependants": "Αριθμός Εξαρτωμένων",
     "telephoneNumber": "Αριθμός τηλεφώνου"
+  },
+  "language": {
+    "en-gb": "EG - Αγγλικά",
+    "el": "GR - Ελληνικά",
+    "pt-br": "PT - Πορτογαλικά"
+  },
+  "locale": {
+    "Etc/GMT": "(UTC+00:00) GR Coordinated Universal Time",
+    "Europe/London": "(UTC+00:00) GR Dublin, Edinburgh, Lisbon, London",
+    "Europe/Istanbul": "(UTC+02:00) GR Athens, Bucharest, Istanbul",
+    "America/Sao_Paulo": "(UTC-03:00) GR Brasilia"
   }
 }

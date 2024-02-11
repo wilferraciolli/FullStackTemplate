@@ -29,6 +29,7 @@ const MODULES = [
   MatCheckboxModule,
   MatDialogModule,
   MatDatepickerModule,
+  MatDividerModule,
   MatFormFieldModule,
   MatGridListModule,
   MatIconModule,
@@ -44,7 +45,6 @@ const MODULES = [
   MatTableModule,
   MatTabsModule,
   MatToolbarModule,
-  MatDividerModule,
   MatRadioModule,
   MatTooltipModule
 ];
