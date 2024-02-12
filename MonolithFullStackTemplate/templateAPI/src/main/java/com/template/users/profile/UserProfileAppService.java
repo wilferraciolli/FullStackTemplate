@@ -10,6 +10,7 @@ import com.template.users.details.UserDetailsView;
 import com.template.users.details.UserDetailsViewRepository;
 import com.template.users.user.User;
 import com.template.users.user.UserRepository;
+import com.template.usersettings.UserSettingRestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.Link;
@@ -98,6 +99,12 @@ public class UserProfileAppService {
                     "findById",
                     "person",
                     Map.of("id", userDetailsView.getPersonId())));
+
+            linksToAdd.add(linkBuilder.buildLink(
+                    UserSettingRestService.class,
+                    "getAllSettingsForUser",
+                    "userSettings",
+                    Map.of("userId", userDetailsView.getId())));
         }
 
         return linksToAdd;
