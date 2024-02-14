@@ -24,8 +24,8 @@ export class UserSettingService extends HttpBaseService {
   private translateService: TranslateService = inject(TranslateService);
   private profileService: ProfileService = inject(ProfileService);
 
-  private userLocale: WritableSignal<IUserSetting> = signal(this._resolveInitialLocale());
-  private userLanguage: WritableSignal<IUserSetting> = signal(this._resolveInitialLanguage());
+  private userLocale: WritableSignal<IUserSetting> = signal(UserSetting.englishLocal);
+  private userLanguage: WritableSignal<IUserSetting> = signal(UserSetting.englishLanguage);
 
   private _userProfile: UserProfile | null = null;
   private _userSettingsLink: Link | undefined = undefined;
@@ -40,65 +40,83 @@ export class UserSettingService extends HttpBaseService {
 
   public setUserLocale(userLocale: IUserSetting): void {
     this._createUpdateUserSetting(userLocale.id, LOCALE_CODE_SETTING);
-    localStorage.setItem('templateUI-userLocale', JSON.stringify(userLocale));
+    // localStorage.setItem('templateUI-userLocale', JSON.stringify(userLocale));
     this.userLocale.set(userLocale);
   }
 
   public setUserLanguage(userLanguage: IUserSetting): void {
     this._createUpdateUserSetting(userLanguage.id, LANGUAGE_CODE_SETTING);
-    localStorage.setItem('templateUI-userLanguage', JSON.stringify(userLanguage));
+    // localStorage.setItem('templateUI-userLanguage', JSON.stringify(userLanguage));
     this.translateService.use(userLanguage.id);
     this.userLanguage.set(userLanguage);
   }
 
   // get user settings from local storage or default
-  private _resolveInitialLocale(): IUserSetting {
-    const userLocaleStorage: string | null = localStorage.getItem('templateUI-userLocale');
+  // private _resolveInitialLocale(): IUserSetting {
+  //   const userLocaleStorage: string | null = localStorage.getItem('templateUI-userLocale');
+  //
+  //   if (userLocaleStorage) {
+  //     const userLocale: IUserSetting | null | undefined = JSON.parse(userLocaleStorage);
+  //
+  //     if (userLocale) {
+  //       return userLocale;
+  //     }
+  //   }
+  //
+  //   return UserSetting.englishLocal;
+  // }
 
-    if (userLocaleStorage) {
-      const userLocale: IUserSetting | null | undefined = JSON.parse(userLocaleStorage);
+  // private _resolveInitialLanguage(): IUserSetting {
+  //   const userLanguageStorage: string | null = localStorage.getItem('templateUI-userLanguage');
+  //   if (userLanguageStorage) {
+  //     const userLanguage: IUserSetting | null | undefined = JSON.parse(userLanguageStorage);
+  //
+  //     if (userLanguage) {
+  //       return userLanguage;
+  //     }
+  //   }
+  //
+  //   return UserSetting.englishLanguage;
+  // }
 
-      if (userLocale) {
-        return userLocale;
-      }
-    }
-
-    return UserSetting.englishLocal;
-  }
-
-  private _resolveInitialLanguage(): IUserSetting {
-    const userLanguageStorage: string | null = localStorage.getItem('templateUI-userLanguage');
-    if (userLanguageStorage) {
-      const userLanguage: IUserSetting | null | undefined = JSON.parse(userLanguageStorage);
-
-      if (userLanguage) {
-        return userLanguage;
-      }
-    }
-
-    return UserSetting.englishLanguage;
-  }
-
-
-  // TODO this need to somehow set the value on the user language
-  private _resolveInitialLanguage$(): Observable<IUserSetting> {
+  public fetchInitialUserSettings(): void {
     this._userProfile = this.profileService.currentUserProfileValue;
     this._userSettingsLink = this._userProfile?.links.userSettings;
 
     if (this._userSettingsLink) {
-      this.getSingle<UserSettingsResponse>(this._userSettingsLink.href).pipe(
-        map((v: UserSettingsResponse) =>
-          v._data.userSetting.find(id => LOCALE_CODE_SETTING === id.settingValue)
-        ),
-        // filter(v => Boolean(v)),
-        tap((v: any) => {
-          console.log('****************************************got i t ', v);
-        })
-      );
-    }
+      this.getSingle<UserSettingsResponse>(this._userSettingsLink.href).subscribe((response: UserSettingsResponse) => {
+        if (response) {
+          response._data.userSetting.forEach(v => {
+            console.log('found value ', v);
+            if (LANGUAGE_CODE_SETTING === v.settingCode) {
+              this.userLanguage.set({ id: v.settingValue, name: v.settingValue });
+            }
 
-    return of(UserSetting.englishLanguage);
+            if (LOCALE_CODE_SETTING === v.settingCode) {
+              this.userLocale.set({ id: v.settingValue, name: v.settingValue });
+            }
+          });
+        }
+      });
+    }
   }
+
+  // public fetchInitialLanguage(): void {
+  //   this._userProfile = this.profileService.currentUserProfileValue;
+  //   this._userSettingsLink = this._userProfile?.links.userSettings;
+  //
+  //   if (this._userSettingsLink) {
+  //     this.getSingle<UserSettingsResponse>(this._userSettingsLink.href).pipe(
+  //       map((v: UserSettingsResponse) =>
+  //         v._data.userSetting.find(id => LANGUAGE_CODE_SETTING === id.settingCode)
+  //       )
+  //     ).subscribe(language=> {
+  //       if (language){
+  //         this.userLanguage.set({id: language.settingValue, name: language.settingValue});
+  //       }
+  //     });
+  //   }
+  // }
 
   private _createUpdateUserSetting(settingId: string, settingCode: string): void {
     this._userProfile = this.profileService.currentUserProfileValue;

@@ -17,9 +17,10 @@ export class UserSettingsComponent implements OnInit {
   constructor(public formBuilder: UserSettingsFormBuilder,
               private _userSettingService: UserSettingService) {
 
-    // make sure that changing the users language will update the form
     effect(() => {
-      this.formBuilder.patchLanguageValue(this._userSettingService.selectedUserLanguage().id);
+      this.formBuilder.setFormValue(
+        this._userSettingService.selectedUserLanguage().id,
+        this._userSettingService.selectedUserLocale().id);
     });
   }
 

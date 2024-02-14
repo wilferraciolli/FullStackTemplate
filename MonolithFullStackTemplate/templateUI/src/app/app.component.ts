@@ -14,6 +14,7 @@ export class AppComponent {
   private _translateService: TranslateService = inject(TranslateService);
 
   constructor() {
+    this._userSettingService.fetchInitialUserSettings();
     this._translateService.setDefaultLang(this._userSettingService.selectedUserLanguage().id);
   }
 }
