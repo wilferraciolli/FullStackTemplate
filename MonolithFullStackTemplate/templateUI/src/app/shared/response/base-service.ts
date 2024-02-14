@@ -26,15 +26,21 @@ export class HttpBaseService {
         catchError(this.handleError));
   }
 
-  public async getAllPromise<T>(url: string): Promise<any> {
+  public async getAllPromise<T>(url: string): Promise<T | void> {
     const response =  await this.httpClient.get<T>(environment.baseUrl + url)
       .toPromise();
 
     return response;
   }
 
-  getSingle<T>(url: string) {
+  public async postPromise<T>(url: string, payloadToAdd: T): Promise<any> {
+    const response =  await this.httpClient.post<T>(environment.baseUrl + url, payloadToAdd, { headers: this.headers })
+                                .toPromise();
 
+    return response;
+  }
+
+  getSingle<T>(url: string): Observable<T> {
     return this.httpClient.get<T>(environment.baseUrl + url)
       .pipe(
         // tap(() => console.log(`fetched by url = ${url}`)),
