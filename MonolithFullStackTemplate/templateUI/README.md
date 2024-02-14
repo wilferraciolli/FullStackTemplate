@@ -61,6 +61,14 @@ Run the following command
 ```
 npm install @ngx-translate/core @ngx-translate/http-loader rxjs --save
 ```
+
+##### story books
+Tutorial can be found here `https://storybook.js.org/docs/get-started/install`
+run ```npx storybook@latest init``` to install
+run ```npm run storybook``` to run the server
+
+
+
 ## Creating lazily loading modules
     ```
     ng generate module moduleName --route routeName --module app.module
