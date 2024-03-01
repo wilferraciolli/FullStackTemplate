@@ -12,7 +12,7 @@ import { UserSettingsResponse } from './interfaces/user-settings-response';
 import { ProfileService } from './profile.service';
 
 
-// more on locales here https://get.kintone.help/general/en/admin/list_systemadmin/list_localization/timezone.html
+// more on locales here https://www.zeitverschiebung.net/en/timezone/asia--famagusta
 // more language codes here https://www.andiamo.co.uk/resources/iso-language-codes/
 
 const LANGUAGE_CODE_SETTING: string = 'LANGUAGE';

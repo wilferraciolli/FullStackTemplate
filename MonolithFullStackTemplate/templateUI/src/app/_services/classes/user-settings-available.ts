@@ -1,7 +1,7 @@
 export class UserSetting {
   public static readonly utcLocal: UserSetting = new UserSetting('Etc/GMT', '(UTC+00:00) Coordinated Universal Time');
   public static readonly englishLocal: UserSetting = new UserSetting('Europe/London', '(UTC+00:00) Dublin, Edinburgh, Lisbon, London');
-  public static readonly greekLocal: UserSetting = new UserSetting('Europe/Istanbul', '(UTC+02:00) Athens, Bucharest, Istanbul');
+  public static readonly greekLocal: UserSetting = new UserSetting('Europe/Athens', '(UTC+02:00) Athens, Nicosia');
   public static readonly portugueseLocal: UserSetting = new UserSetting('America/Sao_Paulo', '(UTC-03:00) Brasilia');
 
   public static readonly englishLanguage: UserSetting = new UserSetting('en-gb', 'English (United Kingdom)');
