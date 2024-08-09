@@ -30,8 +30,10 @@ export class TemplateComponent implements OnInit {
     // Getting UTC and setting onto a timezone API2UI
     this.timeInUK = new Date('2024-01-01T23:00:00.00Z').toLocaleString('en-gb', { timeZone: 'Europe/London' });
     this.timeInUKBST = new Date('2024-05-01T23:00:00.00Z').toLocaleString('en-gb', { timeZone: 'Europe/London' });
+
     this.timeInCY = new Date('2024-01-01T23:00:00.00Z').toLocaleString('el', { timeZone: 'Europe/Athens' });
     this.timeInCYBST = new Date('2024-05-01T23:00:00.00Z').toLocaleString('el', { timeZone: 'Europe/Athens' });
+
     this.timeInBR = new Date('2024-01-01T23:00:00.00Z').toLocaleString('pt-br', { timeZone: 'America/Sao_Paulo' });
   }
 

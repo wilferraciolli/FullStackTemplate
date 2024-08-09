@@ -38,6 +38,10 @@ npm install @types/lodash --save-dev
         import * as moment from 'moment';
         let myMoment: moment.Moment = moment("someDate");
 
+###### Luxon
+    `npm install --save luxon luxon-angular`
+    `npm i --save-dev @types/luxon`
+
 ###### JWT decoder
     npm i --save @types/jwt-decode
     npm i jwt_decode

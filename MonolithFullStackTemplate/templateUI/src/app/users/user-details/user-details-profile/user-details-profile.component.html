@@ -10,7 +10,7 @@
         <div class="user-details-profile-form-container">
           <div class="user-details-profile-form-content">
             <input type="hidden" formControlName="$key">
-            <mat-form-field color="primary">
+            <mat-form-field color="primary" appearance="outline">
               <input formControlName="firstName" matInput placeholder="{{'userProfile.firstName' | translate}}">
 
               <mat-error *ngIf="userDetailsProfileFormBuilder.firstName.hasError('required')">
@@ -21,7 +21,7 @@
               </mat-error>
             </mat-form-field>
 
-            <mat-form-field color="primary">
+            <mat-form-field color="primary" appearance="outline">
               <input formControlName="lastName" matInput placeholder="{{'userProfile.lastName' | translate}}">
 
               <mat-error *ngIf="userDetailsProfileFormBuilder.lastName.hasError('required')">
@@ -32,7 +32,7 @@
               </mat-error>
             </mat-form-field>
 
-            <mat-form-field color="primary">
+            <mat-form-field color="primary" appearance="outline">
               <input formControlName="email" matInput placeholder="{{'userProfile.email' | translate}}">
 
               <mat-error *ngIf="userDetailsProfileFormBuilder.email.hasError('required')">
@@ -43,18 +43,26 @@
               </mat-error>
             </mat-form-field>
 
-            <mat-form-field color="primary">
-              <mat-label>{{'userProfile.dateOfBirth' | translate}}</mat-label>
-              <input matInput [matDatepicker]="picker" placeholder="{{'form.chooseADate' | translate}}"
-                     formControlName="dateOfBirth">
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
+<!--            <mat-form-field color="primary">-->
+<!--              <mat-label>{{'userProfile.dateOfBirth' | translate}}</mat-label>-->
+<!--              <input matInput [matDatepicker]="picker" placeholder="{{'form.chooseADate' | translate}}"-->
+<!--                     formControlName="dateOfBirth">-->
+<!--              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>-->
+<!--              <mat-datepicker #picker></mat-datepicker>-->
+<!--            </mat-form-field>-->
+
+            <app-date-field
+              formControlName="dateOfBirth"
+              label="{{'form.chooseADate' | translate}}"
+              [required]="true"
+              [min]="'1900-01-01'"
+              [max]="'2020-00-01'"
+            />
 
           </div>
 
           <div class="user-details-profile-form-content">
-            <mat-form-field color="primary">
+            <mat-form-field color="primary" appearance="outline">
               <mat-label>{{'userProfile.gender' | translate}}</mat-label>
               <mat-select formControlName="genderId">
                 <mat-option *ngFor="let gender of genders" [value]="gender.value">
@@ -63,7 +71,7 @@
               </mat-select>
             </mat-form-field>
 
-            <mat-form-field color="primary">
+            <mat-form-field color="primary" appearance="outline">
               <mat-label>{{'userProfile.maritalStatus' | translate}}</mat-label>
               <mat-select formControlName="maritalStatusId">
                 <mat-option *ngFor="let maritalStatus of maritalStatuses" [value]="maritalStatus.value">
@@ -72,7 +80,7 @@
               </mat-select>
             </mat-form-field>
 
-            <mat-form-field color="primary">
+            <mat-form-field color="primary" appearance="outline">
               <input formControlName="numberOfDependants" matInput
                      placeholder="{{'userProfile.numberOfDependants' | translate}}"
                      type="number"
@@ -81,7 +89,7 @@
                      step="1">
             </mat-form-field>
 
-            <mat-form-field color="primary">
+            <mat-form-field color="primary" appearance="outline">
               <input formControlName="phoneNumber" matInput matInput #input maxlength="15"
                      placeholder="{{'userProfile.phoneNumber' | translate}}">
               <span matTextPrefix>+&nbsp;</span>

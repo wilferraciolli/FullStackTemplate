@@ -5,6 +5,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FooterComponent} from "./shared/footer/footer.component";
+import { DateFieldComponent } from './shared/forms/fields/date-field/date-field.component';
 import {HeaderComponent} from "./shared/header/header.component";
 import {HomeComponent} from "./home/home.component";
 import {LoadingComponent} from "./shared/components/loading/loading.component";
@@ -61,7 +62,8 @@ import {PersonPhotoComponent} from "./shared/business-components/person-photo/pe
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
-    })
+    }),
+    DateFieldComponent
   ],
   providers: [
     {provide: MatDialogRef, useValue: {}},

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import { DateTimeService } from '../../../_services/date-time/date-time.service';
 import {Person} from '../../../people/person';
-import {DateTimeService} from '../../../_services/date-time.service';
 import {PersonForm} from "../../../people/person-form";
 
 @Injectable({

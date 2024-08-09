@@ -1,0 +1,53 @@
+.date-field {
+  &-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 12px;
+  }
+
+  &-label {
+    width: 30%;
+    font-size: 0.75rem; /* adjust font size */
+    color: #a1a0a0; /* adjust text color */
+  }
+
+  &-label label {
+    font-weight: lighter; /* make the label bold */
+  }
+
+  &-input-container {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* make the input field full-width */
+  }
+
+  &-input {
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* make the input field full-width */
+    //padding: 0.5rem 0.75rem; /* add some padding */
+    padding: 0.8rem; /* add some padding */
+    font-size: 1rem; /* adjust font size */
+    border-radius: 0.25rem; /* add a slight border radius */
+    background-color: #fff; /* set background color to white */
+    //cursor: pointer; /* change cursor to a pointer on hover */
+    margin-bottom: 1rem;
+    border: 1px solid #ececec;
+  }
+
+  &-input.mat-input-element {
+    /* override Material Design styles here */
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    border-radius: 0.25rem;
+    background-color: blueviolet;
+  }
+
+  &-error {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+  }
+}

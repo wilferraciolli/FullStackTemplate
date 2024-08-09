@@ -4,7 +4,7 @@ import {User} from './user';
 import {UserServiceService} from './user-service.service';
 import * as _ from 'lodash';
 import {MetadataService} from '../_services/metadata.service';
-import {DateTimeService} from '../_services/date-time.service';
+import {DateTimeService} from '../_services/date-time/date-time.service';
 import {UserForm} from "./user-form";
 import {Id} from "../shared/response/id";
 import {EMAIL_PATTERN} from "../shared/constants";

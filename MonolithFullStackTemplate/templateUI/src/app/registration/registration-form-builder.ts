@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import * as _ from 'lodash';
+import { DateTimeService } from '../_services/date-time/date-time.service';
 
-import {DateTimeService} from '../_services/date-time.service';
 import {RegistrationForm} from "./registration-form";
 import {UserRegistration} from "./user-registration";
 import {EMAIL_PATTERN} from "../shared/constants";
