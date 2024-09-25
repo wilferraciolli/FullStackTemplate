@@ -72,11 +72,54 @@ run ```npx storybook@latest init``` to install
 run ```npm run storybook``` to run the server
 
 
+##### Capacitor 
+`npm install @capacitor/core`
+`npm install @capacitor/cli --save-dev`
+
+
+### Mobile Capacitor
+For this we are using Ionic Capacitor to deploy the application as a mobile app.
+In a nutshell the website is here `https://capacitorjs.com/solution/angular` all that it does, 
+Create ios and Android apps, build the code as prod and sync to capacitor, then it creates ionic-angular-android app
+
+Run `npx cap init` to initialize the mobile app Follow the instructions by filling in details 
+The command above will create the capacitor.config file within the project, 
+check its values and make sure that the webDir folder is set correctly Eg
+
+```js
+const config: CapacitorConfig = {
+appId: 'com.wiltech.capacitor',
+appName: 'angular-ionic-capacitor',
+webDir: 'dist/angular-ionic-capacitor/browser',
+};
+```
+
+Next build the app as prod to get the DISt files created 
+`ng build --configuration production`
+
+The next step is to add he mobile platforms (apple and android) run 
+`npm install @capacitor/ios @capacitor/android`
+
+Then add each platform individually 
+`npx cap add ios`
+`npx cap add android`
+
+NEXT run the command to open the editor 
+`npx cap open ios` 
+`npx cap open android`
+
+Now we can install plugins PS after any plugin is installed we need to sync the app by running 
+`npx cap sync`
+
+Capacitor plugins
+Camera`npm install @capacitor/camera`
+
 
 ## Creating lazily loading modules
     ```
     ng generate module moduleName --route routeName --module app.module
     ```
+
 
 ### Resoruces
 ##### images
@@ -88,7 +131,6 @@ https://www.mockupworld.co/free/category/
 https://www.ls.graphics/
 https://unblast.com/taxi-booking-ui-components-template-sketch/ FREE MOCK UPS
 https://shots.so/
-
 
 
 ## Development server
