@@ -25,7 +25,9 @@ public enum UserRoleType {
     /**
      * Role user user role type.
      */
-    ROLE_USER("User");
+    ROLE_USER("User"),
+
+    ROLE_GUEST("Guest");
 
     private String description;
 
