@@ -9,7 +9,7 @@ export class UserProfile {
   lastName: string;
   roleIds: string[];
   links: UserProfileLinks;
-  meta: UserProfileMeta;
+  meta: UserProfileMeta | null;
 
   constructor(id: string,
               personId: string,
@@ -18,7 +18,7 @@ export class UserProfile {
               lastName: string,
               roleIds: string[],
               links: UserProfileLinks,
-              meta: UserProfileMeta) {
+              meta: UserProfileMeta | null) {
     this.id = id;
     this.personId = personId;
     this.username = username;
@@ -28,4 +28,12 @@ export class UserProfile {
     this.links = links;
     this.meta = meta;
   }
+}
+
+export enum UserRoleType {
+  GUEST = 'ROLE_GUEST',
+  INTEGRATION = 'ROLE_INTEGRATION',
+  ADMIN = 'ROLE_ADMIN',
+  HR_ADMIN = 'ROLE_HR_ADMIN',
+  USER = 'ROLE_USER'
 }

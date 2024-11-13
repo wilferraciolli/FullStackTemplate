@@ -66,6 +66,9 @@ Run the following command
 npm install @ngx-translate/core @ngx-translate/http-loader rxjs --save
 ```
 
+##### ngRx Signals
+```ng add @ngrx/store```
+
 ##### story books
 Tutorial can be found here `https://storybook.js.org/docs/get-started/install`
 run ```npx storybook@latest init``` to install

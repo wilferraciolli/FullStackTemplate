@@ -35,7 +35,7 @@ export class HeaderComponent implements OnInit {
               private userSettingService: UserSettingService) {
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.availableLanguages = [
       new ValueViewValue(UserSetting.englishLanguage.id, 'header.language.english'),
       new ValueViewValue(UserSetting.greekLanguage.id, 'header.language.greek'),

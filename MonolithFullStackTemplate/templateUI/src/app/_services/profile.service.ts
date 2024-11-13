@@ -1,35 +1,26 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {UserProfileResponse} from './classes/user.profile.response';
 import {UserProfile} from './classes/user.profile';
 import {UserProfileAdapter} from "./classes/user.profile-adapter";
+import {GUEST_USER_PROFILE, UserSessionStore} from "./user-session-store/user-session.store";
+import {StorageService} from "./storage/storage.service";
+import {USER_PROFILE_KEY} from "./storage/storage-known-key.constant";
 
 @Injectable({providedIn: 'root'})
 export class ProfileService {
 
   private readonly _USER_PROFILE_URL: string = environment.baseUrl + '/api/iam/userprofile';
+  private readonly _userStore = inject(UserSessionStore);
+  private readonly _storageService: StorageService = inject(StorageService);
 
   public currentUserProfile!: Observable<UserProfile>;
   private currentUserProfileSubject!: BehaviorSubject<UserProfile>;
 
   constructor(private httpClient: HttpClient,
               private adapter: UserProfileAdapter) {
-    // let userFromLocalStorage: string | null = localStorage.getItem('templateUI-userProfile');
-    // if (userFromLocalStorage) {
-    //   this.currentUserProfileSubject = new BehaviorSubject<UserProfile>(JSON.parse(userFromLocalStorage));
-    // }
-
-    // else {
-    //   this._getUserProfile()
-    //     .then((response: UserProfile) => {
-    //       this.currentUserProfileSubject = new BehaviorSubject<UserProfile>(response);
-    //       this.currentUserProfile = this.currentUserProfileSubject.asObservable();
-    //     });
-    // }
-
-
     // get the user profile from storage
     // @ts-ignore
     this.currentUserProfileSubject = new BehaviorSubject<UserProfile>(JSON.parse(localStorage.getItem('templateUI-userProfile')));
@@ -52,10 +43,8 @@ export class ProfileService {
   }
 
   public removeUserProfile(): void {
-    localStorage.removeItem('templateUI-userProfile');
-
-    // TODO tell all of the subscribers that this can be completed
-    // this.currentUserProfileSubject.complete();
+    this._storageService.removeItem(USER_PROFILE_KEY);
+    this._userStore.updateUserProfile(GUEST_USER_PROFILE);
   }
 
   private async loadUserProfile<T>(): Promise<UserProfileResponse> {
@@ -75,13 +64,9 @@ export class ProfileService {
       userProfileResponse._data.userProfile,
       userProfileResponse._data.userProfile.links,
       userProfileResponse._metadata);
-    localStorage.setItem('templateUI-userProfile', JSON.stringify(userProfile));
+    this._storageService.addToLocalStorage<UserProfile>(USER_PROFILE_KEY, userProfile)
     this.currentUserProfileSubject.next(userProfile);
-  }
 
-  // private async _getUserProfile(): Promise<UserProfile> {
-  //   let response: UserProfileResponse = await this.loadUserProfile();
-  //
-  //   return new UserProfile(response);
-  // }
+    this._userStore.updateUserProfile(userProfile);
+  }
 }

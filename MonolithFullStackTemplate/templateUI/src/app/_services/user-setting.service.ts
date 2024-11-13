@@ -24,7 +24,7 @@ export class UserSettingService extends HttpBaseService {
   private translateService: TranslateService = inject(TranslateService);
   private profileService: ProfileService = inject(ProfileService);
 
-  private userLocale: WritableSignal<IUserSetting> = signal(UserSetting.englishLocal);
+  private userLocale: WritableSignal<IUserSetting> = signal(UserSetting.englishLocale);
   private userLanguage: WritableSignal<IUserSetting> = signal(UserSetting.englishLanguage);
 
   private _userProfile: UserProfile | null = null;
