@@ -20,12 +20,4 @@ export class UserProfileAdapter implements Adapter<UserProfile> {
       meta
     );
   }
-
-  // constructor(data: UserProfileResponse) {
-  //   this.id = data._data.userProfile.id;
-  //   this.personId = data._data.userProfile.personId;
-  //   this.firstName = data._data.userProfile.firstName;
-  //   this.lastName = data._data.userProfile.lastName;
-  //   this.links = data._data.userProfile.links;
-  // }
 }

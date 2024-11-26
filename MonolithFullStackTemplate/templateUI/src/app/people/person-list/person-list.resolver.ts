@@ -1,16 +1,14 @@
 import {inject, Injectable} from '@angular/core';
-import {ProfileService} from '../../_services/profile.service';
 import {UserProfile} from '../../_services/classes/user.profile';
-import {firstValueFrom} from 'rxjs';
 import {Link} from "../../shared/response/link";
+import {UserSessionStore} from "../../_services/user-session-store/user-session.store";
 
 @Injectable({providedIn: 'root'})
 export class PersonListResolver {
-
-  private readonly profileService: ProfileService = inject(ProfileService);
+  private readonly _userStore = inject(UserSessionStore);
 
   public async resolvePersonListLink(): Promise<Link | null> {
-    const userProfile: UserProfile | null = await firstValueFrom(this.profileService.currentUserProfile);
+    const userProfile: UserProfile | null = this._userStore.userProfile();
 
     if (!userProfile || !userProfile.links.people) {
       return null;

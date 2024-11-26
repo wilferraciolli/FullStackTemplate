@@ -1,12 +1,12 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { UserProfile } from '../../_services/classes/user.profile';
-import { Router } from '@angular/router';
-import { LinksService } from '../../_services/links-service';
-import { AuthService } from '../../_services/auth-service';
-import { ProfileService } from '../../_services/profile.service';
-import { ValueViewValue } from '../response/value-viewValue';
-import { UserSettingService } from "../../_services/user-setting.service";
-import { UserSetting } from "../../_services/classes/user-settings-available";
+import {Component, EventEmitter, inject, OnInit, Output, signal, Signal, WritableSignal} from '@angular/core';
+import {Router} from '@angular/router';
+import {LinksService} from '../../_services/links-service';
+import {AuthService} from '../../_services/auth-service';
+import {ProfileService} from '../../_services/profile.service';
+import {ValueViewValue} from '../response/value-viewValue';
+import {UserSettingService} from "../../_services/user-setting.service";
+import {UserSetting} from "../../_services/classes/user-settings-available";
+import {UserSessionStore} from "../../_services/user-session-store/user-session.store";
 
 @Component({
   selector: 'app-header',
@@ -14,14 +14,14 @@ import { UserSetting } from "../../_services/classes/user-settings-available";
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+  private readonly _userStore = inject(UserSessionStore);
 
-  isLoggedOn: boolean = false;
-  usersAccess: boolean = false;
-  peopleAccess: boolean = false;
+  public isLoggedOn: Signal<boolean> = this._userStore.isUserLoggedOn;
+  public usersAccess: WritableSignal<boolean> = signal(false);
+  public peopleAccess: WritableSignal<boolean> = signal(false);
 
   availableLanguages: Array<ValueViewValue> = [];
 
-  userProfile!: UserProfile;
   @Output()
   toggleSidenav = new EventEmitter<void>(); // event used to toggle sidenav
 
@@ -42,16 +42,7 @@ export class HeaderComponent implements OnInit {
       new ValueViewValue(UserSetting.portugueseLanguage.id, 'header.language.portuguese')
     ];
 
-    this.authenticationService.isUserLoggedOn
-      .subscribe(x => {
-        this.isLoggedOn = x;
-      });
-
-    this.profileService.currentUserProfile
-      .subscribe(user => {
-        this.userProfile = user;
-        this.getAreasAccess();
-      });
+    this.getAreasAccess();
   }
 
   /**
@@ -65,16 +56,16 @@ export class HeaderComponent implements OnInit {
   }
 
   getProfile(): void {
-    this.router.navigate(['userdetails', this.userProfile.id]);
+    this.router.navigate(['userdetails', this._userStore.userProfile()?.id]);
   }
 
   getUsers(): void {
-    const dataObject = { state: { usersLink: this.userProfile.links.users } };
+    const dataObject = {state: {usersLink: this._userStore.userProfile()?.links.users}};
     this.router.navigate(['users'], dataObject);
   }
 
   getPeople(): void {
-    const dataObject = { state: { peopleLink: this.userProfile.links.people } };
+    const dataObject = {state: {peopleLink: this._userStore.userProfile()?.links.people}};
     this.router.navigate(['people'], dataObject);
   }
 
@@ -82,12 +73,12 @@ export class HeaderComponent implements OnInit {
    * Get the user profile for the person logged on. This can be used to work out areas access.
    */
   private getAreasAccess(): void {
-    if (this.userProfile) {
-      this.usersAccess = this.linksService.hasLink(this.userProfile.links.users);
-      this.peopleAccess = this.linksService.hasLink(this.userProfile.links.people);
+    if (this._userStore.userProfile()) {
+      this.usersAccess.set(this.linksService.hasLink(this._userStore.userProfile()?.links.users));
+      this.peopleAccess.set(this.linksService.hasLink(this._userStore.userProfile()?.links.people));
     } else {
-      this.usersAccess = false;
-      this.peopleAccess = false;
+      this.usersAccess.set(false);
+      this.peopleAccess.set(false);
     }
   }
 

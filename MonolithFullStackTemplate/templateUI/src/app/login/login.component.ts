@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {finalize, first} from 'rxjs/operators';
 import {AuthService} from '../_services/auth-service';
@@ -6,6 +6,7 @@ import {LoadingService} from '../shared/components/loading/loading.service';
 import {ProfileService} from "../_services/profile.service";
 import {LoginFormBuilder} from "./login-form-builder";
 import {TranslateService} from "@ngx-translate/core";
+import {UserSessionStore} from "../_services/user-session-store/user-session.store";
 
 @Component({
   selector: 'app-login',
@@ -13,6 +14,7 @@ import {TranslateService} from "@ngx-translate/core";
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+  private readonly _userStore = inject(UserSessionStore);
 
   public loading: boolean = false;
   public submitted: boolean = false;
@@ -43,12 +45,9 @@ export class LoginComponent implements OnInit {
   ) {
 
     // redirect to home if already logged in
-    this.authenticationService.isUserLoggedOn
-      .subscribe((loggedOn: boolean) => {
-        if (loggedOn) {
-          this.router.navigate(['/']);
-        }
-      });
+    if (this._userStore.isUserLoggedOn()) {
+      this.router.navigate(['/']);
+    }
   }
 
   /**
@@ -63,7 +62,7 @@ export class LoginComponent implements OnInit {
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 
-    await this.translateService.use('en').toPromise();
+    // await this.translateService.use('en').toPromise();
     this.usernameRequiredErrorLabel = this.translateService.instant('form.validation.required');
     this.usernameMinLenghtLabel = this.translateService.instant('form.validation.minLength', {value: 3});
     this.usernameFormatErrorLabel = this.translateService.instant('form.validation.emailFormat');

@@ -1,20 +1,14 @@
 import {inject, Injectable} from '@angular/core';
 import {Link} from '../../shared/response/link';
-import {ProfileService} from '../../_services/profile.service';
 import {UserProfile} from '../../_services/classes/user.profile';
-import {firstValueFrom} from "rxjs";
+import {UserSessionStore} from "../../_services/user-session-store/user-session.store";
 
 @Injectable({providedIn: 'root'})
 export class UserListResolver {
-
-  private readonly profileService: ProfileService = inject(ProfileService);
+  private readonly _userStore = inject(UserSessionStore);
 
   public async resolveUserListLink(): Promise<Link | null> {
-    const userProfile: UserProfile | null = await firstValueFrom(this.profileService.currentUserProfile)
-      .then((userProfile: UserProfile) => userProfile);
-    //
-    // const userProfile: UserProfile | undefined = await this.profileService.currentUserProfile
-    //   .pipe(first()).toPromise()
+    const userProfile: UserProfile | null = this._userStore.userProfile();
 
     if (!userProfile || !userProfile.links.users) {
       return null;

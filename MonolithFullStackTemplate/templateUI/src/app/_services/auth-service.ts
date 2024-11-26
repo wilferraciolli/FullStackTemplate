@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {inject, Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {finalize, map} from 'rxjs/operators';
@@ -11,37 +11,29 @@ import {IAuthDetails} from "./interfaces/IAuthDetails";
 import * as _ from "lodash";
 import {ITokenDetails} from "./interfaces/ITokenDetails";
 import {Login} from "../login/login";
+import {StorageService} from "./storage/storage.service";
+import {AUTH_DETAILS_KEY} from "./storage/storage-known-key.constant";
+import {UserSessionStore} from "./user-session-store/user-session.store";
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
-
   private readonly _AUTHENTICATION_URL: string = '/api/auth';
   private readonly _REFRESH_TOKEN_URL: string = '/api/auth/refresh/token';
 
+  private _storageService: StorageService = inject(StorageService);
+  private _userSessionStore = inject(UserSessionStore);
+  private _httpClient = inject(HttpClient);
+  private _loadingService = inject(LoadingService);
+
   private refreshTokenTimeout!: any;
 
-  public isUserLoggedOn: Observable<boolean>;
-  private isUserLoggedOnSubject: BehaviorSubject<boolean>;
-
-  constructor(
-    private httpClient: HttpClient,
-    private loadingService: LoadingService) {
-
-    this.isUserLoggedOnSubject = new BehaviorSubject<boolean>(this.hasValidTokenAndCredentials());
-    this.isUserLoggedOn = this.isUserLoggedOnSubject.asObservable();
-  }
-
-  /**
-   * Public method to check whether a user is logged on.
-   */
-  public get isLoggedOn(): boolean {
-    return this.isUserLoggedOnSubject.value;
+  constructor() {
   }
 
   public login(authentication: Login): Observable<IAuthDetails> {
-    this.loadingService.loadingOn();
+    this._loadingService.loadingOn();
 
-    return this.httpClient
+    return this._httpClient
       .post<IAuthDetails>(environment.baseUrl + this._AUTHENTICATION_URL + '/signin', authentication)
       .pipe(
         map((authDetails: IAuthDetails) => {
@@ -49,7 +41,7 @@ export class AuthService {
 
           return authDetails;
         }),
-        finalize(() => this.loadingService.loadingOff()));
+        finalize(() => this._loadingService.loadingOff()));
   }
 
   public logout(): void {
@@ -59,13 +51,13 @@ export class AuthService {
 
   // TODO This should just be a void as there is no response from API
   public register(userDetails: UserRegistration): any {
-    this.loadingService.loadingOn();
-    return this.httpClient
+    this._loadingService.loadingOn();
+    return this._httpClient
       .post<any>(environment.baseUrl + this._AUTHENTICATION_URL + '/register', userDetails)
       .pipe(map((): void => {
           return;
         }),
-        finalize(() => this.loadingService.loadingOff()));
+        finalize(() => this._loadingService.loadingOff()));
   }
 
   private hasValidTokenAndCredentials(): boolean {
@@ -76,12 +68,10 @@ export class AuthService {
   }
 
   public getTokenFromLocalStorage(): string {
-    const authDetailsFromStorage: string | null = localStorage.getItem('templateUI-authDetails');
+    const authDetailsFromStorage: IAuthDetails | null = this._storageService.getFromLocalStorage<IAuthDetails>(AUTH_DETAILS_KEY);
 
     if (authDetailsFromStorage) {
-      const authDetails: IAuthDetails = JSON.parse(authDetailsFromStorage);
-
-      return authDetails.access_token;
+      return authDetailsFromStorage.access_token;
     }
 
     return '';
@@ -105,15 +95,9 @@ export class AuthService {
   }
 
   private getRefreshToken(): string {
-    const authDetailsStorage: string | null = localStorage.getItem('templateUI-authDetails');
+    const authDetailsStorage: IAuthDetails | null = this._storageService.getFromLocalStorage<IAuthDetails>(AUTH_DETAILS_KEY);
     if (authDetailsStorage) {
-      const authDetails = JSON.parse(authDetailsStorage);
-
-      if (authDetails) {
-        return authDetails.refresh_token;
-      } else {
-        return '';
-      }
+      return authDetailsStorage.refresh_token;
     }
 
     return '';
@@ -148,7 +132,7 @@ export class AuthService {
 
   // TODO add type
   private _refreshToken(): Observable<IAuthDetails> {
-    return this.httpClient
+    return this._httpClient
       .post<any>(environment.baseUrl + this._REFRESH_TOKEN_URL, {'refreshToken': this.getRefreshToken()})
       .pipe(map((authDetails: IAuthDetails) => {
 
@@ -158,16 +142,14 @@ export class AuthService {
   }
 
   private _removeUser(): void {
-    localStorage.removeItem('templateUI-authDetails');
-
-    // tell all of the subscribers
-    this.isUserLoggedOnSubject.next(false);
+    this._storageService.removeItem(AUTH_DETAILS_KEY);
+    this._userSessionStore.updateUserAuth(null);
   }
 
   private saveAuthDetails(authDetails: IAuthDetails): void {
     // store user details and jwt token in local storage to keep user logged in between page refreshes
-    localStorage.setItem('templateUI-authDetails', JSON.stringify(authDetails));
-    this.isUserLoggedOnSubject.next(true);
+    this._storageService.addToLocalStorage<IAuthDetails>(AUTH_DETAILS_KEY, authDetails);
+    this._userSessionStore.updateUserAuth(authDetails);
     this.startRefreshTokenTimer();
   }
 }

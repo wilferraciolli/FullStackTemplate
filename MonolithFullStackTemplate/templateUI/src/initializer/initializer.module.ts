@@ -1,5 +1,6 @@
 import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {UserSessionInitializerService} from "./user-session.initializer.service";
+import {SystemConfigInitializerService} from "./system-config.initializer.service";
 
 
 export function initializeUserProfile(userSessionService: UserSessionInitializerService) {
@@ -8,35 +9,20 @@ export function initializeUserProfile(userSessionService: UserSessionInitializer
   };
 }
 
-
-// TODO sample function to show app initializer
-export function initializeApp2() {
+export function initializeAuth(userSessionService: UserSessionInitializerService) {
   return (): Promise<void> => {
-    return new Promise((resolve, reject) => {
-      console.log(`initializeApp2 called`);
-      setTimeout(() => {
-        console.log(`initializeApp2 Finished`);
-        resolve();
-      }, 2000);
-    });
+    return userSessionService.initUserAuth();
   };
 }
 
+export function initializeSystemConfig(systemConfig: SystemConfigInitializerService) {
+  return (): Promise<void> => {
+    return systemConfig.initSystemConfiguration();
+  };
+}
 
 @NgModule({
   providers: [
-    // {
-    //   provide: APP_INITIALIZER,
-    //   multi: true,
-    //   useFactory: (config: UserSessionService) => {
-    //     return () => {
-    //       config.initUserSession();
-    //       console.log('App initializer')
-    //       return Promise<void>;
-    //     };
-    //   },
-    //   deps: [UserSettingService],
-    // },
     {
       provide: APP_INITIALIZER,
       multi: true,
@@ -46,7 +32,14 @@ export function initializeApp2() {
     {
       provide: APP_INITIALIZER,
       multi: true,
-      useFactory: initializeApp2
+      useFactory: initializeAuth,
+      deps: [UserSessionInitializerService]
+    },
+    {
+      provide: APP_INITIALIZER,
+      multi: true,
+      useFactory: initializeSystemConfig,
+      deps: [SystemConfigInitializerService]
     },
   ],
 })

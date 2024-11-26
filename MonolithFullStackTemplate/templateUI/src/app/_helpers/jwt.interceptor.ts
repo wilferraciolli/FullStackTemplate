@@ -1,12 +1,15 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {AuthService} from '../_services/auth-service';
+import {UserSessionStore} from "../_services/user-session-store/user-session.store";
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
+  private _userSessionStore = inject(UserSessionStore);
+  private _authenticationService: AuthService = inject(AuthService);
 
-  constructor(private authenticationService: AuthService) {
+  constructor() {
   }
 
   /**
@@ -16,10 +19,14 @@ export class JwtInterceptor implements HttpInterceptor {
    */
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // add authorization header with jwt token if available
-    if (this.authenticationService.isLoggedOn && !this.authenticationService.isTokenExpired()) {
+    const tokenFromLocalStorage: string = this._authenticationService.getTokenFromLocalStorage();
+
+    if (tokenFromLocalStorage
+      && this._userSessionStore.isUserLoggedOn()
+      && !this._authenticationService.isTokenExpired()) {
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${this.authenticationService.getTokenFromLocalStorage()}`,
+          Authorization: `Bearer ${tokenFromLocalStorage}`,
           // 'Content-Type': 'application/json',
           // 'Access-Control-Allow-Origin': '*',
           Accept: 'application/json'

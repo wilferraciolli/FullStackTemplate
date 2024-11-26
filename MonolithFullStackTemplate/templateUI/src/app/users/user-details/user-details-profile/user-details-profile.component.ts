@@ -1,6 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {UserProfile} from '../../../_services/classes/user.profile';
 import {UserDetailsProfileService} from './user-details-profile.service';
 import {PersonAdapter} from '../../../people/person.adapter';
 import {Person} from '../../../people/person';
@@ -10,6 +9,8 @@ import {ProfileService} from '../../../_services/profile.service';
 import {UserDetailsProfileFormBuilder} from './user-details-profile-form-builds';
 import {MetadataService} from '../../../_services/metadata.service';
 import {PersonResponse} from "../../../people/person/person-response";
+import {UserSessionStore} from "../../../_services/user-session-store/user-session.store";
+import {Link} from "../../../shared/response/link";
 
 @Component({
   selector: 'app-user-details-profile',
@@ -17,8 +18,7 @@ import {PersonResponse} from "../../../people/person/person-response";
   styleUrls: ['./user-details-profile.component.scss']
 })
 export class UserDetailsProfileComponent implements OnInit {
-
-  userProfile!: UserProfile;
+  private readonly _userStore = inject(UserSessionStore);
 
   person!: Person;
   genders: Array<ValueViewValue> = [];
@@ -35,12 +35,7 @@ export class UserDetailsProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.profileService.currentUserProfile
-      .subscribe(user => {
-        this.userProfile = user;
-
-        this._fetchPersonUserDetailsProfile();
-      });
+    this._fetchPersonUserDetailsProfile();
   }
 
   public updatePerson(): void {
@@ -58,8 +53,10 @@ export class UserDetailsProfileComponent implements OnInit {
   }
 
   private _fetchPersonUserDetailsProfile(): void {
-    if (this.userProfile.links.person){
-      this.userDetailsProfileService.getById(this.userProfile.links.person.href)
+    const personLink: Link | undefined = this._userStore.userProfile()?.links.person
+
+    if (personLink) {
+      this.userDetailsProfileService.getById(personLink.href)
         .then((response: PersonResponse) => {
 
           // get person details and populate form
@@ -70,8 +67,7 @@ export class UserDetailsProfileComponent implements OnInit {
           this.genders = this.metadataService.resolveMetadataIdValues(response._metadata.genderId.values);
           this.maritalStatuses = this.metadataService.resolveMetadataIdValues(response._metadata.maritalStatusId.values);
         });
-    }
-    else {
+    } else {
       this.notificationService.error('User logged on does not have a person attached.')
     }
   }

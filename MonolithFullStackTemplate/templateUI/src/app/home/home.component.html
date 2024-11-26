@@ -1,7 +1,7 @@
 <div class="container">
 
   <mat-toolbar>
-    <span class="home-title">{{'home.title' | translate}}</span>
+    <span class="home-title">{{ 'home.title' | translate }}</span>
 
     <app-photo-thumbnail
       [imageUrl]="'http://localhost:5001/api/public/people/2000/images/fc7dbada-987a-41ae-8a4c-7ea852ead18f/download'">
@@ -13,13 +13,23 @@
     </app-photo-thumbnail>
 
     <app-photo-thumbnail
-      [imageUrl]="''"  >
+      [imageUrl]="''">
     </app-photo-thumbnail>
   </mat-toolbar>
   <br>
 
-  user is:
-{{user() | json}}
+  <h3>user is:</h3>
+  {{ user() | json }}
+  <br/>
+  <h3>language is</h3>
+  {{ lang() |json }}
+
+  <h3>auth details</h3>
+  <br>
+  {{ auth() |json }}
+  <h3>loggedon</h3>
+  <br>
+  {{ isLoggedOn() |json }}
 
   <div class="home-contentBody">
     <div class="home-card">

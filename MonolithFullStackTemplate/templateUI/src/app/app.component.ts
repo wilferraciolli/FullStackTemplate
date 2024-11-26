@@ -1,6 +1,6 @@
-import { Component, inject } from '@angular/core';
-import { TranslateService } from "@ngx-translate/core";
-import { UserSettingService } from "./_services/user-setting.service";
+import {Component, inject} from '@angular/core';
+import {TranslateService} from "@ngx-translate/core";
+import {UserSessionStore} from "./_services/user-session-store/user-session.store";
 
 @Component({
   selector: 'app-root',
@@ -10,11 +10,11 @@ import { UserSettingService } from "./_services/user-setting.service";
 export class AppComponent {
   public title: string = 'templateUI';
 
-  private _userSettingService: UserSettingService = inject(UserSettingService);
   private _translateService: TranslateService = inject(TranslateService);
+  private _userSessionStore = inject(UserSessionStore);
 
   constructor() {
-    this._userSettingService.fetchInitialUserSettings();
-    this._translateService.setDefaultLang(this._userSettingService.selectedUserLanguage().id);
+    // set fallback language
+    this._translateService.setDefaultLang(this._userSessionStore.userLanguage().id);
   }
 }

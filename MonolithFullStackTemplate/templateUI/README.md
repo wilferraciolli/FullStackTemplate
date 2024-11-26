@@ -13,6 +13,7 @@ https://github.com/clickvote/clickvote
 
 Look here for state management with Signals
 https://medium.com/ngconf/keeping-state-with-a-service-using-signals-bee652158ecf
+and here `https://www.stefanos-lignos.dev/posts/ngrx-signals-store`
 
 ## Imports
 
@@ -68,6 +69,7 @@ npm install @ngx-translate/core @ngx-translate/http-loader rxjs --save
 
 ##### ngRx Signals
 ```ng add @ngrx/store```
+See this cheat sheet on signal store `https://www.stefanos-lignos.dev/posts/ngrx-signals-store`
 
 ##### story books
 Tutorial can be found here `https://storybook.js.org/docs/get-started/install`
