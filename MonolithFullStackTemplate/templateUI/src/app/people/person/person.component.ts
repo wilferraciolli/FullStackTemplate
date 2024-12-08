@@ -1,4 +1,4 @@
-import {HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import {Component, Inject, OnInit, Optional} from '@angular/core';
 import { DialogLinkData } from '../../shared/dialog.service';
 import {PersonService} from '../person.service';

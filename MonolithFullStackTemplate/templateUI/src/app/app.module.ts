@@ -21,7 +21,7 @@ import {UserSettingsComponent} from "./users/user-details/user-settings/user-set
 import {CommonModule, DatePipe} from "@angular/common";
 import {SharedModule} from "./shared/shared.module";
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
-import {HTTP_INTERCEPTORS, HttpClient} from "@angular/common/http";
+import { HTTP_INTERCEPTORS, HttpClient } from "@angular/common/http";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {JwtInterceptor} from "./_helpers/jwt.interceptor";
 import {ErrorInterceptor} from "./_helpers/error.interceptor";

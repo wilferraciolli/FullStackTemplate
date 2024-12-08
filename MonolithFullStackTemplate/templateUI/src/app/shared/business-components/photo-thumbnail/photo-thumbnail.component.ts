@@ -1,7 +1,7 @@
 import {Component, inject, Input, OnInit} from '@angular/core';
 import {NgIf} from "@angular/common";
 import {PersonPhotoResponse} from "../../../people/person-photo/person-photo.response";
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import {Observable} from "rxjs";
 
 const DEFAULT_EMPTY_IMAGE: string = '';

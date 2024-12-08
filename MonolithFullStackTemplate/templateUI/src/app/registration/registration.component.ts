@@ -3,7 +3,7 @@ import {first} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NotificationService} from '../shared/notification.service';
 import {AuthService} from '../_services/auth-service';
-import {HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {RegistrationFormBuilder} from "./registration-form-builder";
 import {UserSessionStore} from "../_services/user-session-store/user-session.store";

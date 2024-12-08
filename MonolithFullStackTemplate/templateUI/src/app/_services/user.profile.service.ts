@@ -1,10 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {catchError, retry, tap} from 'rxjs/operators';
-import {BehaviorSubject, Observable, Subject, throwError} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {UserProfile} from './classes/user.profile';
-import {UserProfileResponse} from './classes/user.profile.response';
 
 //TODO remove this service as not in use anymore
 

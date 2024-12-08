@@ -1,6 +1,6 @@
 import {Component, inject, Input, OnInit, signal, WritableSignal} from '@angular/core';
 import {NgIf} from "@angular/common";
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import {PersonPhotoResponse} from "../../../people/person-photo/person-photo.response";
 import {Observable} from "rxjs";
 import {environment} from "../../../../environments/environment";
