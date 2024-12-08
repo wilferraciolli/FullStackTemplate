@@ -40,7 +40,7 @@ public class SchedulerService {
     public void startScheduler() {
         // periodically monitors the table and run jobs
         if (scheduledTask == null || scheduledTask.isCancelled()) {
-            scheduledTask = taskScheduler.scheduleAtFixedRate(this::checkScheduledJobs, Duration.ofSeconds(10));
+            scheduledTask = taskScheduler.scheduleAtFixedRate(this::checkScheduledJobs, Duration.ofDays(10));
         }
     }
 
